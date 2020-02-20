@@ -81,7 +81,7 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
 #' data(U)
 #' plot(neighbourhoods(U,.002))
 neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
-  h <- hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
+  hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
 
 #' Distances between hexagonal bins 
 #' 
@@ -103,8 +103,8 @@ neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
 #'y<-sapply(1:1000,function(i){hD[U$hexagon[sss1[i]],U$hexagon[sss2[i]]]})
 #'plot(x,y,pch=".")
 
-dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
-  if(is.null(U$hexagon)){U$hexagon<-neighbourhoods(U,delta)@cID}
+dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhoods(U,delta)){
+  if(is.null(U$hexagon)){U$hexagon<-h@cID}
   dd<-plyr::ddply(U,~hexagon, function(d){data.frame(mx=median(d$x),my=median(d$y))})
   centers<-hexbin::hcell2xy(h)
   dd$x<-sapply(dd$mx,function(y,x){x[which.min(abs(x - y))]},x=unique(centers$x))
@@ -177,7 +177,7 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
   closedistances=NULL
   h<-neighbourhoods(U,delta)
   U$hexagon<-paste0(h@cID)
-  dist_areas<-dist_areas_f(U)
+  dist_areas<-dist_areas_f(U,delta,h)
   for (tt in 2:TT){
     y<-paste0("I",formatC(tt, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
     y_1<-paste0("I",formatC(tt-1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
