@@ -1,4 +1,4 @@
-library(Strategy)
+
 data(U)
 data(UE)
 
