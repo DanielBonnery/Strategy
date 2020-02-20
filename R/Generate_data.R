@@ -132,11 +132,13 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
   stillfine<-setdiff(1:nrow(U),sicks)
   if(length(new.sicks)>0){
     new.sickhexagons<-unique(U$hexagon[new.sicks])
+    
     for(hexagon in new.sickhexagons){
       exposedhexagons<-dimnames(dist_areas)[[1]][dist_areas[hexagon,]<delta]
+      new.sickinhexagon<-new.sicks[is.element(U$hexagon[new.sicks],hexagon)]
       stillfineexposedhexagon<-stillfine[is.element(U$hexagon[stillfine],exposedhexagons)]
     yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
-                                  x2=U[new.sickhexagons,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfine)*length(new.sicks))
+                                  x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
     closedistances$ind<-rbind(closedistances$ind,cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]))
     closedistances$ra=c(closedistances$ra,yy$ra)}}
   keep=is.element(closedistances$ind[,1],stillfine)
@@ -152,7 +154,7 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
 risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskhalf=5*10^(-4),jumprisk=10^-6,delta=0.01){
   stillfine<-setdiff(1:nrow(U),sicks)
   nI=length(sicks)
-  closedistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=0.05)
+  closedistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
   #risk<-plyr::aaply(Matrix::sparseMatrix(i=closedistances$ind[,1],j=closedistances$ind[,2],x=closedistances$ra),1,risktobeinfectedbydistancetoallinfectedunit,nI=length(sicks))
   exposed=intersect(stillfine,unique(closedistances$ind[,1]))
   risk=plyr::aaply(exposed,1,function(i){risktobeinfectedbydistancetoallinfectedunit(closedistances$ra[closedistances$ind[,1]==i],nI =nI )},.progress="text")
@@ -183,13 +185,13 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
     y_1<-paste0("I",formatC(tt-1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
     y_2<-paste0("I",formatC(tt-2, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
     sicks_2=(1:nrow(U))[U[[y_2]]=="sick"]
-    sicks_1=(1:nrow(U))[U[[y_1]]=="sick"]
+    sicks=sicks_1=(1:nrow(U))[U[[y_1]]=="sick"]
     new.sicks<-setdiff(sicks_1,sicks_2)
     U[[y]]<-U[[y_1]]
-    R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
+    R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks_1,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
     contamination<-rbinom(length(R$exposed),size = 1,prob=R$risk)==1
     U[[y]][R$exposed][contamination]<-"sick"
-    save(U,file="U.rda")
+    #save(U,file="U.rda")
   }
   U
 }
