@@ -44,34 +44,101 @@ Generate_U<-function(SpatialData,.id=NULL,.spatialobject,type="random"){
     xx})} 
 
 
-
+#' Risk to be infected by a neighbour at a distance x
+#' 
+#' @param .dist : a distance
+#' @param .disthalfrisk : distance for which the risk is one half
+#' @return  exp(-.dist/(log(2)*.distriskhalf))
+#' @examples 
+#' #Risk to be ingfected 2 m from the victim when the 50%risk distance is 1 m:
+#' risktobeinfectedbydistancetooneinfectedunit(2,1)
 risktobeinfectedbydistancetooneinfectedunit<-function(.dist,.distriskhalf=5*10^(-4)){
   exp(-.dist/(log(2)*.distriskhalf))
 }
+
+#' Risk to be infected by many neighbours a neighbour at a certain distance 
+#' 
+#' @param .dist : a vector (distances)
+#' @param .disthalfrisk : distance for which the risk is one half
+#' @param nI: total number of infected
+#' @param jumprisk: probability to be infected by one person, no matter how far he(she) is
+#' @return  1-(prod(1-risktobeinfectedbydistancetooneinfectedunit(.dist,.distriskhalf))*(1-jumprisk)^nI)
+#' @examples 
+#' #Risk to be ingfected 2 m from the victim when the 50%risk distance is 1 m:
+#' risktobeinfectedbydistancetooneinfectedunit(2,1)
 
 risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*10^(-4),jumprisk=10^-6){
   1-(prod(1-risktobeinfectedbydistancetooneinfectedunit(.dist,.distriskhalf))*(1-jumprisk)^nI)
 }
 
+#' hexagonal bins
+#' 
+#' @param U : a dataframe containing the numerical variables x and y 
+#' @param delta: controls the bin diameter
+#' @return a hexbin object  hexagonal bins
+#' @examples 
+#' # plot the hex bins of cumbria
+#' data(U)
+#' plot(neighbourhoods(U,.002))
+neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100)){
+  h <- hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
 
-library(fields)
+#' Distances between hexagonal bins 
+#' 
+#' @param U : a dataframe containing the numerical variables x and y and preferable hexagon
+#' @param delta : needed if hexagon is not a variable of U: bins will be recomputed
+#' @return a named matrix
+#' @examples 
+#' data(U) 
+#' dist_areas_f(U)
+#' 
+#' delta<-0.01
+#' h<-neighbourhoods(U,delta)
+#' U$hexagon<-paste0(h@cID)
+#' hD<-dist_areas_f(U,h)
+#'
+#'sss1=sample(nrow(U),1000)
+#'sss2=sample(nrow(U),1000)
+#'x=sapply(1:1000,function(i){dist(U[c(sss1[i],sss2[i]),c("x","y")])})
+#'y<-sapply(1:1000,function(i){hD[U$hexagon[sss1[i]],U$hexagon[sss2[i]]]})
+#'plot(x,y,pch=".")
+
+dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
+  if(is.null(U$hexagon)){U$hexagon<-neighbourhoods(U,delta)@cID}
+  dd<-plyr::ddply(U,~hexagon, function(d){data.frame(mx=median(d$x),my=median(d$y))})
+  centers<-hexbin::hcell2xy(h)
+  dd$x<-sapply(dd$mx,function(y,x){x[which.min(abs(x - y))]},x=unique(centers$x))
+  dd$y<-sapply(dd$my,function(y,x){x[which.min(abs(x - y))]},x=unique(centers$y))
+  hD<-as.matrix(dist(dd[c("x","y")]))
+  #ggplot(dd, aes(x, y)) +geom_segment(aes(x = x, y = y, xend = mx, yend = my, colour = "segment"), data = dd)
+  dimnames(hD)<-list(dd$hexagon,dd$hexagon)
+  hD
+}
+
+
+
+
 #' @examples 
 #' delta<-.005
 #' sicks<-(1:nrow(U))[y=="sick"]
 #' closedistances=updatedist(NULL,U,sicks)
 
-updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005){
+updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
   if(is.null(closedistances)){
     closedistances=list(ind=matrix(NA,0,2),ra=vector())}
   
   if(is.null(new.sicks)){new.sicks<-setdiff(sicks,unique(closedistances$ind[,2]))}
   
   stillfine<-setdiff(1:nrow(U),sicks)
-   if(length(new.sicks)>0){
-    yy<-fields::fields.rdist.near(x1=U[stillfine,c("x","y"),drop=FALSE],
-                                  x2=U[new.sicks,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfine)*length(new.sicks))
+  if(length(new.sicks)>0){
+    new.sickhexagons<-unique(U$hexagon[new.sicks])
+    for(hexagon in new.sickhexagons){
+      exposedhexagons<-dimnames(dist_areas)[[1]][dist_areas[hexagon,]<delta]
+      stillfineexposedhexagon<-stillfine[is.element(U$hexagon[stillfine],exposedhexagons)]
+    yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
+                                  x2=U[new.sickhexagons,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfine)*length(new.sicks))
     closedistances$ind<-rbind(closedistances$ind,cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]))
-    closedistances$ra=c(closedistances$ra,yy$ra)}
+    closedistances$ra=c(closedistances$ra,yy$ra)}}
   keep=is.element(closedistances$ind[,1],stillfine)
   closedistances$ind<-closedistances$ind[keep,]
   closedistances$ra<-closedistances$ra[keep]
@@ -95,6 +162,7 @@ risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskh
 r<-function(risk){
   rbinom(nrow(y),size = 1,prob =risk )
 }
+
 
 #' @examples 
 #' .distriskhalf=5*10^(-4);jumprisk=10^-6;delta=0.05 TT=10
@@ -120,8 +188,8 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
     U[[y]][R$exposed][contamination]<-"sick"
     save(U,file="U.rda")
   }
-U
-  }
+  U
+}
 
 
 
