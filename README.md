@@ -1,7 +1,4 @@
-# Data: Annual Survey of Public Employment & Payroll
-
-`dataONS` is an R package that contains data from the Annual Survey of Public Employment & Payroll.
-The data was pulled from the [ONS website](https://www.ons.gov.uk).
+# Simulations for desease detection
 
 
 
@@ -9,26 +6,11 @@ The data was pulled from the [ONS website](https://www.ons.gov.uk).
 To install  the package, execute:
 
 ```r
-devtools::install_github("DanielBonnery/dataONS")
+cred <- git2r::cred_user_pass("username", "password")
+devtools::install_git("http://pine--is.grid.private.cam.ac.uk:8888/gitlab/dbb31/Strategy.git", credentials = cred)
 ```
-Note that installation is slow, because part of the installation process is the downloading of data from the Census Bureau website.
+where '"username"' and '"password"' need to be replaced by correct strings.
 
 
-##Documentation
-To see the documentation, execute:
+## Generate a population that matches the ONS 2006 population estimates for the parishes of Cumbria
 
-
-##How was the data pulled ?
-To pull the data again, execute:
-
-```r
-alldata<-dataONS::get_data_from_web()
-```
-
-##How to use the data ?
-To see an example of data use, execute:
-
-
-```r
-demo(Popbyparish,package = "dataONS")
-```
