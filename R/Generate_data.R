@@ -80,7 +80,7 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
 #' # plot the hex bins of cumbria
 #' data(U)
 #' plot(neighbourhoods(U,.002))
-neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100)){
+neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
   h <- hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
 
 #' Distances between hexagonal bins 
@@ -175,6 +175,9 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
   U[[y1]]<-U[[y0]]
   U[[y1]][sample(nrow(U),10)]<-"sick"
   closedistances=NULL
+  h<-neighbourhoods(U,delta)
+  U$hexagon<-paste0(h@cID)
+  dist_areas<-dist_areas_f(U)
   for (tt in 2:TT){
     y<-paste0("I",formatC(tt, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
     y_1<-paste0("I",formatC(tt-1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
