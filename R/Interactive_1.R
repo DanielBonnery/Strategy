@@ -1,4 +1,4 @@
-
+#library(Strategy)
 data(U)
 data(UE)
 
@@ -56,9 +56,12 @@ test<-function(){
                                                        min = 1,
                                                        max = ncol(UE)-4,
                                                        value = 30),
-                                           selectInput("testapproach", 
-                                                       "Test", 
-                                                       c("Frequentist","Bayesian")) 
+                                           selectInput("Status", 
+                                                       "health", 
+                                                       c("sick","sane","all")) ,
+                                           selectInput("Test", 
+                                                       "health", 
+                                                       c("sick","sane","all")) 
                               ),
                               
                               mainPanel(
@@ -80,7 +83,7 @@ test<-function(){
     
     
     subsetData <- reactive({
-      return(UE[UE[,input$time+4]=="sick",])
+      return(if(input$Status=="all"){UE[c("x","y")]}else{UE[UE[,input$time+4]==input$Status,c("x","y")]})
     })
     
     data(UE,package="Strategy")
@@ -92,6 +95,7 @@ test<-function(){
     popbins<-quantile(shapeData$population,(seq_len(11)-1)/10) 
     poppal <- colorBin(heat.colors(5), bins=popbins, na.color = "#aaff56",reverse = T)
     library(leaflet)
+    
     
     output$bbmap <- renderLeaflet({
     leaflet(UE) %>% 
@@ -105,9 +109,15 @@ test<-function(){
       addLegend(title = "Population count", pal=poppal, 
                 values=shapeData$population,
                 opacity=1, 
-                na.label = "Not Available") %>% 
-      addMarkers(data = subsetData(),lng = ~x, lat = ~y,
-                 clusterOptions = markerClusterOptions())})
+                na.label = "Not Available")})
+    
+    observe({
+      leafletProxy("bbmap")  %>% 
+        clearMarkerClusters()%>%
+        addMarkers(data = subsetData(),lng = ~x, lat = ~y,
+                   clusterOptions = markerClusterOptions())
+    })
+    
     
     
     #create a data object to display data
