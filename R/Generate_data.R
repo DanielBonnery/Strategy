@@ -81,7 +81,7 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
 #' data(U)
 #' plot(neighbourhoods(U,.002))
 neighbourhoods<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100){
-  hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
+  hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x)[2]-range(U$x)[1])/2*delta), xbnds=range(U$x),ybnds= range(U$y), IDs = TRUE)}
 
 #' Distances between hexagonal bins 
 #' 
@@ -191,7 +191,7 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
     R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks_1,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
     contamination<-rbinom(length(R$exposed),size = 1,prob=R$risk)==1
     U[[y]][R$exposed][contamination]<-"sick"
-    #save(U,file="U.rda")
+    if(tt%%10==0){save(U,file="UE.rda")}
   }
   U
 }
@@ -201,6 +201,5 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
 
 
 
-Generate_O<-function(U,E,S){}
 
 
