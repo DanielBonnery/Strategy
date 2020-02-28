@@ -1,7 +1,7 @@
 
 data(U)
 data(UE)
-
+library(ggplot2)
 data(parish110217popest,package="dataONS")
  data("mtcty150217population",package="dataONS")
  shapeData2<-dataONS::dataParishes_December_2011_Boundaries_EW_BFC()

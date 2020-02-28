@@ -38,9 +38,10 @@
 #'               na.label = "Not Available")
 
 Generate_U<-function(SpatialData,.id=NULL,.spatialobject,type="random"){
-  plyr::adply(1:nrow(shapeData),1,function(i){
-    xx<-as.data.frame(sp::spsample(shapeData[i,.spatialobject],as.data.frame(shapeData)[i,"population"],type))
-    if(!is.null(.id)){xx["id"]=as.data.frame(shapeData)[i,.id]}
+  plyr::adply(1:nrow(SpatialData),1,function(i){
+    xx<-try(as.data.frame(sp::spsample(SpatialData[i,],as.data.frame(SpatialData)[i,"population"],type)))
+    if(inherits(xx,"try-error")){xx<-NULL;print(SpatialData[i,"population"])}
+    if(!is.null(.id)){xx["id"]=as.data.frame(SpatialData)[i,.id]}
     xx})} 
 
 
