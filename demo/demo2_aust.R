@@ -1,6 +1,35 @@
 library(Strategy)
 data(Avo_fields,package="Strategy")
 data(U2,package="Strategy")
+
+
+#Plot the trees
+
+leaflet(Avo_fields) %>%
+  addProviderTiles('Esri.WorldImagery') %>% 
+  addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
+  addPolylines(fillOpacity = 1,color = "red", weight = 3, smoothFactor = 0.5,
+               opacity = 1.0)%>% 
+  addMarkers(lng = U2$x,lat = U2$y,clusterOptions = markerClusterOptions())
+
+leaflet(U2) %>% 
+  addPolygons(data=shapeData,
+              stroke=TRUE,
+              weight=1,
+              color="black",
+              fillOpacity=5,
+              fillColor=~poppal(shapeData$population)) %>% 
+  addTiles() %>% 
+  addLegend(title = "Population count", pal=poppal, 
+            values=shapeData$population,
+            opacity=1, 
+            na.label = "Not Available") %>% 
+  addMarkers(lng = UE[whox,]$x,lat = UE[whox,]$y,
+             clusterOptions = markerClusterOptions()
+  )
+
+
+
 data(UE)
 library(ggplot2)
 data(parish110217popest,package="dataONS")
