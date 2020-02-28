@@ -1,4 +1,4 @@
-# Direct application of https://nceas.github.io/oss-lessons/spatial-data-gis-law/3-mon-intro-gis-in-r.html
+if(FALSE){# Direct application of https://nceas.github.io/oss-lessons/spatial-data-gis-law/3-mon-intro-gis-in-r.html
 
 #Load all the libraries
 library(rgdal)
@@ -70,3 +70,4 @@ ql <- readOGR(dsn = y,layer = "QLD_LANDUSE_CURRENT_X" ,require_geomType="wkbPoly
 ogrListLayers(y)
 
 rgdal::ogrInfo(y, layer =  "QLD_LANDUSE_CURRENT_X",require_geomType="wkbPolygon")
+}

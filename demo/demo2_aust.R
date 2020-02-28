@@ -29,7 +29,7 @@ leaflet(U2) %>%
   )
 
 
-
+if(FALSE){
 data(UE)
 library(ggplot2)
 data(parish110217popest,package="dataONS")
@@ -70,3 +70,4 @@ leaflet(UE) %>%
              clusterOptions = markerClusterOptions()
   )
 
+}
