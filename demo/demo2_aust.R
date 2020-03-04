@@ -2,31 +2,24 @@ library(Strategy)
 data(Avo_fields,package="Strategy")
 data(U2,package="Strategy")
 
-
+U2<-U2[2:4]
 #Plot the trees
 
-leaflet(Avo_fields) %>%
+QLD<-Avo_fields$State=="Qld"
+QLDt<-is.element(U2$id,Avo_fields$Avo_id[QLD])
+
+leaflet(Avo_fields[QLD,]) %>%
   addProviderTiles('Esri.WorldImagery') %>% 
   addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
-  addPolylines(fillOpacity = 1,color = "red", weight = 3, smoothFactor = 0.5,
-               opacity = 1.0)%>% 
-  addMarkers(lng = U2$x,lat = U2$y,clusterOptions = markerClusterOptions())
+  addPolylines(fillOpacity = 1,color = "red", weight = 3, smoothFactor = 0.5,opacity = 1.0)%>% 
+  addMarkers(lng = U2[QLDt,]$x,lat = U2[QLDt,]$y,clusterOptions = markerClusterOptions())
 
-leaflet(U2) %>% 
-  addPolygons(data=shapeData,
-              stroke=TRUE,
-              weight=1,
-              color="black",
-              fillOpacity=5,
-              fillColor=~poppal(shapeData$population)) %>% 
-  addTiles() %>% 
-  addLegend(title = "Population count", pal=poppal, 
-            values=shapeData$population,
-            opacity=1, 
-            na.label = "Not Available") %>% 
-  addMarkers(lng = UE[whox,]$x,lat = UE[whox,]$y,
-             clusterOptions = markerClusterOptions()
-  )
+
+leaflet(Avo_fields[QLD,]) %>%
+  addProviderTiles('Esri.WorldImagery') %>% 
+  addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
+  addPolylines(fillOpacity = 1,color = "red", weight = 3, smoothFactor = 0.5,opacity = 1.0)%>% 
+  addMarkers(lng = U2[QLDt,]$x,lat = U2[QLDt,]$y)
 
 
 if(FALSE){

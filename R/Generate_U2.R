@@ -1,0 +1,13 @@
+generate_U2<-function(){
+  data(CLUM_Commodities_2018_v2,package="dataACLUMP")
+  sh<-CLUM_Commodities_2018_v2[CLUM_Commodities_2018_v2$Commod_dsc=="avocados",]
+  set.seed(1)
+  p=.1+.9*exp(-sh$Area_ha)
+  #plot(sh$Area_ha,p)
+  sh$population<-2+rbinom(n=nrow(sh),size=round(200*sh$Area_ha/p),p)
+  #summary(sh$population)
+  sum(sh$population)
+  #quantile(sh$population,.9+(0:10)/100)
+  sh$Avo_id<-1:nrow(sh)
+  U2<-Generate_U(sh,.id="Avo_id",.spatialobject="Area_ha",type="regular")
+  return(list(U2=U2,sh=sh))}
