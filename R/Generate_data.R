@@ -134,17 +134,21 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
   if(length(new.sicks)>0){
     new.sickhexagons<-unique(U$hexagon[new.sicks])
     
-    for(hexagon in new.sickhexagons){
+    L<- parallel::mclapply(new.sickhexagons,function(hexagon){
       exposedhexagons<-dimnames(dist_areas)[[1]][dist_areas[hexagon,]<delta]
       new.sickinhexagon<-new.sicks[is.element(U$hexagon[new.sicks],hexagon)]
       stillfineexposedhexagon<-stillfine[is.element(U$hexagon[stillfine],exposedhexagons)]
-    yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
-                                  x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
-    closedistances$ind<-rbind(closedistances$ind,cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]))
-    closedistances$ra=c(closedistances$ra,yy$ra)}}
-  keep=is.element(closedistances$ind[,1],stillfine)
-  closedistances$ind<-closedistances$ind[keep,]
-  closedistances$ra<-closedistances$ra[keep]
+      if(length(stillfineexposedhexagon)*length(new.sickinhexagon)>0){
+        yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
+                                      x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
+        return(if(!identical(yy$ra,-1)){
+          list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
+      }})
+    closedistances$ra=c(closedistances$ra,do.call(c,lapply(L,function(x){x$ra})))
+    closedistances$ind<-rbind(closedistances$ind,do.call(rbind,lapply(L,function(x){x$ind})))
+    keep=is.element(closedistances$ind[,1],stillfine)
+    closedistances$ind<-closedistances$ind[keep,]
+    closedistances$ra<-closedistances$ra[keep]}
   closedistances}
 
 
@@ -155,10 +159,12 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
 risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskhalf=5*10^(-4),jumprisk=10^-6,delta=0.01){
   stillfine<-setdiff(1:nrow(U),sicks)
   nI=length(sicks)
+  print(paste0(nI," sick."))
   closedistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
   #risk<-plyr::aaply(Matrix::sparseMatrix(i=closedistances$ind[,1],j=closedistances$ind[,2],x=closedistances$ra),1,risktobeinfectedbydistancetoallinfectedunit,nI=length(sicks))
   exposed=intersect(stillfine,unique(closedistances$ind[,1]))
-  risk=plyr::aaply(exposed,1,function(i){risktobeinfectedbydistancetoallinfectedunit(closedistances$ra[closedistances$ind[,1]==i],nI =nI )},.progress="text")
+  print(paste0(length(exposed), " exposed."))
+  risk=unlist(parallel::mclapply(exposed,function(i){risktobeinfectedbydistancetoallinfectedunit(closedistances$ra[closedistances$ind[,1]==i],nI =nI )},.progress="text"))
   return(list(exposed=exposed,risk=risk,closedistances=closedistances))
 }
 
