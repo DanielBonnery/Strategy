@@ -72,6 +72,9 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
   1-(prod(1-risktobeinfectedbydistancetooneinfectedunit(.dist,.distriskhalf))*(1-jumprisk)^nI)
 }
 
+
+
+
 #' hexagonal bins
 #' 
 #' @param U : a dataframe containing the numerical variables x and y 
@@ -122,13 +125,11 @@ dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhood
 #' @examples 
 #' delta<-.005
 #' sicks<-(1:nrow(U))[y=="sick"]
-#' closedistances=updatedist(NULL,U,sicks)
+#' closedistances=newdist(NULL,U,sicks)
 
-updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
-  if(is.null(closedistances)){
-    closedistances=list(ind=matrix(NA,0,2),ra=vector())}
-  
-  if(is.null(new.sicks)){new.sicks<-setdiff(sicks,unique(closedistances$ind[,2]))}
+newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
+
+  if(is.null(new.sicks)){new.sicks<-if(!is.null(closedistances)){setdiff(sicks,unique(closedistances$ind[,2]))}else{sicks}}
   
   stillfine<-setdiff(1:nrow(U),sicks)
   if(length(new.sicks)>0){
@@ -144,33 +145,211 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
         return(if(!identical(yy$ra,-1)){
           list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
       }})
-    closedistances$ra=c(closedistances$ra,do.call(c,lapply(L,function(x){x$ra})))
-    closedistances$ind<-rbind(closedistances$ind,do.call(rbind,lapply(L,function(x){x$ind})))
-    keep=is.element(closedistances$ind[,1],stillfine)
-    closedistances$ind<-closedistances$ind[keep,]
-    closedistances$ra<-closedistances$ra[keep]}
-  closedistances}
+    ra=do.call(c,lapply(L,function(x){x$ra}))
+    ind<-do.call(rbind,lapply(L,function(x){x$ind}))
+    keep=is.element(ind[,1],stillfine)
+    return(list(ind=ind[keep,],ra=ra[keep]))}
+  else{return(list(ind=NULL,ra=NULL))}}
+
+
+
+updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
+  if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}
+  L<-newdist(closedistances,U,sicks,new.sicks,delta,dist_areas)
+  list(ind=rbind(closedistances$ind,L$ind),ra=c(closedistances$ra,L$ra))}
+
 
 
 #' @examples 
 #' y=rep("Sane",nrow(U));y[sample(length(y),10)]<-"sick"
 #' jumprisk=10^-6 
 #' .distriskhalf=10^-6
-risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskhalf=5*10^(-4),jumprisk=10^-6,delta=0.01){
+risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskhalf=5*10^(-4),jumprisk=10^-6,delta=0.01,
+                           previouslyexposed=c(),previousrisk=numeric()){
   stillfine<-setdiff(1:nrow(U),sicks)
   nI=length(sicks)
   print(paste0(nI," sick."))
-  closedistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
+  newdistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
   #risk<-plyr::aaply(Matrix::sparseMatrix(i=closedistances$ind[,1],j=closedistances$ind[,2],x=closedistances$ra),1,risktobeinfectedbydistancetoallinfectedunit,nI=length(sicks))
   exposed=intersect(stillfine,unique(closedistances$ind[,1]))
   print(paste0(length(exposed), " exposed."))
-  risk=unlist(parallel::mclapply(exposed,function(i){risktobeinfectedbydistancetoallinfectedunit(closedistances$ra[closedistances$ind[,1]==i],nI =nI )},.progress="text"))
+  newadditionalrisk=unlist(parallel::mclapply(exposed,function(i){
+    risktobeinfectedbydistancetoallinfectedunit(newdistances$ra[newdistances$ind[,1]==i],nI =nI )}))
   return(list(exposed=exposed,risk=risk,closedistances=closedistances))
 }
 
 r<-function(risk){
   rbinom(nrow(y),size = 1,prob =risk )
 }
+
+
+
+
+
+
+
+
+
+
+
+#' 
+#' @example
+#' data(Avo_fields,package="Strategy")
+#' polygon1<-Avo_fields[1,]
+#' A<-polygon1@polygons
+#' B<-A[[1]]@Polygons[[1]]@coords
+#' i=sample(nrow(B)-1,1)
+#' s<-B[i:(i+1),]
+#' p<-c(runif(1,min = 142.162,max=142.165),runif(1,min=-34.171,max=-34.167))
+#' plot(B,type='l')
+#' points(s,type="l",lwd=4,col="red")
+#' points(x=p[1],y=p[2] ,col="red",cex=2)
+#' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2])
+#' projpointonseg_a(p,s)
+#' distpointtoseg(p,s)
+#' dist(rbind(p,projpointonseg(p,s)))
+projpointonseg_a<-function(p,s){
+  x1<-s[1,]
+  X1<-p-x1
+  X2<-s[2,]-x1
+  a0=crossprod(X1,X2)/sum(X2^2)
+  min(1,max(0,a0))
+}
+
+projpointonseg<-function(p,s){
+  s[1,]+projpointonseg_a(p,s)*(s[2,]-s[1,])
+}
+distpointtoseg<-function(p,s){
+  X1<-p-s[1,]
+  X2<-s[2,]-s[1,]
+  sqrt(sum((X1-(projpointonseg_a(p,s)*X2))^2))
+  #dist(rbind(X1,projpointonseg_a(p,s)*X2))
+  }
+
+ 
+#' @example
+#' data(Avo_fields,package="Strategy")
+#' polygon1<-Avo_fields[1,]
+#' A<-polygon1@polygons
+#' B<-A[[1]]@Polygons[[1]]@coords
+#' i=sample(nrow(B)-1,2,rep=F)
+#' 
+#' s1<-B[i[1]:(i[1]+1),]
+#' s2<-B[i[2]:(i[2]+1),]
+#' plot(B,type='l')
+#' points(s1,type="l",lwd=4,col="green")
+#' points(s2,type="l",lwd=4,col="blue")
+#' dd<-distsegmenttosegment(s1,s2)
+#' l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
+#' min(as.matrix(dist(rbind(s1,s2),diag=T,upper = T))[3:4,1:2]);dd
+#' s<-if(l<=2){s2}else{s1}
+#' p=rbind(s1,s2)[l,]
+#' points(x=p[1],y=p[2] ,col="red",cex=2)
+#' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2])
+#' projpointonseg_a(p,s)
+
+
+distsegmenttosegment<-function(s1,s2){
+  min(c(plyr::aaply(s1,1,distpointtoseg,s=s2),plyr::aaply(s2,1,distpointtoseg,s=s1)))
+}
+
+
+#' @example
+#' data(Avo_fields,package="Strategy")
+#' polygon1<-Avo_fields[1,]
+#' A<-polygon1@polygons
+#' B<-A[[1]]@Polygons[[1]]@coords
+#' s<-cbind(runif(2,min = min(B[,1]),max=max(B[,1])),runif(2,min=min(B[,2]),max=max(B[,2])))
+#' plot(B,type='l')
+#' s1<-s
+#' points(s,type="l",lwd=4,col="green")
+#' x<-vector()
+#' for(i in 1:(nrow(B)-1)){
+#' s2<-B[(i:(i+1)),]
+#' dd<-distsegmenttosegment(s1,s2)
+#' l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
+#' min(as.matrix(dist(rbind(s1,s2),diag=T,upper = T))[3:4,1:2]);dd
+#' sk<-if(l<=2){s2}else{s1}
+#' p=rbind(s1,s2)[l,]
+#' points(x=p[1],y=p[2] ,col="red",cex=2)
+#' points(projpointonseg(p,sk)[1],projpointonseg(p,sk)[2],col="red",cex=2)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,sk)[1],y1=projpointonseg(p,sk)[2])
+#' x=c(x,dd)
+#' }
+#' min(x)
+#' distsegmenttopoly(s,B)
+#' distpolytopoly()
+
+distsegmenttopoly<-function(s,.poly){
+  min(plyr::aaply(1:(nrow(.poly)-1),1,function(i){distsegmenttosegment(s,.poly[i:(i+1),])}))}
+
+
+
+#' @example
+#' data(Avo_fields,package="Strategy")
+#' poly1<-Avo_fields[1,]@polygons[[1]]@Polygons[[1]]@coords
+#' poly2<-Avo_fields[2,]@polygons[[1]]@Polygons[[1]]@coords
+#' distpolytopoly(poly1,poly2)
+
+
+distpolytopoly<-function(poly1,poly2){
+  min(plyr::aaply(1:(nrow(poly1)-1),1,function(i){distsegmenttopoly(poly1[i:(i+1),],poly2)}))
+}
+
+#'@examples
+#' data(Avo_fields,package="Strategy")
+#' polygons<-Avo_fields
+#' MM<-polydistmat(Avo_fields)
+#' parallel::detectCores()
+#' save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
+polydistmat<-function(shp){
+  L<-plyr::alply(1:(nrow(shp)-1),1,function(i){do.call(rbind,
+    parallel::mclapply((i+1):nrow(shp),function(j){
+              c(i,j,distpolytopoly(Avo_fields[i,]@polygons[[1]]@Polygons[[1]]@coords,Avo_fields[j,]@polygons[[1]]@Polygons[[1]]@coords))}))},.progress="text")
+  do.call(rbind,L)}
+              
+#'@examples
+#' data(Avo_fields,package="Strategy")
+#' polygons<-Avo_fields
+#' shp<-Avo_fields[(nrow(Avo_fields)-30):(nrow(Avo_fields)),]
+
+connectedpop<-function(shp,MM=polydistmat(shp),delta){
+  x=MM[MM[,3]<delta,1:2]
+  bins<-data.frame(polygon=1:nrow(shp),
+              bin=1:nrow(shp))
+  someremain=TRUE
+  nextbins<-sort(unique(x[,1]))
+  while(someremain){
+    nextbin=nextbins[1]
+    islinked<-x[,1]==nextbin
+    while(any(islinked)){
+    newtobin<-x[islinked,2]
+    bins$bin[newtobin]<-nextbin
+    if(any(!islinked)){
+    x<-x[!islinked,,drop=FALSE]
+    x[is.element(x[,1],newtobin),2]<-nextbin
+    x<-plyr::aaply(x,1,sort,.drop = FALSE)
+    islinked<-x[,1]==nextbin
+    nextbins<-setdiff(nextbins,c(nextbin,newtobin))}else{islinked=FALSE;nextbins=c()}
+    }
+    someremain=length(nextbins)>0
+  }
+     
+   })})
+  
+    
+}
+
+
+
+
+
+
+
+
+
 
 
 #' @examples 
