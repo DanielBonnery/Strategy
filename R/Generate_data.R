@@ -83,9 +83,15 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
 #' @examples 
 #' # plot the hex bins of cumbria
 #' data(U)
-#' plot(neighbourhoods(U,.002))
+#' plot(neighbourhoods(U,.1))
+#' plot(neighbourhoods(U,.01))
+#' plot(neighbourhoods(U,.001))
 neighbourhoods<-function(U,delta=(range(U$x,na.rm=TRUE)[2]-range(U$x,na.rm=TRUE)[1])/100){
-  hexbin::hexbin(U$x, U$y, xbins =ceiling((range(U$x,na.rm=TRUE)[2]-range(U$x,na.rm=TRUE)[1])/2*delta), xbnds=range(U$x,na.rm=TRUE),ybnds= range(U$y,na.rm=TRUE), IDs = TRUE)}
+  hexbin::hexbin(U$x, U$y, 
+                 xbins =ceiling((range(U$x,na.rm=TRUE)[2]-range(U$x,na.rm=TRUE)[1])/(2*delta)), 
+                 xbnds=range(U$x,na.rm=TRUE),
+                 ybnds= range(U$y,na.rm=TRUE), 
+                 IDs = TRUE)}
 
 #' Distances between hexagonal bins 
 #' 
@@ -193,7 +199,7 @@ r<-function(risk){
 
 
 #' 
-#' @example
+#' @examples
 #' data(Avo_fields,package="Strategy")
 #' polygon1<-Avo_fields[1,]
 #' A<-polygon1@polygons
@@ -228,7 +234,7 @@ distpointtoseg<-function(p,s){
   }
 
  
-#' @example
+#' @examples
 #' data(Avo_fields,package="Strategy")
 #' polygon1<-Avo_fields[1,]
 #' A<-polygon1@polygons
@@ -256,7 +262,7 @@ distsegmenttosegment<-function(s1,s2){
 }
 
 
-#' @example
+#' @examples
 #' data(Avo_fields,package="Strategy")
 #' polygon1<-Avo_fields[1,]
 #' A<-polygon1@polygons
@@ -287,7 +293,7 @@ distsegmenttopoly<-function(s,.poly){
 
 
 
-#' @example
+#' @examples
 #' data(Avo_fields,package="Strategy")
 #' poly1<-Avo_fields[1,]@polygons[[1]]@Polygons[[1]]@coords
 #' poly2<-Avo_fields[2,]@polygons[[1]]@Polygons[[1]]@coords

@@ -23,5 +23,7 @@ hexagonal bins
 \examples{
 # plot the hex bins of cumbria
 data(U)
-plot(neighbourhoods(U,.002))
+plot(neighbourhoods(U,.1))
+plot(neighbourhoods(U,.01))
+plot(neighbourhoods(U,.001))
 }

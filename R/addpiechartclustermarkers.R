@@ -1,9 +1,11 @@
+#' Change leaflet cluster markers to pie charts
+#' 
 #' @param map the map to add awesome pie chart cluster markers to
 #' @param .data data for the cluster markers
 #' @param .colors a vector of colors of at least the same size that nlevels(.data[[group]])
 #' @param group the name of a factor variable of .data
 #'
-#' @example 
+#' @examples
 #' data("breweries91",package="leaflet")
 #' breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),nrow(breweries91),replace=T)
 #' library(leaflet)
