@@ -19,5 +19,4 @@ where '"username"' and '"password"' need to be replaced by correct strings.
 ```{eval=TRUE,echo=TRUE,warning=TRUE}
 library(Strategy)
 example(addpiechartclustermarkers)
-
 ```

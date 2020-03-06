@@ -127,7 +127,15 @@ dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhood
 
 
 
-
+#'  compute distances between new infected and exposed
+#' 
+#'  @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#'  @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
+#'  @param sicks
+#'  @param new.sicks
+#'  @param delta a positive number : a threshold
+#'  @param dist_areas: a function between 
+#'  @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
 #' @examples 
 #' delta<-.005
 #' sicks<-(1:nrow(U))[y=="sick"]
@@ -159,13 +167,28 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
 
 
 
+
+#' update the list of the already nown distances between subjects with distances between new infected and exposed
+#' 
+#'  @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#'  @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
+#'  @param sicks
+#'  @param new.sicks
+#'  @param delta a positive number : a threshold
+#'  @param dist_areas: a function between 
+#'  @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#' @examples 
+#' delta<-.005
+#' sicks<-(1:nrow(U))[y=="sick"]
+#' closedistances=newdist(NULL,U,sicks)
 updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
   if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}
   L<-newdist(closedistances,U,sicks,new.sicks,delta,dist_areas)
   list(ind=rbind(closedistances$ind,L$ind),ra=c(closedistances$ra,L$ra))}
 
 
-
+#' Computes the risk to be infected
+#' 
 #' @examples 
 #' y=rep("Sane",nrow(U));y[sample(length(y),10)]<-"sick"
 #' jumprisk=10^-6 
@@ -198,7 +221,9 @@ r<-function(risk){
 
 
 
-#' 
+#' computes the position of a projected point in the basis formed by a segment
+#' @param p a numeric vector of length 2
+#' @param s a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
 #' @examples
 #' data(Avo_fields,package="Strategy")
 #' polygon1<-Avo_fields[1,]
@@ -215,17 +240,61 @@ r<-function(risk){
 #' projpointonseg_a(p,s)
 #' distpointtoseg(p,s)
 #' dist(rbind(p,projpointonseg(p,s)))
+#' 
+#' zz<-function(p){
+#' s=matrix(c(0,1,0,0),2,2)
+#' plot(s,type="l",xlim=c(-.5,1.5))
+#' points(x=p[1],y=p[2] ,col="red",cex=2)
+#' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],col="red")
+#' text(projpointonseg_a(p,s),-.8,paste0("a=",projpointonseg_a(p,s)))}
+#' par(mfrow=c(2,2))
+#' zz(c(-.5,1))
+#' zz(0:1)
+#' zz(c(.5,1))
+#' zz(c(1.5,1))
 projpointonseg_a<-function(p,s){
   x1<-s[1,]
   X1<-p-x1
   X2<-s[2,]-x1
-  a0=crossprod(X1,X2)/sum(X2^2)
+  den<-sum(X2^2)
+  a0=crossprod(X1,X2)/(den+(den==0))
   min(1,max(0,a0))
 }
+
+#' computes the position of a projected point in the basis formed by a segment
+#' @param p a numeric vector of length 2
+#' @param s a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @examples
+#' zz<-function(p){
+#' s=matrix(c(0,1,0,0),2,2)
+#' plot(s,type="l",xlim=c(-.5,1.5))
+#' points(x=p[1],y=p[2] ,col="red",cex=.5)
+#' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=.5)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],col="red")}
+#' par(mfrow=c(3,3))
+#' set.seed(1);replicate(9,zz(c(runif(1,-.5,1.5),runif(1,-1,1))))
 
 projpointonseg<-function(p,s){
   s[1,]+projpointonseg_a(p,s)*(s[2,]-s[1,])
 }
+
+
+#' computes the distance between a point and a segment
+#' 
+#' @param p a numeric vector of length 2
+#' @param s a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @examples
+#' zz<-function(p){
+#' s=matrix(c(0,3,0,0),2,2)
+#' plot(s,type="l",xlim=c(-2,5),ylim=c(-2,2))
+#' points(x=p[1],y=p[2] ,col="red",cex=.5)
+#' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=.5)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],col="red")
+#' text((projpointonseg(p,s)[1]+p[1])/2,(projpointonseg(p,s)[2]+p[2])/2,round(distpointtoseg(p,s),2))}
+#' par(mfrow=c(3,3))
+#' set.seed(1);replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+
 distpointtoseg<-function(p,s){
   X1<-p-s[1,]
   X2<-s[2,]-s[1,]
@@ -233,35 +302,78 @@ distpointtoseg<-function(p,s){
   #dist(rbind(X1,projpointonseg_a(p,s)*X2))
   }
 
- 
-#' @examples
-#' data(Avo_fields,package="Strategy")
-#' polygon1<-Avo_fields[1,]
-#' A<-polygon1@polygons
-#' B<-A[[1]]@Polygons[[1]]@coords
-#' i=sample(nrow(B)-1,2,rep=F)
+#' computes the orientation of a triangle
 #' 
-#' s1<-B[i[1]:(i[1]+1),]
-#' s2<-B[i[2]:(i[2]+1),]
-#' plot(B,type='l')
+#' @param s a 3x2 numeric matrix, representing a triangle. Each row of the matrix are the coordinates of an extreme point of the triangle.
+#' @examples
+#' zz<-function(p){
+#' s=matrix(sample(0:2,6,rep=T),3,2)
+#' plot(s[c(1:3,1),],type="l",main=(if(triangleorientation(s)==1){"+"}else{if(triangleorientation(s)==-1){"-"}else{"aligned"}}))
+#' text(s[,1],s[,2],toupper(letters[1:3]),cex=2,col="red")
+#' 
+#' }
+#' par(mfrow=c(3,3))
+#' replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+triangleorientation<-function(s){sign(det(s[2:3,]-s[c(1,1),]))}
+
+
+#' computes the orientation of a triangle
+#' 
+#' @param s1 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of an extreme point of the segment.
+#' @param s2 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of an extreme point of the segment.
+#' @examples
+#' zz<-function(){
+#' s1=matrix(sample(0:2,4,rep=T),2,2)
+#' s2=matrix(sample(0:2,4,rep=T),2,2)
+#' si<-segment.intersect(s1,s2)
+#' s<-rbind(s1,s2)
+#' plot(s,cex=.5,main=if(si){"Intersect"}else{"Disjoint"})
+#' points(s1,type="l")
+#' points(s2,type="l")
+#' text(s[,1],s[,2],toupper(letters[1:4]),cex=2,col="red")
+#' 
+#' }
+#' par(mfrow=c(3,3))
+#' set.seed(1);replicate(9,zz())
+segment.intersect<-function(s1,s2){
+  (triangleorientation(rbind(s1[1,],s2))*triangleorientation(rbind(s1[2,],s2)))<=0&
+    (triangleorientation(rbind(s2[1,],s1))*triangleorientation(rbind(s2[2,],s1)))<=0}
+
+
+#' distance segment to segment
+
+#' @param s1 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @param s2 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @return a number
+#' @examples
+#' zz<-function(){
+#' s1=matrix(sample(0:4,4,rep=T),2,2)
+#' s2=matrix(sample(0:4,4,rep=T),2,2)
+#' s<-rbind(s1,s2)
+#' dd<-distsegmenttosegment(s1,s2)
+#' plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s))
 #' points(s1,type="l",lwd=4,col="green")
 #' points(s2,type="l",lwd=4,col="blue")
-#' dd<-distsegmenttosegment(s1,s2)
-#' l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
-#' min(as.matrix(dist(rbind(s1,s2),diag=T,upper = T))[3:4,1:2]);dd
+#' if(dd>0){l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
 #' s<-if(l<=2){s2}else{s1}
 #' p=rbind(s1,s2)[l,]
 #' points(x=p[1],y=p[2] ,col="red",cex=2)
 #' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
-#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2])
-#' projpointonseg_a(p,s)
+#' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],lty=3)}}
+#' 
+#' par(mfrow=c(3,3))
+#' set.seed(3);replicate(9,zz())
 
 
 distsegmenttosegment<-function(s1,s2){
-  min(c(plyr::aaply(s1,1,distpointtoseg,s=s2),plyr::aaply(s2,1,distpointtoseg,s=s1)))
+  if(segment.intersect(s1,s2)){0}else{
+  min(c(plyr::aaply(s1,1,distpointtoseg,s=s2),plyr::aaply(s2,1,distpointtoseg,s=s1)),na.rm=T)}
 }
 
-
+#' Distance between a segment and a polygon
+#' 
+#' @param .poly a polygon (a nx2 matrix, each line is a point)
+#' @param s a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
 #' @examples
 #' data(Avo_fields,package="Strategy")
 #' polygon1<-Avo_fields[1,]
