@@ -336,11 +336,8 @@ connectedpop<-function(shp,MM=polydistmat(shp),delta){
     }
     someremain=length(nextbins)>0
   }
-     
-   })})
-  
-    
-}
+  bins
+  }
 
 
 
