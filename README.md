@@ -17,6 +17,7 @@ where '"username"' and '"password"' need to be replaced by correct strings.
 ## Details and demo
 
 ```{eval=TRUE,echo=TRUE,warning=TRUE}
-example(Strategy::)
+library(Strategy)
+example(addpiechartclustermarkers)
 
 ```
