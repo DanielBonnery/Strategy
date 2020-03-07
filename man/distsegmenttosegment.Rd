@@ -23,9 +23,9 @@ s1=matrix(sample(0:4,4,rep=T),2,2)
 s2=matrix(sample(0:4,4,rep=T),2,2)
 s<-rbind(s1,s2)
 dd<-distsegmenttosegment(s1,s2)
-plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s))
-points(s1,type="l",lwd=4,col="green")
-points(s2,type="l",lwd=4,col="blue")
+plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+points(s1,type="l",lwd=2)
+points(s2,type="l",lwd=2)
 if(dd>0){l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
 s<-if(l<=2){s2}else{s1}
 p=rbind(s1,s2)[l,]
@@ -33,6 +33,6 @@ points(x=p[1],y=p[2] ,col="red",cex=2)
 points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
 segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],lty=3)}}
 
-par(mfrow=c(3,3))
+par(oma=c(0,0,0,0),mfrow=c(3,3))
 set.seed(3);replicate(9,zz())
 }

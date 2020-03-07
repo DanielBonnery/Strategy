@@ -23,6 +23,6 @@ Distances between hexagonal bins
 }
 \examples{
 data(U) 
-dist_areas_f(U)
-delta<-0.01
+dist_areas_f(U)[1:3,1:3]
+dist_areas_f(U,0.03)[1:3,1:3]
 }

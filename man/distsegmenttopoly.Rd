@@ -38,5 +38,4 @@ x=c(x,dd)
 }
 min(x)
 distsegmenttopoly(s,B)
-distpolytopoly()
 }

@@ -100,8 +100,8 @@ neighbourhoods<-function(U,delta=(range(U$x,na.rm=TRUE)[2]-range(U$x,na.rm=TRUE)
 #' @return a named matrix
 #' @examples 
 #' data(U) 
-#' dist_areas_f(U)
-#' delta<-0.01
+#' dist_areas_f(U)[1:3,1:3]
+#' dist_areas_f(U,0.03)[1:3,1:3]
 
 dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhoods(U,delta)){
   if(is.null(U$hexagon)){U$hexagon<-h@cID}
@@ -360,9 +360,9 @@ segment.intersect<-function(s1,s2){
 #' s2=matrix(sample(0:4,4,rep=T),2,2)
 #' s<-rbind(s1,s2)
 #' dd<-distsegmenttosegment(s1,s2)
-#' plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s))
-#' points(s1,type="l",lwd=4,col="green")
-#' points(s2,type="l",lwd=4,col="blue")
+#' plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+#' points(s1,type="l",lwd=2)
+#' points(s2,type="l",lwd=2)
 #' if(dd>0){l<-which(c(distpointtoseg(s1[1,],s2),distpointtoseg(s1[2,],s2),distpointtoseg(s2[1,],s1),distpointtoseg(s2[2,],s1))==dd)[1]
 #' s<-if(l<=2){s2}else{s1}
 #' p=rbind(s1,s2)[l,]
@@ -370,7 +370,7 @@ segment.intersect<-function(s1,s2){
 #' points(projpointonseg(p,s)[1],projpointonseg(p,s)[2],col="red",cex=2)
 #' segments(x0 = p[1],y0=p[2],x1=projpointonseg(p,s)[1],y1=projpointonseg(p,s)[2],lty=3)}}
 #' 
-#' par(mfrow=c(3,3))
+#' par(oma=c(0,0,0,0),mfrow=c(3,3))
 #' set.seed(3);replicate(9,zz())
 
 
@@ -407,7 +407,6 @@ distsegmenttosegment<-function(s1,s2){
 #' }
 #' min(x)
 #' distsegmenttopoly(s,B)
-#' distpolytopoly()
 
 distsegmenttopoly<-function(s,.poly){
   min(plyr::aaply(1:(nrow(.poly)-1),1,function(i){distsegmenttosegment(s,.poly[i:(i+1),])}))}
