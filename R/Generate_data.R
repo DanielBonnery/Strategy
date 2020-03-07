@@ -121,8 +121,8 @@ dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhood
 #' 
 #' @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
 #' @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
-#' @param sicks
-#' @param new.sicks
+#' @param sicks a vector of integers
+#' @param new.sicks a vector of integers
 #' @param delta a positive number : a threshold
 #' @param dist_areas: a function between 
 #' @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 

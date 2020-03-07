@@ -18,6 +18,10 @@ newdist(
 
 \item{U}{a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates,}
 
+\item{sicks}{a vector of integers}
+
+\item{new.sicks}{a vector of integers}
+
 \item{delta}{a positive number : a threshold}
 
 \item{dist_areas:}{a function between}
