@@ -518,11 +518,11 @@ connectedpop<-function(MM,delta,n=max(MM[,1:2])){
 
 #' Generate epidemic
 #'
-#' @param U
-#' @param TT
-#' @param .distriskhalf=5*10^(-4)
-#' @param jumprisk=10^-6
-#' @param delta=0.05
+#' @param U a data.frame
+#' @param TT an integer
+#' @param .distriskhalf a positive number(default 5*10^(-4))
+#' @param jumprisk =10^-6 a positive number
+#' @param delta =0.05 a positive number
 #' @examples 
 #' .distriskhalf=5*10^(-4);jumprisk=10^-6;delta=0.05; TT=10
 #' UE<-Generate_Discrete_Time_Epidemic(U,3)

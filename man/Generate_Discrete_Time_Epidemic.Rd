@@ -12,6 +12,17 @@ Generate_Discrete_Time_Epidemic(
   delta = 0.05
 )
 }
+\arguments{
+\item{U}{a data.frame}
+
+\item{TT}{an integer}
+
+\item{.distriskhalf}{a positive number(default 5*10^(-4))}
+
+\item{jumprisk}{=10^-6 a positive number}
+
+\item{delta}{=0.05 a positive number}
+}
 \description{
 Generate epidemic
 }
