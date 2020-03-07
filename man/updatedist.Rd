@@ -18,6 +18,10 @@ updatedist(
 
 \item{U}{a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates,}
 
+\item{sicks}{a vector of integers indicating the row numbers in U for sicks}
+
+\item{new.sicks}{a vector of integers indicating the row numbers in U for new sicks}
+
 \item{delta}{a positive number : a threshold}
 
 \item{dist_areas:}{a function between}
@@ -32,6 +36,6 @@ update the list of the already nown distances between subjects with distances be
 data(UE,package="Strategy")
 delta<-.005
 sicks<-(1:nrow(UE))[UE$I001=="sick"]
-closedistance=updatedist(NULL,UE,sicks)
+closedistances=updatedist(NULL,UE,sicks)
 do.call(cbind,closedistances)[1:3,]
 }

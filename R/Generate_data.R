@@ -130,7 +130,7 @@ dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhood
 #' data(UE,package="Strategy")
 #' delta<-.005
 #' sicks<-(1:nrow(UE))[UE$I001=="sick"]
-#' closedistance=newdist(NULL,UE,sicks)
+#' closedistances=newdist(NULL,UE,sicks)
 #' do.call(cbind,closedistances)[1:3,]
 newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
 
@@ -159,8 +159,8 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
 #' 
 #' @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
 #' @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
-#' @param sicks
-#' @param new.sicks
+#' @param sicks a vector of integers indicating the row numbers in U for sicks
+#' @param new.sicks a vector of integers indicating the row numbers in U for new sicks
 #' @param delta a positive number : a threshold
 #' @param dist_areas: a function between 
 #' @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
@@ -168,7 +168,7 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
 #' data(UE,package="Strategy")
 #' delta<-.005
 #' sicks<-(1:nrow(UE))[UE$I001=="sick"]
-#' closedistance=updatedist(NULL,UE,sicks)
+#' closedistances=updatedist(NULL,UE,sicks)
 #' do.call(cbind,closedistances)[1:3,]
 updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
   if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}

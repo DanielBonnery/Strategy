@@ -36,6 +36,6 @@ compute distances between new infected and exposed
 data(UE,package="Strategy")
 delta<-.005
 sicks<-(1:nrow(UE))[UE$I001=="sick"]
-closedistance=newdist(NULL,UE,sicks)
+closedistances=newdist(NULL,UE,sicks)
 do.call(cbind,closedistances)[1:3,]
 }
