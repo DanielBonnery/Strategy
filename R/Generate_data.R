@@ -101,17 +101,7 @@ neighbourhoods<-function(U,delta=(range(U$x,na.rm=TRUE)[2]-range(U$x,na.rm=TRUE)
 #' @examples 
 #' data(U) 
 #' dist_areas_f(U)
-#' 
 #' delta<-0.01
-#' h<-neighbourhoods(U,delta)
-#' U$hexagon<-paste0(h@cID)
-#' hD<-dist_areas_f(U,h)
-#'
-#'sss1=sample(nrow(U),1000)
-#'sss2=sample(nrow(U),1000)
-#'x=sapply(1:1000,function(i){dist(U[c(sss1[i],sss2[i]),c("x","y")])})
-#'y<-sapply(1:1000,function(i){hD[U$hexagon[sss1[i]],U$hexagon[sss2[i]]]})
-#'plot(x,y,pch=".")
 
 dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhoods(U,delta)){
   if(is.null(U$hexagon)){U$hexagon<-h@cID}
@@ -127,20 +117,21 @@ dist_areas_f<-function(U,delta=(range(U$x)[2]-range(U$x)[1])/100,h=neighbourhood
 
 
 
-#'  compute distances between new infected and exposed
+#' compute distances between new infected and exposed
 #' 
-#'  @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
-#'  @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
-#'  @param sicks
-#'  @param new.sicks
-#'  @param delta a positive number : a threshold
-#'  @param dist_areas: a function between 
-#'  @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#' @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#' @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
+#' @param sicks
+#' @param new.sicks
+#' @param delta a positive number : a threshold
+#' @param dist_areas: a function between 
+#' @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
 #' @examples 
+#' data(UE,package="Strategy")
 #' delta<-.005
-#' sicks<-(1:nrow(U))[y=="sick"]
-#' closedistances=newdist(NULL,U,sicks)
-
+#' sicks<-(1:nrow(UE))[UE$I001=="sick"]
+#' closedistance=newdist(NULL,UE,sicks)
+#' do.call(cbind,closedistances)[1:3,]
 newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
 
   if(is.null(new.sicks)){new.sicks<-if(!is.null(closedistances)){setdiff(sicks,unique(closedistances$ind[,2]))}else{sicks}}
@@ -164,23 +155,21 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
     keep=is.element(ind[,1],stillfine)
     return(list(ind=ind[keep,],ra=ra[keep]))}
   else{return(list(ind=NULL,ra=NULL))}}
-
-
-
-
 #' update the list of the already nown distances between subjects with distances between new infected and exposed
 #' 
-#'  @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
-#'  @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
-#'  @param sicks
-#'  @param new.sicks
-#'  @param delta a positive number : a threshold
-#'  @param dist_areas: a function between 
-#'  @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#' @param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
+#' @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
+#' @param sicks
+#' @param new.sicks
+#' @param delta a positive number : a threshold
+#' @param dist_areas: a function between 
+#' @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
 #' @examples 
+#' data(UE,package="Strategy")
 #' delta<-.005
-#' sicks<-(1:nrow(U))[y=="sick"]
-#' closedistances=newdist(NULL,U,sicks)
+#' sicks<-(1:nrow(UE))[UE$I001=="sick"]
+#' closedistance=updatedist(NULL,UE,sicks)
+#' do.call(cbind,closedistances)[1:3,]
 updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
   if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}
   L<-newdist(closedistances,U,sicks,new.sicks,delta,dist_areas)
@@ -457,7 +446,9 @@ distpolytopoly<-function(poly1,poly2){
 extractpolygonsaslist<-function(shp){
   lapply(1:nrow(shp),function(i){shp[i,]@polygons[[1]]@Polygons[[1]]@coords})}
 
-
+#' Compute distance matrix for a list of polygons
+#' @param list.poly a list of nx2 numeric matrices
+#' @return a  (n*(n-1)/2)x 3 matrix  
 #' @examples
 #' polys=lapply(c(0:3,5:7),function(x){
 #' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
@@ -465,11 +456,11 @@ extractpolygonsaslist<-function(shp){
 #' plot(do.call(rbind,polys),xlab="",yaxt="n")
 #' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
 #' polydistmat(polys)
-#' data(Avo_fields,package="Strategy")
-#' polygons<-Avo_fields
-#' MM<-polydistmat(extractpolygonsaslist(Avo_fields))
-#' parallel::detectCores()
-#' save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
+#' #data(Avo_fields,package="Strategy")
+#' #polygons<-Avo_fields
+#' #MM<-polydistmat(extractpolygonsaslist(Avo_fields))
+#' #parallel::detectCores()
+#' #save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
 polydistmat<-function(list.poly){
   L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
     do.call(rbind,
@@ -525,7 +516,13 @@ connectedpop<-function(MM,delta,n=max(MM[,1:2])){
 
 
 
-
+#' Generate epidemic
+#'
+#' @param U
+#' @param TT
+#' @param .distriskhalf=5*10^(-4)
+#' @param jumprisk=10^-6
+#' @param delta=0.05
 #' @examples 
 #' .distriskhalf=5*10^(-4);jumprisk=10^-6;delta=0.05; TT=10
 #' UE<-Generate_Discrete_Time_Epidemic(U,3)
@@ -555,11 +552,3 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
   }
   U
 }
-
-
-
-
-
-
-
-

@@ -24,15 +24,5 @@ Distances between hexagonal bins
 \examples{
 data(U) 
 dist_areas_f(U)
-
 delta<-0.01
-h<-neighbourhoods(U,delta)
-U$hexagon<-paste0(h@cID)
-hD<-dist_areas_f(U,h)
-
-sss1=sample(nrow(U),1000)
-sss2=sample(nrow(U),1000)
-x=sapply(1:1000,function(i){dist(U[c(sss1[i],sss2[i]),c("x","y")])})
-y<-sapply(1:1000,function(i){hD[U$hexagon[sss1[i]],U$hexagon[sss2[i]]]})
-plot(x,y,pch=".")
 }

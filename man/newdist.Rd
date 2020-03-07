@@ -13,17 +13,25 @@ newdist(
   dist_areas = dist_areas_f(U, delta)
 )
 }
+\arguments{
+\item{closedistances}{NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id}
+
+\item{U}{a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates,}
+
+\item{delta}{a positive number : a threshold}
+
+\item{dist_areas:}{a function between}
+}
+\value{
+NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id
+}
 \description{
-@param closedistances NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id 
- @param U a data.frame with the variables hexagon (can be any bin identifier), x, y : coordinates, 
- @param sicks
- @param new.sicks
- @param delta a positive number : a threshold
- @param dist_areas: a function between 
- @return NULL, or a named list with 2 named elements: closedistances$ra, closedistances$id
+compute distances between new infected and exposed
 }
 \examples{
+data(UE,package="Strategy")
 delta<-.005
-sicks<-(1:nrow(U))[y=="sick"]
-closedistances=newdist(NULL,U,sicks)
+sicks<-(1:nrow(UE))[UE$I001=="sick"]
+closedistance=newdist(NULL,UE,sicks)
+do.call(cbind,closedistances)[1:3,]
 }
