@@ -10,9 +10,14 @@
 #' breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),nrow(breweries91),replace=T)
 #' library(leaflet)
 #' library(dplyr)
-#' leaflet() %>%
+#' leaflet(breweries91) %>%
 #' addTiles() %>%
-#' addpiechartclustermarkers(breweries91,.colors=c("red","green","blue"),group="goodbear")
+#' addAwesomeMarkers()
+#' map<-leaflet(breweries91) %>%addTiles()
+#' addpiechartclustermarkers(map,.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
+#' leaflet(breweries91) %>%
+#' addTiles() %>%
+#' addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 
 addpiechartclustermarkers<-function(map,.data,.colors,group){
   

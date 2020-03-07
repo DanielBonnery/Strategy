@@ -14,11 +14,10 @@ computes the orientation of a triangle
 }
 \examples{
 zz<-function(p){
-s=matrix(sample(0:2,6,rep=T),3,2)
-plot(s[c(1:3,1),],type="l",main=(if(triangleorientation(s)==1){"+"}else{if(triangleorientation(s)==-1){"-"}else{"aligned"}}))
-text(s[,1],s[,2],toupper(letters[1:3]),cex=2,col="red")
-
+s=matrix(sample(0:4,6,rep=T),3,2)
+plot(s[c(1:3,1),],type="l",main=if(triangleorientation(s)==1){"+"}else{if(triangleorientation(s)==-1){"-"}else{"aligned"}},xlim=c(-1,5),ylim=c(-1,5),xlab="",ylab="",xaxt='n', yaxt='n')
+text(s[,1],s[,2],toupper(letters[1:3]),cex=1,col="red")
 }
-par(mfrow=c(3,3))
-replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+par(mfrow=c(2,2),mar=c(5,3,2,2))
+set.seed(7);replicate(4,zz(c(sample(-2:3,1),sample(-2:2,1))))
 }

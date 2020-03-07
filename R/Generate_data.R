@@ -307,37 +307,57 @@ distpointtoseg<-function(p,s){
 #' @param s a 3x2 numeric matrix, representing a triangle. Each row of the matrix are the coordinates of an extreme point of the triangle.
 #' @examples
 #' zz<-function(p){
-#' s=matrix(sample(0:2,6,rep=T),3,2)
-#' plot(s[c(1:3,1),],type="l",main=(if(triangleorientation(s)==1){"+"}else{if(triangleorientation(s)==-1){"-"}else{"aligned"}}))
-#' text(s[,1],s[,2],toupper(letters[1:3]),cex=2,col="red")
-#' 
+#' s=matrix(sample(0:4,6,rep=T),3,2)
+#' plot(s[c(1:3,1),],type="l",main=if(triangleorientation(s)==1){"+"}else{if(triangleorientation(s)==-1){"-"}else{"aligned"}},xlim=c(-1,5),ylim=c(-1,5),xlab="",ylab="",xaxt='n', yaxt='n')
+#' text(s[,1],s[,2],toupper(letters[1:3]),cex=1,col="red")
 #' }
-#' par(mfrow=c(3,3))
-#' replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+#' par(mfrow=c(2,2),mar=c(5,3,2,2))
+#' set.seed(7);replicate(4,zz(c(sample(-2:3,1),sample(-2:2,1))))
 triangleorientation<-function(s){sign(det(s[2:3,]-s[c(1,1),]))}
 
 
-#' computes the orientation of a triangle
+#' test if two segments intersect
 #' 
 #' @param s1 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of an extreme point of the segment.
 #' @param s2 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of an extreme point of the segment.
 #' @examples
-#' zz<-function(){
-#' s1=matrix(sample(0:2,4,rep=T),2,2)
-#' s2=matrix(sample(0:2,4,rep=T),2,2)
+#' zz<-function(s1=matrix(sample(0:3,4,rep=T),2,2),s2=matrix(sample(0:3,4,rep=T),2,2)){
 #' si<-segment.intersect(s1,s2)
 #' s<-rbind(s1,s2)
-#' plot(s,cex=.5,main=if(si){"Intersect"}else{"Disjoint"})
+#' plot(s,cex=.5,main=if(si){"Intersect"}else{"Disjoint"},xlab="",ylab="",xaxt='n', yaxt='n',xlim=range(s)+c(-1,1),ylim=range(s)+c(-1,1))
 #' points(s1,type="l")
 #' points(s2,type="l")
-#' text(s[,1],s[,2],toupper(letters[1:4]),cex=2,col="red")
+#' text(s[,1],s[,2],toupper(letters[1:4]),cex=1,col="red")
 #' 
 #' }
-#' par(mfrow=c(3,3))
-#' set.seed(1);replicate(9,zz())
+#' par(mfrow=c(3,4),mar=c(5,3,2,2))
+#' set.seed(12);replicate(4,zz())
+#' zz(matrix(0,2,2),matrix(0,2,2))
+#' zz(matrix(0,2,2),matrix(1,2,2))
+#' zz(matrix(c(1,1,1,1),2,2),matrix(c(2,3,2,3),2,2))
+#' zz(matrix(c(1,1,0,0),2,2),matrix(c(0,1,0,0),2,2))
+#' zz(matrix(c(1,3,1,3),2,2),matrix(c(2,4,2,4),2,2))
+#' zz(matrix(c(0,1,0,1),2,2),matrix(c(2,3,2,3),2,2))
+#' zz(matrix(c(0,4,0,4),2,2),matrix(c(1,3,1,3),2,2))
+#' zz(matrix(c(0,1,0,1),2,2),matrix(c(0,3,0,3),2,2))
 segment.intersect<-function(s1,s2){
-  (triangleorientation(rbind(s1[1,],s2))*triangleorientation(rbind(s1[2,],s2)))<=0&
-    (triangleorientation(rbind(s2[1,],s1))*triangleorientation(rbind(s2[2,],s1)))<=0}
+  x=c(triangleorientation(rbind(s1[1,],s2)),
+      triangleorientation(rbind(s1[2,],s2)),
+      triangleorientation(rbind(s2[1,],s1)),
+      triangleorientation(rbind(s2[2,],s1)))
+  y<-max(prod(x[1:2]),prod(x[3:4]))
+  if(y==1){FALSE}else{if(y==-1){TRUE}else{
+    w<-s1[2,]-s1[1,]
+    if(any(w!=0)){
+      z=c(sum(w^2),sort(c(crossprod(s2[1,]-s1[1,],w),crossprod(s2[2,]-s1[1,],w))))
+    (z[3]>z[1]&z[2]<z[1])|(z[3]<z[1]&z[3]>0)}else{
+      w<-s2[2,]-s2[1,]
+      if(any(w!=0)){
+        z=c(sum(w^2),sort(c(crossprod(s1[1,]-s2[1,],w),crossprod(s1[2,]-s2[1,],w))))
+        (z[3]>=z[1]&z[2]<=z[1])|(z[3]<=z[1]&z[3]>=0)
+      }else{all(s1[1,]==s2[1,])}
+    }
+  }}}
 
 
 #' distance segment to segment
@@ -404,39 +424,78 @@ distsegmenttopoly<-function(s,.poly){
   min(plyr::aaply(1:(nrow(.poly)-1),1,function(i){distsegmenttosegment(s,.poly[i:(i+1),])}))}
 
 
-
+#' Computes distance between two polygons
+#' @param poly1 a polygon (a n x 2 numerical matrix)
+#' @param poly2 a polygon (a n x 2 numerical matrix)
+#' @return a positive number, the distance between the two polygons
 #' @examples
-#' data(Avo_fields,package="Strategy")
-#' poly1<-Avo_fields[1,]@polygons[[1]]@Polygons[[1]]@coords
-#' poly2<-Avo_fields[2,]@polygons[[1]]@Polygons[[1]]@coords
-#' distpolytopoly(poly1,poly2)
+#' polys=lapply(c(0:1),function(x){
+#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
+#' par(mfrow=c(1,1))
+#' plot(do.call(rbind,polys),xlab="",yaxt="n")
+#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
+#' distpolytopoly(polys[[1]],polys[[2]])
+#' polys=lapply(c(1:2),function(x){
+#' cbind(c(-x,-x,x,x,-x),c(-x,x,x,-x,-x))})
+#' par(mfrow=c(1,1))
+#' plot(do.call(rbind,polys),xlab="",yaxt="n")
+#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
+#' distpolytopoly(polys[[1]],polys[[2]])
+#' polys=lapply(c(1:2),function(x){
+#' cbind(c(-2,-2,2,2,-2),c(-1,1,1,-1,-1))[,c(x,(1:2)[-x])]})
+#' par(mfrow=c(1,1))
+#' plot(do.call(rbind,polys),xlab="",yaxt="n")
+#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
+#' distpolytopoly(polys[[1]],polys[[2]])
+
 
 
 distpolytopoly<-function(poly1,poly2){
   min(plyr::aaply(1:(nrow(poly1)-1),1,function(i){distsegmenttopoly(poly1[i:(i+1),],poly2)}))
 }
 
-#'@examples
+extractpolygonsaslist<-function(shp){
+  lapply(1:nrow(shp),function(i){shp[i,]@polygons[[1]]@Polygons[[1]]@coords})}
+
+
+#' @examples
+#' polys=lapply(c(0:3,5:7),function(x){
+#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
+#' par(mfrow=c(1,1))
+#' plot(do.call(rbind,polys),xlab="",yaxt="n")
+#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
+#' polydistmat(polys)
 #' data(Avo_fields,package="Strategy")
 #' polygons<-Avo_fields
-#' MM<-polydistmat(Avo_fields)
+#' MM<-polydistmat(extractpolygonsaslist(Avo_fields))
 #' parallel::detectCores()
 #' save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
-polydistmat<-function(shp){
-  L<-plyr::alply(1:(nrow(shp)-1),1,function(i){do.call(rbind,
-    parallel::mclapply((i+1):nrow(shp),function(j){
-              c(i,j,distpolytopoly(Avo_fields[i,]@polygons[[1]]@Polygons[[1]]@coords,Avo_fields[j,]@polygons[[1]]@Polygons[[1]]@coords))}))},.progress="text")
+polydistmat<-function(list.poly){
+  L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
+    do.call(rbind,
+    parallel::mclapply((i+1):length(list.poly),function(j){
+              c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))},.progress="text")
   do.call(rbind,L)}
               
 #'@examples
+#' polys=lapply(c(0:3,5:7),function(x){
+#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
+#' bins<-connectedpop(polydistmat(polys),1)
+#' par(mfrow=c(1,1))
+#' plot(do.call(rbind,polys),xlab="",yaxt="n")
+#' for(i in 1:length(polys)){
+#' .poly=polys[[i]]
+#' segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2],col=
+#' bins$bin[i])}
+#' 
 #' data(Avo_fields,package="Strategy")
 #' polygons<-Avo_fields
 #' shp<-Avo_fields[(nrow(Avo_fields)-30):(nrow(Avo_fields)),]
 
-connectedpop<-function(shp,MM=polydistmat(shp),delta){
+connectedpop<-function(MM,delta,n=max(MM[,1:2])){
   x=MM[MM[,3]<delta,1:2]
-  bins<-data.frame(polygon=1:nrow(shp),
-              bin=1:nrow(shp))
+  bins<-data.frame(polygon=1:n,
+              bin=1:n)
   someremain=TRUE
   nextbins<-sort(unique(x[,1]))
   while(someremain){
@@ -447,7 +506,7 @@ connectedpop<-function(shp,MM=polydistmat(shp),delta){
     bins$bin[newtobin]<-nextbin
     if(any(!islinked)){
     x<-x[!islinked,,drop=FALSE]
-    x[is.element(x[,1],newtobin),2]<-nextbin
+    x[is.element(x[,1],newtobin),1]<-nextbin
     x<-plyr::aaply(x,1,sort,.drop = FALSE)
     islinked<-x[,1]==nextbin
     nextbins<-setdiff(nextbins,c(nextbin,newtobin))}else{islinked=FALSE;nextbins=c()}

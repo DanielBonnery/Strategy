@@ -2,7 +2,7 @@
 % Please edit documentation in R/Generate_data.R
 \name{segment.intersect}
 \alias{segment.intersect}
-\title{computes the orientation of a triangle}
+\title{test if two segments intersect}
 \usage{
 segment.intersect(s1, s2)
 }
@@ -12,20 +12,26 @@ segment.intersect(s1, s2)
 \item{s2}{a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of an extreme point of the segment.}
 }
 \description{
-computes the orientation of a triangle
+test if two segments intersect
 }
 \examples{
-zz<-function(){
-s1=matrix(sample(0:2,4,rep=T),2,2)
-s2=matrix(sample(0:2,4,rep=T),2,2)
+zz<-function(s1=matrix(sample(0:3,4,rep=T),2,2),s2=matrix(sample(0:3,4,rep=T),2,2)){
 si<-segment.intersect(s1,s2)
 s<-rbind(s1,s2)
-plot(s,cex=.5,main=if(si){"Intersect"}else{"Disjoint"})
+plot(s,cex=.5,main=if(si){"Intersect"}else{"Disjoint"},xlab="",ylab="",xaxt='n', yaxt='n',xlim=range(s)+c(-1,1),ylim=range(s)+c(-1,1))
 points(s1,type="l")
 points(s2,type="l")
-text(s[,1],s[,2],toupper(letters[1:4]),cex=2,col="red")
+text(s[,1],s[,2],toupper(letters[1:4]),cex=1,col="red")
 
 }
-par(mfrow=c(3,3))
-set.seed(1);replicate(9,zz())
+par(mfrow=c(3,4),mar=c(5,3,2,2))
+set.seed(12);replicate(4,zz())
+zz(matrix(0,2,2),matrix(0,2,2))
+zz(matrix(0,2,2),matrix(1,2,2))
+zz(matrix(c(1,1,1,1),2,2),matrix(c(2,3,2,3),2,2))
+zz(matrix(c(1,1,0,0),2,2),matrix(c(0,1,0,0),2,2))
+zz(matrix(c(1,3,1,3),2,2),matrix(c(2,4,2,4),2,2))
+zz(matrix(c(0,1,0,1),2,2),matrix(c(2,3,2,3),2,2))
+zz(matrix(c(0,4,0,4),2,2),matrix(c(1,3,1,3),2,2))
+zz(matrix(c(0,1,0,1),2,2),matrix(c(0,3,0,3),2,2))
 }
