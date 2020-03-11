@@ -104,49 +104,6 @@ r<-function(risk){
 
 
 
-              
-#'@examples
-#' polys=lapply(c(0:3,5:7),function(x){
-#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
-#' bins<-connectedpop(polydistmat(polys),1)
-#' par(mfrow=c(1,1))
-#' plot(do.call(rbind,polys),xlab="",yaxt="n")
-#' for(i in 1:length(polys)){
-#' .poly=polys[[i]]
-#' segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2],col=
-#' bins$bin[i])}
-#' 
-#' data(Avo_fields,package="Strategy")
-#' polygons<-Avo_fields
-
-
-connectedpop<-function(MM,delta,n=max(MM[,1:2])){
-  x=MM[MM[,3]<delta,1:2]
-  bins<-data.frame(polygon=1:n,
-              bin=1:n)
-  someremain=TRUE
-  nextbins<-sort(unique(x[,1]))
-  while(someremain){
-    nextbin=nextbins[1]
-    islinked<-x[,1]==nextbin
-    while(any(islinked)){
-    newtobin<-x[islinked,2]
-    bins$bin[newtobin]<-nextbin
-    if(any(!islinked)){
-    x<-x[!islinked,,drop=FALSE]
-    x[is.element(x[,1],newtobin),1]<-nextbin
-    x<-plyr::aaply(x,1,sort,.drop = FALSE)
-    islinked<-x[,1]==nextbin
-    nextbins<-setdiff(nextbins,c(nextbin,newtobin))}else{islinked=FALSE;nextbins=c()}
-    }
-    someremain=length(nextbins)>0
-  }
-  bins
-  }
-
-
-
-
 #' Generate epidemic
 #'
 #' @param U a data.frame

@@ -6,6 +6,21 @@
 \usage{
 rangesoverlap(r1, r2)
 }
+\arguments{
+\item{r1}{a range a length 2 numerical vector}
+
+\item{r2}{a range a length 2 numerical vector}
+}
 \description{
 tells if two ranges overlap
+}
+\examples{
+par(mfrow=c(1,4),oma=c(0,0,0,0))
+set.seed(8);replicate(4,(function(){
+r1<-sample(1:8,2);r2<-sample(1:5,2)
+plot(cbind(c(r1,r2),0),yaxt='n',xlab='',ylab='',xaxt='n',
+main=paste0(if(rangesoverlap(r1,r2)){"O"}else{"Does not o"},"verlap"))
+points(cbind(r1,0),type="l",lwd=3)
+points(cbind(r2,0),type="l",col="red")
+})())
 }

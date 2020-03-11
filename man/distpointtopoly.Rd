@@ -15,15 +15,16 @@ distpointtopoly(p, .poly)
 computes the distance between a point and a polygon
 }
 \examples{
-zz<-function(p){
-s=matrix(c(0,3,0,0),2,2)
-plot(s,type="l",xlim=c(-2,5),ylim=c(-2,2),
+zz<-function(){
+p<-sample(0:6,2,rep=T)
+.poly<-matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+plot(rbind(.poly,p),
 xlab="",ylab="",
-xaxt='n',yaxt='n')
-points(x=p[1],y=p[2] ,col="red",cex=.5)
-points(closestpointonseg(p,s)[1],closestpointonseg(p,s)[2],col="red",cex=.5)
-segments(x0 = p[1],y0=p[2],x1=closestpointonseg(p,s)[1],y1=closestpointonseg(p,s)[2],col="red")
-text((closestpointonseg(p,s)[1]+p[1])/2,(closestpointonseg(p,s)[2]+p[2])/2,round(distpointtoseg(p,s),2))}
-par(mfrow=c(3,3))
-set.seed(1);replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+cex=.2,main=paste0("Distance: ",signif(distpointtopoly(p,.poly),3)))
+points(.poly,type='l')
+points(x=p[1],y=p[2] ,col="red",cex=1)
+points(closestpointonpolygon(p,.poly)[1],closestpointonpolygon(p,.poly)[2],col="red",cex=1)
+points(rbind(p,closestpointonpolygon(p,.poly)),col="red",lty=3,type='l')}
+par(mfrow=c(3,3),oma=c(0,0,1,0),mar=c(2,2.1,1,0.1))
+set.seed(1);replicate(9,zz())
 }

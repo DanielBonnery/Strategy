@@ -18,22 +18,20 @@ a positive number, the distance between the two polygons
 Computes distance between two polygons
 }
 \examples{
-polys=lapply(c(0:1),function(x){
-cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
-par(mfrow=c(1,1))
-plot(do.call(rbind,polys),xlab="",yaxt="n")
-for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-distpolytopoly(polys[[1]],polys[[2]])
-polys=lapply(c(1:2),function(x){
-cbind(c(-x,-x,x,x,-x),c(-x,x,x,-x,-x))})
-par(mfrow=c(1,1))
-plot(do.call(rbind,polys),xlab="",yaxt="n")
-for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-distpolytopoly(polys[[1]],polys[[2]])
-polys=lapply(c(1:2),function(x){
-cbind(c(-2,-2,2,2,-2),c(-1,1,1,-1,-1))[,c(x,(1:2)[-x])]})
-par(mfrow=c(1,1))
-plot(do.call(rbind,polys),xlab="",yaxt="n")
-for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-distpolytopoly(polys[[1]],polys[[2]])
+zz<-function(){
+poly1=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+poly2=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+s<-rbind(poly1,poly2)
+dd<-distpolytopoly(poly1,poly2)
+plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+points(poly1,type="l",lwd=2)
+points(poly2,type="l",lwd=2)
+for(cc in closestpointsontwopolygons_n(poly1,poly2)){
+points(cc,type="l",col="red",lty=3)}}
+
+par(mfrow=c(2,2),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
+set.seed(2);replicate(4,zz())
+}
+\seealso{
+distsegmenttopoly
 }

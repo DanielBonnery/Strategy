@@ -23,7 +23,8 @@ zz<-function(){
 .poly=matrix(sample(0:4,6,rep=T),3,2)[c(1:3,1),]
 p<-sample(0:4,2,rep=T)
 dd<-distpointtopoly(p,.poly)
-plot(rbind(p,.poly),cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+plot(rbind(p,.poly),cex=.5,main=paste0("Distance: ", signif(dd,3)),
+asp=1,xlim=range(cbind(p,.poly)),ylim=range(cbind(p,.poly)),xaxt='n',yaxt='n',xlab='',ylab='')
 points(.poly,type="l",lwd=2)
 cc<-rbind(p,closestpointonpolygon(p,.poly))
 points(cc,col="red",cex=2)

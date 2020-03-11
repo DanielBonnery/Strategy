@@ -22,7 +22,8 @@ hexagonal bins
 }
 \examples{
 # plot the hex bins of cumbria
-data(U)
+data(U,package="Strategy")
+library("hexbin")
 plot(neighbourhoods(U,.1))
 plot(neighbourhoods(U,.01))
 plot(neighbourhoods(U,.001))

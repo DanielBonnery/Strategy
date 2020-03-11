@@ -2,20 +2,25 @@
 % Please edit documentation in R/Distances.R
 \name{ranges.gap}
 \alias{ranges.gap}
-\title{tells if two ranges overlap}
+\title{Interval length between two ranges (0 if they overlap)}
 \usage{
 ranges.gap(r1, r2)
 }
+\arguments{
+\item{r1}{a range a length 2 numerical vector}
+
+\item{r2}{a range a length 2 numerical vector}
+}
 \description{
-tells if two ranges overlap
+Interval length between two ranges (0 if they overlap)
 }
 \examples{
-zz<-function(){
-x=sample(6,4,rep=F)
-r1=x[1:2];r2=x[3:4]
-plot(x,rep(0,4),main=ranges.gap(r1,r2),yaxt='n',xlab='',ylab='')
-segments(x[1],0,x[2],0,col="blue")
-segments(x[3],0,x[4],0,col="green")}
-par(mfrow=c(2,2),oma=c(0,0,0,0))
-set.seed(8);replicate(4,zz())
+par(mfrow=c(1,4),oma=c(0,0,0,0))
+set.seed(10);replicate(4,(function(){
+r1<-sample(1:8,2);r2<-sample(1:5,2)
+plot(cbind(c(r1,r2),0),yaxt='n',xlab='',ylab='',
+main=paste0("Gap: ",ranges.gap(r1,r2)))
+points(cbind(r1,0),type="l",lwd=3)
+points(cbind(r2,0),type="l",col="red")
+})())
 }

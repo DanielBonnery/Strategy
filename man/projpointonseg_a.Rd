@@ -24,7 +24,7 @@ points(x=p[1],y=p[2] ,col="red",cex=2)
 points(closestpointonseg(p,s)[1],closestpointonseg(p,s)[2],col="red",cex=2)
 segments(x0 = p[1],y0=p[2],x1=closestpointonseg(p,s)[1],y1=closestpointonseg(p,s)[2],col="red")
 text(projpointonseg_a(p,s),-.8,paste0("a=",projpointonseg_a(p,s)))}
-par(oma=c(0,0,0,0),mfrow=c(2,2))
+par(oma=c(0,0,0,0),mfrow=c(1,4))
 zz(c(-.5,1))
 zz(0:1)
 zz(c(.5,1))

@@ -7,7 +7,8 @@
 polysmalldistmat(
   list.poly,
   delta,
-  gradients = cbind(c(0, 1), c(1, 0), c(1, 1), c(1, -1))
+  gradients = cbind(c(0, 1), c(1, 0), c(1, 1), c(1, -1)),
+  .progress = "none"
 )
 }
 \arguments{
@@ -24,7 +25,7 @@ zz<-function(delta){
 list.poly=plyr::alply(cbind(rep(0:8,9),rep(0:8,each=9))[sample(81,20),],1,function(x){
 cbind(x[1]+c(0,0,.5,.5,0),x[2]+c(0,.5,.5,0,0))})
 gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1))
-par(mfrow=c(1,1))
+par(mfrow=c(1,1),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
 plot(do.call(rbind,list.poly),xlab="",yaxt="n",ylab="",cex=.1,main=paste0("Match polygons distant less than ",delta))
 for(.poly in list.poly){points(.poly,type="l")}
 X=polysmalldistmat(list.poly,delta)

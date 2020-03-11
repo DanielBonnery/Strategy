@@ -4,7 +4,7 @@
 \alias{polydistmat}
 \title{Compute distance matrix for a list of polygons}
 \usage{
-polydistmat(list.poly)
+polydistmat(list.poly, .progress = "text")
 }
 \arguments{
 \item{list.poly}{a list of nx2 numeric matrices}
@@ -16,15 +16,25 @@ a  (n*(n-1)/2)x 3 matrix
 Compute distance matrix for a list of polygons
 }
 \examples{
-polys=lapply(c(0:3,5:7),function(x){
-cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
-par(mfrow=c(1,1))
-plot(do.call(rbind,polys),xlab="",yaxt="n")
-for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-polydistmat(polys)
-#data(Avo_fields,package="Strategy")
-#polygons<-Avo_fields
-#MM<-polydistmat(extractpolygonsaslist(Avo_fields))
-#parallel::detectCores()
-#save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
+zz<-function(){
+list.poly=plyr::alply(cbind(rep(0:8,9),rep(0:8,each=9))[sample(81,4),],1,function(x){
+cbind(x[1]+c(0,0,.5,.5,0),x[2]+c(0,.5,.5,0,0))})
+gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1))
+par(mfrow=c(1,1),oma=c(0,0,0,0),mar=c(0.1,0.1,.1,0.1))
+plot(do.call(rbind,list.poly),xlab="",yaxt="n",ylab="",cex=.1)
+for(i in 1:length(list.poly)){.poly=list.poly[[i]]
+points(.poly,type="l")
+text(mean(.poly[,1]),mean(.poly[,2]),as.roman(i))
+}
+X=polydistmat(list.poly,.progress="none")
+X<-cbind(X,floor(rank(X[,3])))
+colorlink=topo.colors(2*max(X[,4]))[X[,4]]
+for(i in 1:nrow(X)){
+cc<-closestpointsontwopolygons(list.poly[[X[i,1]]],list.poly[[X[i,2]]])
+points(cc,col=colorlink[i],type="l",lty=3)
+text(mean(cc[,1]),mean(cc[,2]),signif(X[i,3],3))
+}
+colnames(X)<-c("polygon 1","polygon 2", "distance","col")
+X[,1:3]}
+set.seed(1);zz()
 }

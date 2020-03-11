@@ -5,7 +5,8 @@
 #' @return a hexbin object  hexagonal bins
 #' @examples 
 #' # plot the hex bins of cumbria
-#' data(U)
+#' data(U,package="Strategy")
+#' library("hexbin")
 #' plot(neighbourhoods(U,.1))
 #' plot(neighbourhoods(U,.01))
 #' plot(neighbourhoods(U,.001))
@@ -120,7 +121,7 @@ updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist
 #' points(closestpointonseg(p,s)[1],closestpointonseg(p,s)[2],col="red",cex=2)
 #' segments(x0 = p[1],y0=p[2],x1=closestpointonseg(p,s)[1],y1=closestpointonseg(p,s)[2],col="red")
 #' text(projpointonseg_a(p,s),-.8,paste0("a=",projpointonseg_a(p,s)))}
-#' par(oma=c(0,0,0,0),mfrow=c(2,2))
+#' par(oma=c(0,0,0,0),mfrow=c(1,4))
 #' zz(c(-.5,1))
 #' zz(0:1)
 #' zz(c(.5,1))
@@ -165,7 +166,8 @@ closestpointonseg<-function(p,s){
 #' .poly=matrix(sample(0:4,6,rep=T),3,2)[c(1:3,1),]
 #' p<-sample(0:4,2,rep=T)
 #' dd<-distpointtopoly(p,.poly)
-#' plot(rbind(p,.poly),cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+#' plot(rbind(p,.poly),cex=.5,main=paste0("Distance: ", signif(dd,3)),
+#' asp=1,xlim=range(cbind(p,.poly)),ylim=range(cbind(p,.poly)),xaxt='n',yaxt='n',xlab='',ylab='')
 #' points(.poly,type="l",lwd=2)
 #' cc<-rbind(p,closestpointonpolygon(p,.poly))
 #' points(cc,col="red",cex=2)
@@ -216,7 +218,10 @@ closestpointsontwosegments<-function(s1,s2){
       }}
   rbind(p1,p2)}
 
-
+#'  returns a list of one or more  pair of points, one on each of two segments, with minimal distance
+#' @param s1 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @param s2 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
+#' @return a list of  2x2 numeric matrices, representing a segment.
 #'@examples
 #'zz<-function(){
 #' s1=matrix(sample(0:4,4,rep=T),2,2)
@@ -293,7 +298,9 @@ closestpointsontwopolygons<-function(poly1,poly2){
   closestpointsontwosegments(s1,s2)
 }
 
-
+#' Compute minimum distance between two polygons
+#' @param poly1 a nx2 numeric matrix, representing a polygon. Each row of the matrix are the coordinates of a vertice of the polygon.
+#' @param poly2 a nx2 numeric matrix, representing a polygon. Each row of the matrix are the coordinates of a vertice of the polygon.
 #' @examples 
 #' zz<-function(){
 #' poly1=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
@@ -416,22 +423,39 @@ segment.intersect<-function(s1,s2){
         }else{all(s1[1,]==s2[1,])}
       }
   }}}
+
+
 #' tells if two ranges overlap
+#' @param r1 a range a length 2 numerical vector
+#' @param r2 a range a length 2 numerical vector
+#' @retrun TRUE if two ranges overlap
+#' @examples
+#' par(mfrow=c(1,4),oma=c(0,0,0,0))
+#' set.seed(8);replicate(4,(function(){
+#' r1<-sample(1:8,2);r2<-sample(1:5,2)
+#' plot(cbind(c(r1,r2),0),yaxt='n',xlab='',ylab='',xaxt='n',
+#' main=paste0(if(rangesoverlap(r1,r2)){"O"}else{"Does not o"},"verlap"))
+#' points(cbind(r1,0),type="l",lwd=3)
+#' points(cbind(r2,0),type="l",col="red")
+#' })())
 rangesoverlap<-function(r1,r2){
   !((min(r2)>max(r1))|(min(r1)>max(r2)))
 }
 
-#' tells if two ranges overlap
+#' Interval length between two ranges (0 if they overlap)
+#' @param r1 a range a length 2 numerical vector
+#' @param r2 a range a length 2 numerical vector
+#' @retrun TRUE if two ranges overlap
 #' 
 #' @examples
-#' zz<-function(){
-#' x=sample(6,4,rep=F)
-#' r1=x[1:2];r2=x[3:4]
-#' plot(x,rep(0,4),main=ranges.gap(r1,r2),yaxt='n',xlab='',ylab='')
-#' segments(x[1],0,x[2],0,col="blue")
-#' segments(x[3],0,x[4],0,col="green")}
-#' par(mfrow=c(2,2),oma=c(0,0,0,0))
-#' set.seed(8);replicate(4,zz())
+#' par(mfrow=c(1,4),oma=c(0,0,0,0))
+#' set.seed(10);replicate(4,(function(){
+#' r1<-sample(1:8,2);r2<-sample(1:5,2)
+#' plot(cbind(c(r1,r2),0),yaxt='n',xlab='',ylab='',
+#' main=paste0("Gap: ",ranges.gap(r1,r2)))
+#' points(cbind(r1,0),type="l",lwd=3)
+#' points(cbind(r2,0),type="l",col="red")
+#' })())
 ranges.gap<-function(r1,r2){
   max(0,min(r2)-max(r1),min(r1)-max(r2))
 }
@@ -457,7 +481,7 @@ ranges.gap<-function(r1,r2){
 #' points(cc,type="l",col="red",lty=3)
 #' }
 #' 
-#' par(oma=c(0,0,0,0),mfrow=c(3,3))
+#' par(mfrow=c(3,3),oma=c(0,0,0,0),mar=c(1.1,1.2,1,1.1))
 #' set.seed(3);replicate(9,zz())
 
 distsegmenttosegment<-function(s1,s2){
@@ -470,17 +494,18 @@ distsegmenttosegment<-function(s1,s2){
 #' @param p a numeric vector of length 2
 #' @param .poly a n x2 numeric matrix, representing a polygon. Each row of the matrix are the coordinates of a verticeof the polygon.
 #' @examples
-#' zz<-function(p){
-#' s=matrix(c(0,3,0,0),2,2)
-#' plot(s,type="l",xlim=c(-2,5),ylim=c(-2,2),
+#' zz<-function(){
+#' p<-sample(0:6,2,rep=T)
+#' .poly<-matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+#' plot(rbind(.poly,p),
 #' xlab="",ylab="",
-#' xaxt='n',yaxt='n')
-#' points(x=p[1],y=p[2] ,col="red",cex=.5)
-#' points(closestpointonseg(p,s)[1],closestpointonseg(p,s)[2],col="red",cex=.5)
-#' segments(x0 = p[1],y0=p[2],x1=closestpointonseg(p,s)[1],y1=closestpointonseg(p,s)[2],col="red")
-#' text((closestpointonseg(p,s)[1]+p[1])/2,(closestpointonseg(p,s)[2]+p[2])/2,round(distpointtoseg(p,s),2))}
-#' par(mfrow=c(3,3))
-#' set.seed(1);replicate(9,zz(c(sample(-2:3,1),sample(-2:2,1))))
+#' cex=.2,main=paste0("Distance: ",signif(distpointtopoly(p,.poly),3)))
+#' points(.poly,type='l')
+#' points(x=p[1],y=p[2] ,col="red",cex=1)
+#' points(closestpointonpolygon(p,.poly)[1],closestpointonpolygon(p,.poly)[2],col="red",cex=1)
+#' points(rbind(p,closestpointonpolygon(p,.poly)),col="red",lty=3,type='l')}
+#' par(mfrow=c(3,3),oma=c(0,0,1,0),mar=c(2,2.1,1,0.1))
+#' set.seed(1);replicate(9,zz())
 
 distpointtopoly<-function(p,.poly){
   min(plyr::aaply(1:(nrow(.poly)-1),1,function(i){distpointtoseg(p,.poly[i:(i+1),])}))}
@@ -508,25 +533,21 @@ distsegmenttopoly<-function(s,.poly){
 #' @param poly1 a polygon (a n x 2 numerical matrix)
 #' @param poly2 a polygon (a n x 2 numerical matrix)
 #' @return a positive number, the distance between the two polygons
+#' @seealso distsegmenttopoly
 #' @examples
-#' polys=lapply(c(0:1),function(x){
-#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
-#' par(mfrow=c(1,1))
-#' plot(do.call(rbind,polys),xlab="",yaxt="n")
-#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-#' distpolytopoly(polys[[1]],polys[[2]])
-#' polys=lapply(c(1:2),function(x){
-#' cbind(c(-x,-x,x,x,-x),c(-x,x,x,-x,-x))})
-#' par(mfrow=c(1,1))
-#' plot(do.call(rbind,polys),xlab="",yaxt="n")
-#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-#' distpolytopoly(polys[[1]],polys[[2]])
-#' polys=lapply(c(1:2),function(x){
-#' cbind(c(-2,-2,2,2,-2),c(-1,1,1,-1,-1))[,c(x,(1:2)[-x])]})
-#' par(mfrow=c(1,1))
-#' plot(do.call(rbind,polys),xlab="",yaxt="n")
-#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-#' distpolytopoly(polys[[1]],polys[[2]])
+#' zz<-function(){
+#' poly1=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+#' poly2=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+#' s<-rbind(poly1,poly2)
+#' dd<-distpolytopoly(poly1,poly2)
+#' plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+#' points(poly1,type="l",lwd=2)
+#' points(poly2,type="l",lwd=2)
+#' for(cc in closestpointsontwopolygons_n(poly1,poly2)){
+#' points(cc,type="l",col="red",lty=3)}}
+#' 
+#' par(mfrow=c(2,2),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
+#' set.seed(2);replicate(4,zz())
 distpolytopoly<-function(poly1,poly2){
   min(plyr::aaply(1:(nrow(poly1)-1),1,function(i){distsegmenttopoly(poly1[i:(i+1),],poly2)}))
 }
@@ -547,22 +568,32 @@ extractpolygonsaslist<-function(shp){
 #' @param list.poly a list of nx2 numeric matrices
 #' @return a  (n*(n-1)/2)x 3 matrix  
 #' @examples
-#' polys=lapply(c(0:3,5:7),function(x){
-#' cbind(c(x,x,x+.5,x+.5,x),c(0,1,1,0,0))})
-#' par(mfrow=c(1,1))
-#' plot(do.call(rbind,polys),xlab="",yaxt="n")
-#' for(.poly in polys){segments(x0 = .poly[-5,1],y0 = .poly[-5,2],.poly[-1,1],.poly[-1,2])}
-#' polydistmat(polys)
-#' #data(Avo_fields,package="Strategy")
-#' #polygons<-Avo_fields
-#' #MM<-polydistmat(extractpolygonsaslist(Avo_fields))
-#' #parallel::detectCores()
-#' #save(MM,file=file.path(Mydirectories::googledrive.directory(),"Travail/Recherche/Travaux/Epidemiologie/Strategy/data/MM.rda"))
-polydistmat<-function(list.poly){
+#' zz<-function(){
+#' list.poly=plyr::alply(cbind(rep(0:8,9),rep(0:8,each=9))[sample(81,4),],1,function(x){
+#' cbind(x[1]+c(0,0,.5,.5,0),x[2]+c(0,.5,.5,0,0))})
+#' gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1))
+#' par(mfrow=c(1,1),oma=c(0,0,0,0),mar=c(0.1,0.1,.1,0.1))
+#' plot(do.call(rbind,list.poly),xlab="",yaxt="n",ylab="",cex=.1)
+#' for(i in 1:length(list.poly)){.poly=list.poly[[i]]
+#' points(.poly,type="l")
+#' text(mean(.poly[,1]),mean(.poly[,2]),as.roman(i))
+#' }
+#' X=polydistmat(list.poly,.progress="none")
+#' X<-cbind(X,floor(rank(X[,3])))
+#' colorlink=topo.colors(2*max(X[,4]))[X[,4]]
+#' for(i in 1:nrow(X)){
+#' cc<-closestpointsontwopolygons(list.poly[[X[i,1]]],list.poly[[X[i,2]]])
+#' points(cc,col=colorlink[i],type="l",lty=3)
+#' text(mean(cc[,1]),mean(cc[,2]),signif(X[i,3],3))
+#' }
+#' colnames(X)<-c("polygon 1","polygon 2", "distance","col")
+#' X[,1:3]}
+#' set.seed(1);zz()
+polydistmat<-function(list.poly,.progress="text"){
   L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
     do.call(rbind,
             parallel::mclapply((i+1):length(list.poly),function(j){
-              c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))},.progress="text")
+              c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))},.progress=.progress)
   do.call(rbind,L)}
 
 
@@ -574,7 +605,7 @@ polydistmat<-function(list.poly){
 #' list.poly=plyr::alply(cbind(rep(0:8,9),rep(0:8,each=9))[sample(81,20),],1,function(x){
 #' cbind(x[1]+c(0,0,.5,.5,0),x[2]+c(0,.5,.5,0,0))})
 #' gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1))
-#' par(mfrow=c(1,1))
+#' par(mfrow=c(1,1),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
 #' plot(do.call(rbind,list.poly),xlab="",yaxt="n",ylab="",cex=.1,main=paste0("Match polygons distant less than ",delta))
 #' for(.poly in list.poly){points(.poly,type="l")}
 #' X=polysmalldistmat(list.poly,delta)
@@ -584,17 +615,25 @@ polydistmat<-function(list.poly){
 #' set.seed(1);zz(.5)
 #' set.seed(1);zz(1)
 #' set.seed(1);zz(2)
-polysmalldistmat<-function(list.poly,delta,gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1))){
+polysmalldistmat<-function(list.poly,delta,gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1)),.progress = "none"){
   gradients<-apply(gradients,2,function(x){x/(sqrt(sum(x^2)))})
   n<-ncol(gradients)
   rangesbygradients<-lapply(list.poly,function(.poly){apply(.poly%*%(gradients),2,range)})
-  L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
-    smalls<-sapply((i+1):length(list.poly),function(j){
-      all(sapply(1:n,function(k){ranges.gap(rangesbygradients[[i]][,k],rangesbygradients[[j]][,k])<=delta}))})
+  print("ranges by gradient computed")
+  print(paste0(length(list.poly)," polygons."))
+  L<-parallel::mclapply(1:(length(list.poly)-1),function(i,.rangesbygradients,.delta,.list.poly,.n){
+    smalls<-sapply((i+1):length(.list.poly),function(j){
+      all(sapply(1:.n,function(k){
+        ranges.gap(.rangesbygradients[[i]][,k],.rangesbygradients[[j]][,k])<=.delta}))})
     if(any(smalls)){
       do.call(rbind,
-              parallel::mclapply(((i+1):length(list.poly))[smalls],function(j){
-                c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))}else{matrix(NA,0,3)}},.progress="text")
+              lapply(((i+1):length(.list.poly))[smalls],function(j){
+                c(i,j,Strategy::distpolytopoly(.list.poly[[i]],.list.poly[[j]]))}))}else{matrix(NA,0,3)}},
+    .rangesbygradients=rangesbygradients,
+    .delta=delta,
+    .list.poly=list.poly,
+    .n=n,
+    mc.cores=parallel::detectCores())
   D<-do.call(rbind,L)
   D[D[,3]<=delta,]}
 
@@ -604,4 +643,64 @@ polysmalldistmat<-function(list.poly,delta,gradients=cbind(c(0,1),c(1,0),c(1,1),
 #'list.poly<-extractpolygonsaslist(Avo_fields)
 #'dd<-polysmalldistmat(list.poly,.1)
 #'save(dd,file="~/daniel.bonnery@gmail.com/dd.ra")
+
+
+
+
+
+#'Connected populations
+#' @param MM a distance matrix (column one is an integer id, column 2 is an integer id, column 3 is a distance) in a certain unit u
+#' @param delta a distance in the same unit u
+#' @param n the number of initial bins
+#'@examples
+#' zz<-function(delta){
+#' 
+#' list.poly=plyr::alply(cbind(rep(0:8,9),rep(0:8,each=9))[sample(81,9),],1,function(x){
+#' cbind(x[1]+c(0,0,.5,.5,0),x[2]+c(0,.5,.5,0,0))})
+#' MM=polysmalldistmat(list.poly,delta+1)
+#' bins<-connectedpop(MM,delta,n=9)
+#' 
+#' par(mfrow=c(1,1),oma=c(0,0,0,0),mar=c(0.1,0.1,1.1,0.1))
+#' plot(do.call(rbind,list.poly),xlab="",yaxt="n",ylab="",cex=.1,main=paste0("regroup when dist<",delta))
+#' for(i in 1:length(list.poly)){.poly=list.poly[[i]]
+#' points(.poly,type="l",col=as.factor(bins$bin)[i])
+#' text(mean(.poly[,1]),mean(.poly[,2]),as.roman(i))
+#' }
+#' colorlink=sapply(MM[,3],function(x){if(x<=delta){"green"}else{"red"}})
+#' for(i in 1:nrow(MM)){
+#' cc<-closestpointsontwopolygons(list.poly[[MM[i,1]]],list.poly[[MM[i,2]]])
+#' points(cc,col=colorlink[i],type="l",lty=3)
+#' text(mean(cc[,1]),mean(cc[,2]),signif(MM[i,3],3))
+#' 
+#' }
+#' colnames(MM)<-c("polygon 1","polygon 2", "distance")
+#' MM[,1:3]
+#' }
+#' set.seed(4);delta=2;zz(delta)
+
+connectedpop<-function(MM,delta,n=max(MM[,1:2])){
+  x=MM[MM[,3]<delta,1:2]
+  bins<-data.frame(polygon=1:n,
+                   bin=1:n)
+  someremain=TRUE
+  nextbins<-sort(unique(x[,1]))
+  while(someremain){
+    nextbin=nextbins[1]
+    islinked<-(x[,1]==nextbin)
+    while(any(islinked)){
+      newtobin<-x[islinked,2]
+      bins$bin[newtobin]<-nextbin
+      if(any(!islinked)){
+        x<-x[!islinked,,drop=FALSE]
+        x[is.element(x,newtobin)]<-nextbin
+        x<-plyr::aaply(x,1,sort,.drop = FALSE)
+        islinked<-x[,1]==nextbin
+        nextbins<-setdiff(nextbins,c(nextbin,newtobin))}else{islinked=FALSE;nextbins=c()}
+    }
+    someremain=length(nextbins)>0
+  }
+  bins
+}
+
+
 
