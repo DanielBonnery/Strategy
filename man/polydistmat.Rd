@@ -4,7 +4,7 @@
 \alias{polydistmat}
 \title{Compute distance matrix for a list of polygons}
 \usage{
-polydistmat(list.poly, .progress = "text")
+polydistmat(list.poly)
 }
 \arguments{
 \item{list.poly}{a list of nx2 numeric matrices}

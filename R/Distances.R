@@ -64,7 +64,7 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
   if(length(new.sicks)>0){
     new.sickhexagons<-unique(U$hexagon[new.sicks])
     
-    L<- parallel::mclapply(new.sickhexagons,function(hexagon){
+    L<- lapply(new.sickhexagons,function(hexagon){
       exposedhexagons<-dimnames(dist_areas)[[1]][dist_areas[hexagon,]<delta]
       new.sickinhexagon<-new.sicks[is.element(U$hexagon[new.sicks],hexagon)]
       stillfineexposedhexagon<-stillfine[is.element(U$hexagon[stillfine],exposedhexagons)]
@@ -72,6 +72,7 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
         yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
                                       x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
         return(if(!identical(yy$ra,-1)){
+          if(length(stillfineexposedhexagon)*length(new.sickinhexagon)==1){yy$ind<-matrix(yy$ind,1,2)}
           list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
       }})
     ra=do.call(c,lapply(L,function(x){x$ra}))
@@ -589,7 +590,7 @@ extractpolygonsaslist<-function(shp){
 #' colnames(X)<-c("polygon 1","polygon 2", "distance","col")
 #' X[,1:3]}
 #' set.seed(1);zz()
-polydistmat<-function(list.poly,.progress="text"){
+polydistmat<-function(list.poly){
   L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
     do.call(rbind,
             parallel::mclapply((i+1):length(list.poly),function(j){
@@ -597,8 +598,26 @@ polydistmat<-function(list.poly,.progress="text"){
   do.call(rbind,L)}
 
 
+
+#' Compute range of a polygon along certain gradients
+#' 
+#' @param list.poly a list of nx2 numeric matrices
+#' @param delta  a positive number
+#' @param gradients a 2x n matrix each column representing a vector. 
+#' @examples
+#' a=c(1-1/sqrt(2),1/sqrt(2));.poly=cbind(1+c(0,0,a,1,1,a[2:1]),1+c(a,1,1,a[2:1],0,0))[c(1:8,1),]
+#' plot(.poly,type='l',xlab='',ylab='')
+#' rangesbygradients_f(.poly,gradients=cbind(c(0,1),c(1,0),c(1,-1)))
+
+
+rangesbygradients_f<-function(.poly,gradients=-apply(cbind(c(0,1),c(1,0),c(1,1),c(1,-1)),2,function(x){x/(sqrt(sum(x^2)))})){
+apply(.poly%*%(gradients),2,range)
+}
+
 #' Compute distance matrix for a list of polygons
 #' @param list.poly a list of nx2 numeric matrices
+#' @param delta  a positive number
+#' @param gradients a 2x n matrix each column representing a vector. 
 #' @return a  (n*(n-1)/2)x 3 matrix  
 #' @examples
 #' zz<-function(delta){
@@ -615,10 +634,11 @@ polydistmat<-function(list.poly,.progress="text"){
 #' set.seed(1);zz(.5)
 #' set.seed(1);zz(1)
 #' set.seed(1);zz(2)
-polysmalldistmat<-function(list.poly,delta,gradients=cbind(c(0,1),c(1,0),c(1,1),c(1,-1)),.progress = "none"){
-  gradients<-apply(gradients,2,function(x){x/(sqrt(sum(x^2)))})
+polysmalldistmat<-function(list.poly,delta,gradients=apply(cbind(c(0,1),c(1,0),c(1,1),c(1,-1)),2,function(x){x/(sqrt(sum(x^2)))})){
+  if(delta==Inf){polydistmat(list.poly)}else{
   n<-ncol(gradients)
-  rangesbygradients<-lapply(list.poly,function(.poly){apply(.poly%*%(gradients),2,range)})
+  gradients=apply(gradients,2,function(x){x/(sqrt(sum(x^2)))})
+  rangesbygradients<-lapply(list.poly,rangesbygradients_f,gradients=gradients)
   print("ranges by gradient computed")
   print(paste0(length(list.poly)," polygons."))
   L<-parallel::mclapply(1:(length(list.poly)-1),function(i,.rangesbygradients,.delta,.list.poly,.n){
@@ -635,7 +655,7 @@ polysmalldistmat<-function(list.poly,delta,gradients=cbind(c(0,1),c(1,0),c(1,1),
     .n=n,
     mc.cores=parallel::detectCores())
   D<-do.call(rbind,L)
-  D[D[,3]<=delta,]}
+  D[D[,3]<=delta,]}}
 
 
 #'@example

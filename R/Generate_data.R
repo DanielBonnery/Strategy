@@ -83,17 +83,20 @@ risktobeinfectedbydistancetoallinfectedunit<-function(.dist,nI,.distriskhalf=5*1
 #' jumprisk=10^-6 
 #' .distriskhalf=10^-6
 risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskhalf=5*10^(-4),jumprisk=10^-6,delta=0.01,
-                           previouslyexposed=c(),previousrisk=numeric()){
+                           previouslyexposed=c(),previousrisk=NULL){
   stillfine<-setdiff(1:nrow(U),sicks)
   nI=length(sicks)
   print(paste0(nI," sick."))
   newdistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
   #risk<-plyr::aaply(Matrix::sparseMatrix(i=closedistances$ind[,1],j=closedistances$ind[,2],x=closedistances$ra),1,risktobeinfectedbydistancetoallinfectedunit,nI=length(sicks))
-  exposed=intersect(stillfine,unique(closedistances$ind[,1]))
+  
+  exposed=intersect(stillfine,unique(newdistances$ind[,1]))
   print(paste0(length(exposed), " exposed."))
-  newadditionalrisk=unlist(parallel::mclapply(exposed,function(i){
-    risktobeinfectedbydistancetoallinfectedunit(newdistances$ra[newdistances$ind[,1]==i],nI =nI )}))
-  return(list(exposed=exposed,risk=risk,closedistances=closedistances))
+  newadditionalrisk=unlist(lapply(exposed,function(i){
+    risktobeinfectedbydistancetoallinfectedunit(.dist = newdistances$ra[newdistances$ind[,1]==i],.distriskhalf =.distriskhalf, nI =nI )}))
+  risk=newadditionalrisk
+  if(!is.null(previousrisk)){risk[is.element(exposed,previouslyexposed)]=1-(1-previousrisk[is.element(previouslyexposed,exposed)])*(1-risk[is.element(exposed,previouslyexposed)])}
+  return(list(exposed=exposed,risk=risk,newadditionalrisk=newadditionalrisk,closedistances=closedistances))
 }
 
 r<-function(risk){
@@ -134,9 +137,10 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
     new.sicks<-setdiff(sicks_1,sicks_2)
     U[[y]]<-U[[y_1]]
     R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks_1,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
+    if(length(R$exposed)>0){
+      closedistances<-R$closedistances
     contamination<-rbinom(length(R$exposed),size = 1,prob=R$risk)==1
-    U[[y]][R$exposed][contamination]<-"sick"
-    if(tt%%10==0){save(U,file="UE.rda")}
+    U[[y]][R$exposed][contamination]<-"sick"}
   }
   U
 }

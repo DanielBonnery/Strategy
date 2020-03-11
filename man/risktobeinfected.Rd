@@ -13,7 +13,7 @@ risktobeinfected(
   jumprisk = 10^-6,
   delta = 0.01,
   previouslyexposed = c(),
-  previousrisk = numeric()
+  previousrisk = NULL
 )
 }
 \description{

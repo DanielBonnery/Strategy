@@ -7,12 +7,16 @@
 polysmalldistmat(
   list.poly,
   delta,
-  gradients = cbind(c(0, 1), c(1, 0), c(1, 1), c(1, -1)),
-  .progress = "none"
+  gradients = apply(cbind(c(0, 1), c(1, 0), c(1, 1), c(1, -1)), 2, function(x) {    
+    x/(sqrt(sum(x^2))) })
 )
 }
 \arguments{
 \item{list.poly}{a list of nx2 numeric matrices}
+
+\item{delta}{a positive number}
+
+\item{gradients}{a 2x n matrix each column representing a vector.}
 }
 \value{
 a  (n*(n-1)/2)x 3 matrix
