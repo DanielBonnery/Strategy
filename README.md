@@ -81,13 +81,13 @@ leaflet(Avo_fields[QLD,]) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot532d24d0a3ee.png":
+## Warning in normalizePath(f2): path[1]="webshot532d1e2379eb.png":
 ## Lo fichièr o lo repertòri existís pas
 ```
 
 ```
 ## Warning in file(con, "rb"): cannot open file
-## 'webshot532d24d0a3ee.png': Lo fichièr o lo repertòri existís pas
+## 'webshot532d1e2379eb.png': Lo fichièr o lo repertòri existís pas
 ```
 
 ```
@@ -206,13 +206,13 @@ leaflet(Avo_fields[QLD,]) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot532d200ed76d.png":
+## Warning in normalizePath(f2): path[1]="webshot532d5a088b04.png":
 ## Lo fichièr o lo repertòri existís pas
 ```
 
 ```
 ## Warning in file(con, "rb"): cannot open file
-## 'webshot532d200ed76d.png': Lo fichièr o lo repertòri existís pas
+## 'webshot532d5a088b04.png': Lo fichièr o lo repertòri existís pas
 ```
 
 ```
@@ -254,13 +254,13 @@ leaflet(Avo_fields[QLD,]) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot532d2c81fad2.png":
+## Warning in normalizePath(f2): path[1]="webshot532dcf2c970.png":
 ## Lo fichièr o lo repertòri existís pas
 ```
 
 ```
 ## Warning in file(con, "rb"): cannot open file
-## 'webshot532d2c81fad2.png': Lo fichièr o lo repertòri existís pas
+## 'webshot532dcf2c970.png': Lo fichièr o lo repertòri existís pas
 ```
 
 ```
@@ -304,13 +304,13 @@ leaflet(breweries91) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot532d50d76425.png":
+## Warning in normalizePath(f2): path[1]="webshot532d18bde4a0.png":
 ## Lo fichièr o lo repertòri existís pas
 ```
 
 ```
 ## Warning in file(con, "rb"): cannot open file
-## 'webshot532d50d76425.png': Lo fichièr o lo repertòri existís pas
+## 'webshot532d18bde4a0.png': Lo fichièr o lo repertòri existís pas
 ```
 
 ```
@@ -383,7 +383,11 @@ example(Generate_U,echo=F)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## OGR data source with driver: ESRI Shapefile 
+## Source: "/tmp/RtmpDvO7UW/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## with 11358 features
+## It has 7 fields
+## Integer64 fields read as strings:  objectid
 ```
 
 
@@ -415,9 +419,7 @@ example(projpointonseg_a,echo=F)
 example(closestpointonpolygon,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/errtgrefed-1.png" title="plot of chunk errtgrefed" alt="plot of chunk errtgrefed" width="100%" />
 
 
 ```r
@@ -442,9 +444,7 @@ example(closestpointsontwosegments_n,echo=F)
 example(closestpointsontwopolygons,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" />
 
 
 ```r
@@ -471,9 +471,7 @@ example(distpointtoseg,echo=F)
 example(distpointtopoly,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/ergdfsviutyh-1.png" title="plot of chunk ergdfsviutyh" alt="plot of chunk ergdfsviutyh" width="100%" />
 
 
 
