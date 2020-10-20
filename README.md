@@ -80,19 +80,7 @@ leaflet(Avo_fields[QLD,]) %>%
              clusterOptions = markerClusterOptions())
 ```
 
-```
-## Warning in normalizePath(f2): path[1]="webshot532d1e2379eb.png":
-## Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file
-## 'webshot532d1e2379eb.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+<img src="figure/utyhgfdrewefewfwgf-1.png" title="plot of chunk utyhgfdrewefewfwgf" alt="plot of chunk utyhgfdrewefewfwgf" width="100%" />
 
 We have 797 avocado fields in Queensland from ACLUMP.
 The desease is spreading by root, so we can consider that root to root transmission is not possible for trees separated by more than the maximum avocado root reach. I read that the avocado should be planted at least 30 feet from houses, so I think it is safe to say that fields separated by more than 200 m will not contaminate each other via their roots.
@@ -205,19 +193,7 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I012")
 ```
 
-```
-## Warning in normalizePath(f2): path[1]="webshot532d5a088b04.png":
-## Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file
-## 'webshot532d5a088b04.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+<img src="figure/utyhgfdrewgf-1.png" title="plot of chunk utyhgfdrewgf" alt="plot of chunk utyhgfdrewgf" width="100%" />
 
 
 
@@ -253,19 +229,7 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I085")
 ```
 
-```
-## Warning in normalizePath(f2): path[1]="webshot532dcf2c970.png":
-## Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file
-## 'webshot532dcf2c970.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+<img src="figure/utyhgfewrfwedrewgf-1.png" title="plot of chunk utyhgfewrfwedrewgf" alt="plot of chunk utyhgfewrfwedrewgf" width="100%" />
 
 
 ## Details and code demo
@@ -299,23 +263,7 @@ leaflet(breweries91) %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 ```
 
-```
-## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-```
-
-```
-## Warning in normalizePath(f2): path[1]="webshot532d18bde4a0.png":
-## Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file
-## 'webshot532d18bde4a0.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+<img src="figure/tyrtjhfhgn-1.png" title="plot of chunk tyrtjhfhgn" alt="plot of chunk tyrtjhfhgn" width="100%" />
 
 
 ### Computing distances between polygons
@@ -383,11 +331,7 @@ example(Generate_U,echo=F)
 ```
 
 ```
-## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/RtmpDvO7UW/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
-## with 11358 features
-## It has 7 fields
-## Integer64 fields read as strings:  objectid
+## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
 ```
 
 
@@ -419,7 +363,9 @@ example(projpointonseg_a,echo=F)
 example(closestpointonpolygon,echo=F)
 ```
 
-<img src="figure/errtgrefed-1.png" title="plot of chunk errtgrefed" alt="plot of chunk errtgrefed" width="100%" />
+```
+## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+```
 
 
 ```r
@@ -444,7 +390,9 @@ example(closestpointsontwosegments_n,echo=F)
 example(closestpointsontwopolygons,echo=F)
 ```
 
-<img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" />
+```
+## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+```
 
 
 ```r
@@ -471,7 +419,9 @@ example(distpointtoseg,echo=F)
 example(distpointtopoly,echo=F)
 ```
 
-<img src="figure/ergdfsviutyh-1.png" title="plot of chunk ergdfsviutyh" alt="plot of chunk ergdfsviutyh" width="100%" />
+```
+## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+```
 
 
 
