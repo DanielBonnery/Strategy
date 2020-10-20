@@ -1,30 +1,29 @@
 library(shiny)
 library(ggplot2)
 
-function(input, output) {
+dataset <- diamonds
+
+fluidPage(
   
-  dataset <- reactive({
-    diamonds[sample(nrow(diamonds), input$sampleSize),]
-  })
+  titlePanel("Diamonds Explorer"),
   
-  output$plot <- renderPlot({
+  sidebarPanel(
     
-    p <- ggplot(dataset(), aes_string(x=input$x, y=input$y)) + geom_point()
+    sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(dataset),
+                value=min(1000, nrow(dataset)), step=500, round=0),
     
-    if (input$color != 'None')
-      p <- p + aes_string(color=input$color)
+    selectInput('x', 'X', names(dataset)),
+    selectInput('y', 'Y', names(dataset), names(dataset)[[2]]),
+    selectInput('color', 'Color', c('None', names(dataset))),
     
-    facets <- paste(input$facet_row, '~', input$facet_col)
-    if (facets != '. ~ .')
-      p <- p + facet_grid(facets)
+    checkboxInput('jitter', 'Jitter'),
+    checkboxInput('smooth', 'Smooth'),
     
-    if (input$jitter)
-      p <- p + geom_jitter()
-    if (input$smooth)
-      p <- p + geom_smooth()
-    
-    print(p)
-    
-  }, height=700)
+    selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
+    selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
+  ),
   
-}
+  mainPanel(
+    plotOutput('plot')
+  )
+)

@@ -2,7 +2,7 @@
 #' @description launches shiny app 1
 #' @export
 shinyapp1 <- function() {
-  appDir <- system.file("shinyapp1", "shinyapp1", package = "Strategy")
+  appDir <- system.file("shiny-examples", "shinyapp1", package = "Strategy")
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `mypackage`.", call. = FALSE)
   }
