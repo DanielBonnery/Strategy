@@ -72,13 +72,17 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
         yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
                                       x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
         return(if(!identical(yy$ra,-1)){
-          if(length(stillfineexposedhexagon)*length(new.sickinhexagon)==1){yy$ind<-matrix(yy$ind,1,2)}
+          if((length(stillfineexposedhexagon)*length(new.sickinhexagon)==1)|!is.matrix(yy$ind)){yy$ind<-matrix(yy$ind,1,2)}
           list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
       }})
     ra=do.call(c,lapply(L,function(x){x$ra}))
     ind<-do.call(rbind,lapply(L,function(x){x$ind}))
-    keep=is.element(ind[,1],stillfine)
-    return(list(ind=ind[keep,],ra=ra[keep]))}
+    if(!is.matrix(ind)&!is.null(ind)){ind<-matrix(ind,1,2)}
+    if(!is.null(ind)){
+      keep=is.element(ind[,1],stillfine)
+      ind=ind[keep,];ra=ra[keep]
+    }
+    return(list(ind=ind,ra=ra))}
   else{return(list(ind=NULL,ra=NULL))}}
 #' update the list of the already nown distances between subjects with distances between new infected and exposed
 #' 
@@ -579,7 +583,7 @@ extractpolygonsaslist<-function(shp){
 #' points(.poly,type="l")
 #' text(mean(.poly[,1]),mean(.poly[,2]),as.roman(i))
 #' }
-#' X=polydistmat(list.poly,.progress="none")
+#' X=polydistmat(list.poly)
 #' X<-cbind(X,floor(rank(X[,3])))
 #' colorlink=topo.colors(2*max(X[,4]))[X[,4]]
 #' for(i in 1:nrow(X)){
@@ -594,7 +598,7 @@ polydistmat<-function(list.poly){
   L<-plyr::alply(1:(length(list.poly)-1),1,function(i){
     do.call(rbind,
             parallel::mclapply((i+1):length(list.poly),function(j){
-              c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))},.progress=.progress)
+              c(i,j,distpolytopoly(list.poly[[i]],list.poly[[j]]))}))})
   do.call(rbind,L)}
 
 

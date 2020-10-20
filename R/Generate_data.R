@@ -86,12 +86,12 @@ risktobeinfected<-function(U,closedistances=NULL,sicks,new.sicks=NULL,.distriskh
                            previouslyexposed=c(),previousrisk=NULL){
   stillfine<-setdiff(1:nrow(U),sicks)
   nI=length(sicks)
-  print(paste0(nI," sick."))
+  #print(paste0(nI," sick."))
   newdistances=updatedist(closedistances=closedistances,U=U,sicks=sicks,new.sicks=new.sicks,delta=delta)
   #risk<-plyr::aaply(Matrix::sparseMatrix(i=closedistances$ind[,1],j=closedistances$ind[,2],x=closedistances$ra),1,risktobeinfectedbydistancetoallinfectedunit,nI=length(sicks))
   
   exposed=intersect(stillfine,unique(newdistances$ind[,1]))
-  print(paste0(length(exposed), " exposed."))
+  #print(paste0(length(exposed), " exposed."))
   newadditionalrisk=unlist(lapply(exposed,function(i){
     risktobeinfectedbydistancetoallinfectedunit(.dist = newdistances$ra[newdistances$ind[,1]==i],.distriskhalf =.distriskhalf, nI =nI )}))
   risk=newadditionalrisk
@@ -123,7 +123,7 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
   y1<-paste0("I",formatC(1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
   U[[y0]]<-factor(c("sane","sick"))[1]
   U[[y1]]<-U[[y0]]
-  U[[y1]][sample(nrow(U),10)]<-"sick"
+  U[[y1]][sample(nrow(U),10,replace=TRUE)]<-"sick"
   closedistances=NULL
   h<-neighbourhoods(U,delta)
   U$hexagon<-paste0(h@cID)

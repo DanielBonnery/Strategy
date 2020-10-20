@@ -4,7 +4,7 @@
 \alias{addpiechartclustermarkers}
 \title{Change leaflet cluster markers to pie charts}
 \usage{
-addpiechartclustermarkers(map, .data, .colors, group)
+addpiechartclustermarkers(map, .data, .colors, group, ...)
 }
 \arguments{
 \item{map}{the map to add awesome pie chart cluster markers to}
@@ -14,6 +14,8 @@ addpiechartclustermarkers(map, .data, .colors, group)
 \item{.colors}{a vector of colors of at least the same size that nlevels(.data[[group]])}
 
 \item{group}{the name of a factor variable of .data}
+
+\item{...}{further arguments to be passed to addAwesomeMarkers}
 }
 \description{
 Change leaflet cluster markers to pie charts

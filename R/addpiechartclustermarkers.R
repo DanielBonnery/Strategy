@@ -4,7 +4,7 @@
 #' @param .data data for the cluster markers
 #' @param .colors a vector of colors of at least the same size that nlevels(.data[[group]])
 #' @param group the name of a factor variable of .data
-#'
+#' @param ... further arguments to be passed to addAwesomeMarkers
 #' @examples
 #' data("breweries91",package="leaflet")
 #' breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),nrow(breweries91),replace=T)
@@ -19,7 +19,7 @@
 #' addTiles() %>%
 #' addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 
-addpiechartclustermarkers<-function(map,.data,.colors,group){
+addpiechartclustermarkers<-function(map,.data,.colors,group,...){
   
 getColor <- function(breweries91) {.colors[.data[[group]]]}
 
@@ -50,8 +50,10 @@ jsscript3<-
 	const cumulativeProportions= proportions.map((val, i, arr) => sum(arr, 0, i+1));
 	cumulativeProportions.unshift(0);
 
-	const width = 2*Math.sqrt(markers.length);
-	const radius= 15+width/2;
+	const widthgm = 2*Math.sqrt(markers.length);
+	const radiusgm= 15+widthgm/2;
+	const width = 2*Math.min(Math.sqrt(markers.length),5);
+	const radius= 15+1.2*Math.log(markers.length)/Math.log(10)+width/2;
 
 	const arcs= cumulativeProportions.map((prop, i) => { return {
 		x   :  radius*Math.sin(2*Math.PI*prop),
@@ -67,7 +69,7 @@ jsscript3<-
 	return new L.DivIcon({
 		html: `
 			<svg width='60' height='60' viewBox='-30 -30 60 60' style='width: 60px; height: 60px; position: relative; top: -24px; left: -24px;' >
-				<circle cx='0' cy='0' r='15' stroke='none' fill='${colors.center}' />
+				<circle cx='0' cy='0' r='${radius}' stroke='none' fill='${colors.center}' />
 				<text x='0' y='0' dominant-baseline='central' text-anchor='middle' fill='${colors.text}' font-size='15'>${markers.length}</text>
 				${paths.join('')}
 			</svg>
@@ -83,5 +85,5 @@ jsscript3<-
                     icon = icons,
                     clusterOptions = markerClusterOptions(
                       iconCreateFunction =
-                        JS(jsscript3)))}
+                        JS(jsscript3)),...)}
 

@@ -26,7 +26,7 @@ for(i in 1:length(list.poly)){.poly=list.poly[[i]]
 points(.poly,type="l")
 text(mean(.poly[,1]),mean(.poly[,2]),as.roman(i))
 }
-X=polydistmat(list.poly,.progress="none")
+X=polydistmat(list.poly)
 X<-cbind(X,floor(rank(X[,3])))
 colorlink=topo.colors(2*max(X[,4]))[X[,4]]
 for(i in 1:nrow(X)){

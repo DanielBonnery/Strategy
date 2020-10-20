@@ -2,9 +2,9 @@ Package: Strategy
 Type: Package
 Title: X
 Version: 1.0
-Date: 2020-03-11
+Date: 2020-10-20
 Author: D. Bonnery
-Maintainer: D. Bonnery  <dbonnery@umd.edu>
+Maintainer: D. Bonnery  <daniel.bonnery@gmail.com>
 Description: Data
 Depends: ggplot2,
 	leaflet,

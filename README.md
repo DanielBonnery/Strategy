@@ -1,6 +1,9 @@
 ---
 title: "Generic functions for plant epidemiology"
-output: html_document
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+always_allow_html: yes
 ---
 
 # Simulations for desease detection
@@ -13,7 +16,9 @@ To install  the package, execute:
 
 ```r
 cred <- git2r::cred_user_pass("username", "password")
-devtools::install_git("http://pine--is.grid.private.cam.ac.uk:8888/gitlab/dbb31/Strategy.git", credentials = cred)
+devtools::install_git(
+  "http://pine--is.grid.private.cam.ac.uk:8888/gitlab/dbb31/Strategy.git", 
+  credentials = cred)
 ```
 where '"username"' and '"password"' need to be replaced by correct strings.
 
@@ -57,23 +62,34 @@ Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1,3,4)]
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
 QLDt<-is.element(U2$id,Avo_ids)
 
-yearpal <- colorFactor(heat.colors(5),domain = levels(Avo_fields$Source_yr),na.color = "#aaff56")
+yearpal <- colorFactor(heat.colors(5),
+                       domain = levels(Avo_fields$Source_yr),
+                       na.color = "#aaff56")
 
 leaflet(Avo_fields[QLD,]) %>%
-  addProviderTiles('Esri.WorldImagery',options = providerTileOptions(minZoom = 1, maxZoom = 21,maxNativeZoom=19)) %>% 
+  addProviderTiles('Esri.WorldImagery',
+                   options = providerTileOptions(minZoom = 1, 
+                                                 maxZoom = 21,
+                                                 maxNativeZoom=19)) %>% 
   addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
   addPolylines(fillOpacity = 1, weight = 3, smoothFactor = 0.5,opacity = 1.0,
                color=~yearpal(Avo_fields[QLD,]$Source_yr),
                fillColor=~yearpal(Avo_fields[QLD,]$Source_yr))%>% 
-  addMarkers(lng = U2[QLDt,]$x1,lat = U2[QLDt,]$x2,clusterOptions = markerClusterOptions())
+  addMarkers(lng = U2[QLDt,]$x1,
+             lat = U2[QLDt,]$x2,
+             clusterOptions = markerClusterOptions())
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot258b524b0cda.png": No such file or directory
+## Warning in normalizePath(f2):
+## path[1]="webshot532d53ad5e80.png": Lo fichièr o
+## lo repertòri existís pas
 ```
 
 ```
-## Warning in file(con, "rb"): cannot open file 'webshot258b524b0cda.png': No such file or directory
+## Warning in file(con, "rb"): cannot open file
+## 'webshot532d53ad5e80.png': Lo fichièr o lo
+## repertòri existís pas
 ```
 
 ```
@@ -119,7 +135,8 @@ The following code gets the list of couple of fields and their  distances.
 
 
 ```r
-Australia_avo_fields_small_dist_matrix<-Australia_avo_fields_small_dist_matrix_f(delta=Inf)
+Australia_avo_fields_small_dist_matrix<-
+  Australia_avo_fields_small_dist_matrix_f(delta=Inf)
 ```
 
 
@@ -146,6 +163,116 @@ lapply(Australia_connected_fields200,function(x){length(unique(x))})
 ```
 This means we can parallelize the simulation over 388 clusters.
 
+This is what we do when we simulate an epidemy with
+
+
+```r
+U2E2<-generate_Avo_Epi_1()
+```
+The result on a selection of fields can be seen by executing
+
+
+
+```r
+library(Strategy)
+data(Avo_fields,package="Strategy")
+data(U2E2,package="Strategy")
+
+U2E2<-U2E2[c(2:4,12:112)]
+names(U2E2)[1:2]<-c("long","lat")
+#Plot the trees
+Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
+
+QLD<-Avo_fields$State=="Qld"
+
+Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
+QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
+QLDt<-is.element(U2$id,Avo_ids)
+
+
+yearpal <- colorFactor(heat.colors(5),
+                       domain = levels(Avo_fields$Source_yr),
+                       na.color = "#aaff56")
+
+leaflet(Avo_fields[QLD,]) %>%
+  addProviderTiles('Esri.WorldImagery',
+                   options = providerTileOptions(minZoom = 1, 
+                                                 maxZoom = 21,maxNativeZoom=19)) %>% 
+  addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
+  addPolylines(fillOpacity = 1, weight = 3, smoothFactor = 0.5,opacity = 1.0,
+               color=~yearpal(Avo_fields[QLD,]$Source_yr),
+               fillColor=~yearpal(Avo_fields[QLD,]$Source_yr))%>%
+ addpiechartclustermarkers(.data=U2E2[is.element(U2E2$id,Avo_ids),]
+                           ,.colors=c("green","red","orange","purple","black"),
+                           group="I012")
+```
+
+```
+## Warning in normalizePath(f2):
+## path[1]="webshot532d7f94631b.png": Lo fichièr o
+## lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file
+## 'webshot532d7f94631b.png': Lo fichièr o lo
+## repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
+
+
+
+```r
+library(Strategy)
+data(Avo_fields,package="Strategy")
+data(U2E2,package="Strategy")
+
+U2E2<-U2E2[c(2:4,12:112)]
+names(U2E2)[1:2]<-c("long","lat")
+#Plot the trees
+Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
+
+QLD<-Avo_fields$State=="Qld"
+
+Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
+QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
+QLDt<-is.element(U2$id,Avo_ids)
+
+
+yearpal <- colorFactor(heat.colors(5),domain = levels(Avo_fields$Source_yr),na.color = "#aaff56")
+
+leaflet(Avo_fields[QLD,]) %>%
+  addProviderTiles('Esri.WorldImagery',
+                   options = providerTileOptions(minZoom = 1, 
+                                                 maxZoom = 21,maxNativeZoom=19)) %>% 
+  addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
+  addPolylines(fillOpacity = 1, weight = 3, smoothFactor = 0.5,opacity = 1.0,
+               color=~yearpal(Avo_fields[QLD,]$Source_yr),
+               fillColor=~yearpal(Avo_fields[QLD,]$Source_yr))%>%
+ addpiechartclustermarkers(.data=U2E2[is.element(U2E2$id,Avo_ids),]
+                           ,.colors=c("green","red","orange","purple","black"),
+                           group="I085")
+```
+
+```
+## Warning in normalizePath(f2):
+## path[1]="webshot532d261d52f1.png": Lo fichièr o
+## lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file
+## 'webshot532d261d52f1.png': Lo fichièr o lo
+## repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
+
 
 ## Details and code demo
 
@@ -170,7 +297,9 @@ This function 'addpiechartclustermarkers' allows to replace cluster markers by c
 ```r
 library(Strategy)
 data("breweries91",package="leaflet")
-breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),nrow(breweries91),replace=T)
+breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),
+                             nrow(breweries91),
+                             replace=T)
 leaflet(breweries91) %>%
  addTiles() %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
@@ -181,11 +310,15 @@ leaflet(breweries91) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot258b8c932c2.png": No such file or directory
+## Warning in normalizePath(f2):
+## path[1]="webshot532d17f7da82.png": Lo fichièr o
+## lo repertòri existís pas
 ```
 
 ```
-## Warning in file(con, "rb"): cannot open file 'webshot258b8c932c2.png': No such file or directory
+## Warning in file(con, "rb"): cannot open file
+## 'webshot532d17f7da82.png': Lo fichièr o lo
+## repertòri existís pas
 ```
 
 ```
@@ -251,7 +384,7 @@ example(Generate_U,echo=F)
 
 ```
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/RtmpqxhxX8/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## Source: "/tmp/RtmpDvO7UW/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
 ## with 11358 features
 ## It has 7 fields
 ## Integer64 fields read as strings:  objectid
@@ -411,10 +544,6 @@ example(distpolytopoly,ask=F)
 
 ```r
 example(polydistmat,echo=F)
-```
-
-```
-## Error in polydistmat(list.poly, .progress = "none"): unused argument (.progress = "none")
 ```
 
 <img src="figure/dfghuykjnbv-1.png" title="plot of chunk dfghuykjnbv" alt="plot of chunk dfghuykjnbv" width="100%" />

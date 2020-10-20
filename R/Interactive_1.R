@@ -1,3 +1,4 @@
+interactive_1<-function(){
 #library(Strategy)
 data(U)
 data(UE)
@@ -130,3 +131,4 @@ test<-function(){
 }
 
 test()
+}
