@@ -144,3 +144,62 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
   }
   U
 }
+
+
+
+
+#' Generate epidemic under size constraint
+#'
+#' @param U a data.frame with x and y
+#' @param .distriskhalf a positive number(default 5*10^(-4))
+#' @param jumprisk =10^-6 a positive number
+#' @param delta =0.05 a positive number
+#' @param numberinfected,
+#' @param foyersaleatoires
+#' @examples 
+#' .distriskhalf=5*10^(-4);jumprisk=10^-6;delta=0.05; TT=10
+#' UE<-Generate_Discrete_Time_Epidemic(U,3)
+
+Generate_Constrained_Epidemic<-
+  function(U,.distriskhalf=5*10^(-4),
+           jumprisk=10^-6,
+           delta=0.05,
+           numberinfected=10,
+           foyersaleatoires=2){
+  TT<-numberinfected
+  y0<-paste0("I",formatC(0, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
+  y1<-paste0("I",formatC(1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
+  U[[y0]]<-factor(c("sane","sick"))[1]
+  U[[y1]]<-U[[y0]]
+  U[[y1]][sample(nrow(U),foyersaleatoires,replace=F)]<-"sick"
+  closedistances=NULL
+  h<-neighbourhoods(U,delta)
+  U$hexagon<-paste0(h@cID)
+  dist_areas<-dist_areas_f(U,delta,h)
+  conta=foyersaleatoires
+  tt=1
+  while (max(conta,tt)<numberinfected){
+    tt<-tt+1
+    y<-paste0("I",formatC(tt, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
+    y_1<-paste0("I",formatC(tt-1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
+    y_2<-paste0("I",formatC(tt-2, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
+    sicks_2=(1:nrow(U))[U[[y_2]]=="sick"]
+    sicks=sicks_1=(1:nrow(U))[U[[y_1]]=="sick"]
+    new.sicks<-setdiff(sicks_1,sicks_2)
+    U[[y]]<-U[[y_1]]
+    R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks_1,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
+    if(length(R$exposed)>0){
+      closedistances<-R$closedistances
+      contamination<-rbinom(length(R$exposed),size = 1,prob=R$risk)==1
+      if(sum(contamination)+sum(U[[y]]=="sick")>numberinfected){
+        contamination=sample(length(R$exposed),size=numberinfected-sum(U[[y]]=="sick"),
+                                                     prob=R$risk,replace=F)
+      }
+      if(sum(contamination)>0){U[[y]][R$exposed][contamination]<-"sick"}else{tt<-TT}
+      }else{tt<-TT}
+    conta<-sum(U[[y]]=="sick")
+  }
+  U[["Iinf"]]<-U[[y]]
+  if(conta<numberinfected){U$Iinf[U$Iinf=="sane"][sample(sum(U$Iinf=="sane"),numberinfected-conta,F)]<-"sick"}
+  U
+}

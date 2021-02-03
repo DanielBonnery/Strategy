@@ -80,7 +80,17 @@ leaflet(Avo_fields[QLD,]) %>%
              clusterOptions = markerClusterOptions())
 ```
 
-<img src="figure/utyhgfdrewefewfwgf-1.png" title="plot of chunk utyhgfdrewefewfwgf" alt="plot of chunk utyhgfdrewefewfwgf" width="100%" />
+```
+## Warning in normalizePath(f2): path[1]="webshot239e6254c824.png": Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file 'webshot239e6254c824.png': Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
 
 We have 797 avocado fields in Queensland from ACLUMP.
 The desease is spreading by root, so we can consider that root to root transmission is not possible for trees separated by more than the maximum avocado root reach. I read that the avocado should be planted at least 30 feet from houses, so I think it is safe to say that fields separated by more than 200 m will not contaminate each other via their roots.
@@ -193,7 +203,17 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I012")
 ```
 
-<img src="figure/utyhgfdrewgf-1.png" title="plot of chunk utyhgfdrewgf" alt="plot of chunk utyhgfdrewgf" width="100%" />
+```
+## Warning in normalizePath(f2): path[1]="webshot239e3b65c684.png": Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file 'webshot239e3b65c684.png': Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
 
 
 
@@ -229,7 +249,17 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I085")
 ```
 
-<img src="figure/utyhgfewrfwedrewgf-1.png" title="plot of chunk utyhgfewrfwedrewgf" alt="plot of chunk utyhgfewrfwedrewgf" width="100%" />
+```
+## Warning in normalizePath(f2): path[1]="webshot239e128afb08.png": Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file 'webshot239e128afb08.png': Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
 
 
 ## Details and code demo
@@ -263,7 +293,21 @@ leaflet(breweries91) %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 ```
 
-<img src="figure/tyrtjhfhgn-1.png" title="plot of chunk tyrtjhfhgn" alt="plot of chunk tyrtjhfhgn" width="100%" />
+```
+## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+```
+
+```
+## Warning in normalizePath(f2): path[1]="webshot239e9bc0a55.png": Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Warning in file(con, "rb"): cannot open file 'webshot239e9bc0a55.png': Lo fichièr o lo repertòri existís pas
+```
+
+```
+## Error in file(con, "rb"): cannot open the connection
+```
 
 
 ### Computing distances between polygons
@@ -283,9 +327,7 @@ A function of two triangles have the same orientation.
 example(triangleorientation,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/wefwef-1.png" title="plot of chunk wefwef" alt="plot of chunk wefwef" width="100%" />
 
 A function to tell if two segments intersect.
 
@@ -294,9 +336,7 @@ A function to tell if two segments intersect.
 example(segment.intersect,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/fwfqfwf-1.png" title="plot of chunk fwfqfwf" alt="plot of chunk fwfqfwf" width="100%" />
 
 
 
@@ -311,9 +351,7 @@ example(segment.intersect,echo=F)
 example(ranges.gap,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/qdqwd-1.png" title="plot of chunk qdqwd" alt="plot of chunk qdqwd" width="100%" />
 
 
 
@@ -321,9 +359,7 @@ example(ranges.gap,echo=F)
 example(rangesoverlap,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/yujyuj-1.png" title="plot of chunk yujyuj" alt="plot of chunk yujyuj" width="100%" />
 
 
 ```r
@@ -331,7 +367,11 @@ example(Generate_U,echo=F)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## OGR data source with driver: ESRI Shapefile 
+## Source: "/tmp/RtmpPzbN5u/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## with 11358 features
+## It has 7 fields
+## Integer64 fields read as strings:  objectid
 ```
 
 
@@ -342,7 +382,10 @@ example(risktobeinfectedbydistancetooneinfectedunit)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## rsktbn> #Risk to be ingfected 2 m from the victim when the 50%risk distance is 1 m:
+## rsktbn> risktobeinfectedbydistancetooneinfectedunit(2,1)
+## [1] 0.05583301
 ```
 
 
@@ -354,26 +397,18 @@ of the closest point of a segment to a specific point on the plane. The position
 example(projpointonseg_a,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/hrehthrt-1.png" title="plot of chunk hrehthrt" alt="plot of chunk hrehthrt" width="100%" />
 
 
 ```r
 example(closestpointonpolygon,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/errtgrefed-1.png" title="plot of chunk errtgrefed" alt="plot of chunk errtgrefed" width="100%" />
 
 
 ```r
 example(closestpointsontwosegments,echo=F)
-```
-
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
 ```
 
 
@@ -381,36 +416,28 @@ example(closestpointsontwosegments,echo=F)
 example(closestpointsontwosegments_n,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/wfesadokiuj-1.png" title="plot of chunk wfesadokiuj" alt="plot of chunk wfesadokiuj" width="100%" />
 
 
 ```r
 example(closestpointsontwopolygons,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" />
 
 
 ```r
 example(closestpointsontwopolygons_n,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/wrgfglikyju-1.png" title="plot of chunk wrgfglikyju" alt="plot of chunk wrgfglikyju" width="100%" />
 
 
 ```r
 example(distpointtoseg,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/wegkyujh-1.png" title="plot of chunk wegkyujh" alt="plot of chunk wegkyujh" width="100%" />
 
 
 
@@ -419,9 +446,7 @@ example(distpointtoseg,echo=F)
 example(distpointtopoly,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/ergdfsviutyh-1.png" title="plot of chunk ergdfsviutyh" alt="plot of chunk ergdfsviutyh" width="100%" />
 
 
 
@@ -431,26 +456,20 @@ example(distpointtopoly,echo=F)
 example(distpointtoseg,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/trgefsdtyuhfg-1.png" title="plot of chunk trgefsdtyuhfg" alt="plot of chunk trgefsdtyuhfg" width="100%" />
 
 
 ```r
 example(segment.intersect,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/tyrefsdjthgnf-1.png" title="plot of chunk tyrefsdjthgnf" alt="plot of chunk tyrefsdjthgnf" width="100%" />
 
 ```r
 example(distsegmenttosegment,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/rtrgefsujtghn-1.png" title="plot of chunk rtrgefsujtghn" alt="plot of chunk rtrgefsujtghn" width="100%" />
 
 
 ```r
@@ -458,7 +477,13 @@ example(distsegmenttopoly)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## dstsgm> zz<-function(){
+## dstsgm+ .poly<-matrix(sample(0:6,6,T),3,2)[c(1:3,1),]
+## dstsgm+ s<-matrix(sample(0:6,6,T),2,2)
+## dstsgm+ plot(rbind(.poly,s),xlab="",yaxt="n")
+## dstsgm+ points(.poly,type="l");points(s,type="l")
+## dstsgm+ points(closestpointsontwopolygons(s,.poly),lty=3,col="red")}
 ```
 
 
@@ -467,7 +492,37 @@ example(distpolytopoly,ask=F)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## dstply> zz<-function(){
+## dstply+ poly1=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+## dstply+ poly2=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
+## dstply+ s<-rbind(poly1,poly2)
+## dstply+ dd<-distpolytopoly(poly1,poly2)
+## dstply+ plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+## dstply+ points(poly1,type="l",lwd=2)
+## dstply+ points(poly2,type="l",lwd=2)
+## dstply+ for(cc in closestpointsontwopolygons_n(poly1,poly2)){
+## dstply+ points(cc,type="l",col="red",lty=3)}}
+## 
+## dstply> par(mfrow=c(2,2),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
+## 
+## dstply> set.seed(2);replicate(4,zz())
+```
+
+<img src="figure/wedgfpoik-1.png" title="plot of chunk wedgfpoik" alt="plot of chunk wedgfpoik" width="100%" />
+
+```
+## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
 ```
 
 
@@ -475,17 +530,32 @@ example(distpolytopoly,ask=F)
 example(polydistmat,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/dfghuykjnbv-1.png" title="plot of chunk dfghuykjnbv" alt="plot of chunk dfghuykjnbv" width="100%" />
 
 
 ```r
 example(polysmalldistmat,echo=F)
 ```
 
+<img src="figure/dgfghghfdgf-1.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
+
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## [1] "ranges by gradient computed"
+## [1] "20 polygons."
+```
+
+<img src="figure/dgfghghfdgf-2.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
+
+```
+## [1] "ranges by gradient computed"
+## [1] "20 polygons."
+```
+
+<img src="figure/dgfghghfdgf-3.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
+
+```
+## [1] "ranges by gradient computed"
+## [1] "20 polygons."
 ```
 
 ```r
@@ -497,19 +567,13 @@ example(connectedpop)
 example(extractpolygonsaslist)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
-
 
 
 ```r
 example(neighbourhoods,echo=F)
 ```
 
-```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
-```
+<img src="figure/uyhgffguyjg-1.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" /><img src="figure/uyhgffguyjg-2.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" /><img src="figure/uyhgffguyjg-3.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" />
 
 
 ```r
@@ -517,7 +581,20 @@ example(dist_areas_f)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## dst_r_> data(U) 
+## 
+## dst_r_> dist_areas_f(U)[1:3,1:3]
+##            18         67         68
+## 18 0.00000000 0.03502217 0.02395041
+## 67 0.03502217 0.00000000 0.01475275
+## 68 0.02395041 0.01475275 0.00000000
+## 
+## dst_r_> dist_areas_f(U,0.03)[1:3,1:3]
+##             9         10         33
+## 9  0.00000000 0.00000000 0.09622412
+## 10 0.00000000 0.00000000 0.09622412
+## 33 0.09622412 0.09622412 0.00000000
 ```
 
 
@@ -526,7 +603,20 @@ example(newdist)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## newdst> data(UE,package="Strategy")
+## 
+## newdst> delta<-.005
+## 
+## newdst> sicks<-(1:nrow(UE))[UE$I001=="sick"]
+## 
+## newdst> closedistances=newdist(NULL,UE,sicks)
+## 
+## newdst> do.call(cbind,closedistances)[1:3,]
+##                           ra
+## [1,] 13091 13903 0.002314053
+## [2,] 13118 13903 0.003925148
+## [3,] 13138 13903 0.002660063
 ```
 
 
@@ -535,5 +625,18 @@ example(updatedist)
 ```
 
 ```
-## Error in fetch(key): lazy-load database '/home/daniel/R/x86_64-pc-linux-gnu-library/3.6/Strategy/help/Strategy.rdb' is corrupt
+## 
+## updtds> data(UE,package="Strategy")
+## 
+## updtds> delta<-.005
+## 
+## updtds> sicks<-(1:nrow(UE))[UE$I001=="sick"]
+## 
+## updtds> closedistances=updatedist(NULL,UE,sicks)
+## 
+## updtds> do.call(cbind,closedistances)[1:3,]
+##                           ra
+## [1,] 13091 13903 0.002314053
+## [2,] 13118 13903 0.003925148
+## [3,] 13138 13903 0.002660063
 ```

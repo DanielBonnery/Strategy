@@ -75,8 +75,6 @@ test<-function(){
   
   
   server <- function(input, output) {
-    
-    #library(datagovuk)
     library("sp")
     library("rgdal")
     library(dplyr)
@@ -98,6 +96,9 @@ test<-function(){
     library(leaflet)
     
     
+    
+    
+    
     output$bbmap <- renderLeaflet({
     leaflet(UE) %>% 
       addPolygons(data=shapeData,
@@ -111,21 +112,14 @@ test<-function(){
                 values=shapeData$population,
                 opacity=1, 
                 na.label = "Not Available")})
-    
     observe({
       leafletProxy("bbmap")  %>% 
         clearMarkerClusters()%>%
         addMarkers(data = subsetData(),lng = ~x, lat = ~y,
                    clusterOptions = markerClusterOptions())
     })
-    
-    
-    
     #create a data object to display data
-    
     output$data <-DT::renderDataTable(datatable(UE))
-    
-    
   }
   shinyApp(ui = ui, server = server)
 }

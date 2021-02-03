@@ -1,4 +1,3 @@
-
 #' runCompare
 #' 
 #' @description Shiny App to 
@@ -38,22 +37,11 @@ QLDt<-is.element(U2$id,Avo_ids)
 yearpal <- colorFactor(heat.colors(5),domain = levels(Avo_fields$Source_yr),na.color = "#aaff56")
 
 AllTrees<-merge(U2E2,Avo_fields[c("Avo_id","State")],by.x="id",by.y="Avo_id")
-if(FALSE){
-  leaflet(Avo_fields[QLD,]) %>%
-    addProviderTiles('Esri.WorldImagery',options = providerTileOptions(minZoom = 1, maxZoom = 21,maxNativeZoom=19)) %>% 
-    addProviderTiles("CartoDB.PositronOnlyLabels")%>% 
-    addPolylines(fillOpacity = 1, weight = 3, smoothFactor = 0.5,opacity = 1.0,
-                 color=~yearpal(Avo_fields[QLD,]$Source_yr),
-                 fillColor=~yearpal(Avo_fields[QLD,]$Source_yr))%>%
-    addpiechartclustermarkers(.data=Trees(),
-                              ,.colors=c("green","red","orange","purple","black"),
-                              group="I081")}
+
 
 ui <- navbarPage(theme = shinytheme("slate"),
                  title="Detect epidemic",
                  id="main",
-                 #                   tabPanel(title= "Interactive Map",
-                 #                            leafletOutput("bbmap", height=1000)),
                  tabPanel("Interactive Map",
                           sidebarLayout(
                             sidebarPanel(width = 3, 
@@ -66,15 +54,11 @@ ui <- navbarPage(theme = shinytheme("slate"),
                                          selectInput(inputId = "Status", label = "Disease status", selected = "infected",multiple = T,
                                                      choices = c("susceptible","exposed","cryptic","infected","removed")),
                                          selectInput(inputId = "State", label = "State", selected="Qld",
-                                                     choices = unique(Avo_fields$State)),
-                            ),
-                            
+                                                     choices = unique(Avo_fields$State))),
                             mainPanel(plotOutput('toto'),
                                       textOutput('totox'),
                                       leafletOutput("bbmap", height=1000)
-                                      
                             )
                           )
                  ),
                  tabPanel(title="Data", DT::dataTableOutput("data")))
-

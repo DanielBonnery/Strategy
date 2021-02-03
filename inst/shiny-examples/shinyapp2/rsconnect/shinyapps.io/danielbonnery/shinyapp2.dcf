@@ -1,0 +1,10 @@
+name: shinyapp2
+title:
+username:
+account: danielbonnery
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3096450
+bundleId: 3783344
+url: https://danielbonnery.shinyapps.io/shinyapp2/
+when: 1603717611.14781
