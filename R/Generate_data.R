@@ -178,6 +178,7 @@ Generate_Constrained_Epidemic<-
   dist_areas<-dist_areas_f(U,delta,h)
   conta=foyersaleatoires
   tt=1
+  y<-paste0("I",formatC(tt, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
   while (max(conta,tt)<numberinfected){
     tt<-tt+1
     y<-paste0("I",formatC(tt, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
