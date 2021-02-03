@@ -1,6 +1,6 @@
 #' Generate a population of avocado trees
 #' 
-#' @example 
+#' @examples
 #' data(U2,package="Strategy")
 #' data(Avo_fields,package="Strategy")
 #' data(U2,package="Strategy")

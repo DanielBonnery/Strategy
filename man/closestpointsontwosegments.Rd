@@ -14,3 +14,20 @@ closestpointsontwosegments(s1, s2)
 \description{
 computes the coordinates of the closest point on a segment to a point in the plane
 }
+\examples{
+zz<-function(){
+s1=matrix(sample(0:4,4,rep=T),2,2)
+s2=matrix(sample(0:4,4,rep=T),2,2)
+s<-rbind(s1,s2)
+dd<-distsegmenttosegment(s1,s2)
+plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
+points(s1,type="l",lwd=2)
+points(s2,type="l",lwd=2)
+cc<-closestpointsontwosegments(s1,s2)
+points(cc ,col="red",cex=2)
+points(cc,type="l",col="red",lty=3)
+}
+
+par(oma=c(0,0,0,0),mfrow=c(3,3))
+set.seed(3);replicate(9,zz())
+}

@@ -154,8 +154,8 @@ Generate_Discrete_Time_Epidemic<-function(U,TT,.distriskhalf=5*10^(-4),jumprisk=
 #' @param .distriskhalf a positive number(default 5*10^(-4))
 #' @param jumprisk =10^-6 a positive number
 #' @param delta =0.05 a positive number
-#' @param numberinfected,
-#' @param foyersaleatoires
+#' @param numberinfected target number of  infected elements of the population,
+#' @param foyersaleatoires number of sources at random at the start
 #' @examples 
 #' .distriskhalf=5*10^(-4);jumprisk=10^-6;delta=0.05; TT=10
 #' UE<-Generate_Discrete_Time_Epidemic(U,3)

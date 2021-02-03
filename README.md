@@ -80,17 +80,7 @@ leaflet(Avo_fields[QLD,]) %>%
              clusterOptions = markerClusterOptions())
 ```
 
-```
-## Warning in normalizePath(f2): path[1]="webshot239e6254c824.png": Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file 'webshot239e6254c824.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
-```
+<img src="figure/utyhgfdrewefewfwgf-1.png" title="plot of chunk utyhgfdrewefewfwgf" alt="plot of chunk utyhgfdrewefewfwgf" width="100%" />
 
 We have 797 avocado fields in Queensland from ACLUMP.
 The desease is spreading by root, so we can consider that root to root transmission is not possible for trees separated by more than the maximum avocado root reach. I read that the avocado should be planted at least 30 feet from houses, so I think it is safe to say that fields separated by more than 200 m will not contaminate each other via their roots.
@@ -204,15 +194,7 @@ leaflet(Avo_fields[QLD,]) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot239e3b65c684.png": Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file 'webshot239e3b65c684.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
+## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
 ```
 
 
@@ -250,15 +232,7 @@ leaflet(Avo_fields[QLD,]) %>%
 ```
 
 ```
-## Warning in normalizePath(f2): path[1]="webshot239e128afb08.png": Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file 'webshot239e128afb08.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
+## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
 ```
 
 
@@ -294,19 +268,7 @@ leaflet(breweries91) %>%
 ```
 
 ```
-## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-```
-
-```
-## Warning in normalizePath(f2): path[1]="webshot239e9bc0a55.png": Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Warning in file(con, "rb"): cannot open file 'webshot239e9bc0a55.png': Lo fichièr o lo repertòri existís pas
-```
-
-```
-## Error in file(con, "rb"): cannot open the connection
+## Error in addpiechartclustermarkers(., .data = breweries91, .colors = c("red", : could not find function "addpiechartclustermarkers"
 ```
 
 
@@ -368,7 +330,7 @@ example(Generate_U,echo=F)
 
 ```
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/RtmpPzbN5u/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## Source: "/tmp/Rtmp2nJwin/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
 ## with 11358 features
 ## It has 7 fields
 ## Integer64 fields read as strings:  objectid
@@ -410,6 +372,8 @@ example(closestpointonpolygon,echo=F)
 ```r
 example(closestpointsontwosegments,echo=F)
 ```
+
+<img src="figure/ascoikjgh-1.png" title="plot of chunk ascoikjgh" alt="plot of chunk ascoikjgh" width="100%" />
 
 
 ```r

@@ -11,6 +11,9 @@ ranges.gap(r1, r2)
 
 \item{r2}{a range a length 2 numerical vector}
 }
+\value{
+TRUE if two ranges overlap
+}
 \description{
 Interval length between two ranges (0 if they overlap)
 }

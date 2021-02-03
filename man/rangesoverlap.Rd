@@ -11,6 +11,9 @@ rangesoverlap(r1, r2)
 
 \item{r2}{a range a length 2 numerical vector}
 }
+\value{
+TRUE if two ranges overlap
+}
 \description{
 tells if two ranges overlap
 }

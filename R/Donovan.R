@@ -1,4 +1,4 @@
-library(rgdal)
+if(FALSE){library(rgdal)
 library(raster)
 library(mapview)
 library(leaflet)
@@ -73,3 +73,4 @@ leaflet(data=variety)%>%addPolygons()%>%
                             .colors=c("green","blue"),
                             group="Variety")
 
+}

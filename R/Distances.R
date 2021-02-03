@@ -188,7 +188,7 @@ closestpointonpolygon<-function(p,.poly){
 #' computes the coordinates of the closest point on a segment to a point in the plane
 #' @param s1 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
 #' @param s2 a 2x2 numeric matrix, representing a segment. Each row of the matrix are the coordinates of a extreme point of the segment.
-#' @example 
+#' @examples 
 #'zz<-function(){
 #' s1=matrix(sample(0:4,4,rep=T),2,2)
 #' s2=matrix(sample(0:4,4,rep=T),2,2)
@@ -433,7 +433,7 @@ segment.intersect<-function(s1,s2){
 #' tells if two ranges overlap
 #' @param r1 a range a length 2 numerical vector
 #' @param r2 a range a length 2 numerical vector
-#' @retrun TRUE if two ranges overlap
+#' @return TRUE if two ranges overlap
 #' @examples
 #' par(mfrow=c(1,4),oma=c(0,0,0,0))
 #' set.seed(8);replicate(4,(function(){
@@ -450,7 +450,7 @@ rangesoverlap<-function(r1,r2){
 #' Interval length between two ranges (0 if they overlap)
 #' @param r1 a range a length 2 numerical vector
 #' @param r2 a range a length 2 numerical vector
-#' @retrun TRUE if two ranges overlap
+#' @return TRUE if two ranges overlap
 #' 
 #' @examples
 #' par(mfrow=c(1,4),oma=c(0,0,0,0))
@@ -662,7 +662,7 @@ polysmalldistmat<-function(list.poly,delta,gradients=apply(cbind(c(0,1),c(1,0),c
   D[D[,3]<=delta,]}}
 
 
-#'@example
+#'@examples
 #'data(Avo_fields)
 #'list.poly<-extractpolygonsaslist(Avo_fields)
 #'dd<-polysmalldistmat(list.poly,.1)
