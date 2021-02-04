@@ -206,7 +206,6 @@ Generate_Constrained_Epidemic<-
     if(TRUE){
       ggplot2::ggplot(data.frame(x=which(U[[y]]=="sick")),aes(x=x))+geom_histogram(color="white")
     }
-    
   }
   U[["Iinf"]]<-U[[y]]
   if(conta<numberinfected){U$Iinf[U$Iinf=="sane"][sample(sum(U$Iinf=="sane"),numberinfected-conta,F)]<-"sick"}
