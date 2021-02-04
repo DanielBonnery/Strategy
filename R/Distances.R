@@ -71,8 +71,12 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
       if(length(stillfineexposedhexagon)*length(new.sickinhexagon)>0){
         yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
                                       x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
+        if(!identical(yy$ra,-1)){
+          if((length(stillfineexposedhexagon)*length(new.sickinhexagon)==1)|!is.matrix(yy$ind)){yy$ind<-matrix(yy$ind,1,2)
+          yy$ind[,1]<-stillfineexposedhexagon[yy$ind[,1]]
+          yy$ind[,2]<-new.sickinhexagon[yy$ind[,2]]
+          }}
         return(if(!identical(yy$ra,-1)){
-          if((length(stillfineexposedhexagon)*length(new.sickinhexagon)==1)|!is.matrix(yy$ind)){yy$ind<-matrix(yy$ind,1,2)}
           list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
       }})
     ra=do.call(c,lapply(L,function(x){x$ra}))
@@ -96,8 +100,8 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
 #' @examples 
 #' data(UE,package="Strategy")
 #' delta<-.005
-#' sicks<-(1:nrow(UE))[UE$I001=="sick"]
-#' closedistances=updatedist(NULL,UE,sicks)
+#' sicks<-which(UE$I001=="sick")
+#' closedistances=updatedist(NULL,UE,sicks,delta=delta)
 #' do.call(cbind,closedistances)[1:3,]
 updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
   if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}

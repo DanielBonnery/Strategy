@@ -189,6 +189,10 @@ Generate_Constrained_Epidemic<-
     new.sicks<-setdiff(sicks_1,sicks_2)
     U[[y]]<-U[[y_1]]
     R<-risktobeinfected(U,closedistances=closedistances,sicks=sicks_1,new.sicks=new.sicks,.distriskhalf=.distriskhalf,jumprisk=jumprisk,delta=delta)
+    if(TRUE){
+      ggplot2::ggplot(data.frame(x=R$exposed,y=R$risk),aes(x=x,y=y))+
+        geom_point(color="white")+geom_vline(xintercept = which(U[[y1]]=="sick"),color="red")
+    }
     if(length(R$exposed)>0){
       closedistances<-R$closedistances
       contamination<-rbinom(length(R$exposed),size = 1,prob=R$risk)==1
@@ -199,6 +203,10 @@ Generate_Constrained_Epidemic<-
       if(sum(contamination)>0){U[[y]][R$exposed][contamination]<-"sick"}else{tt<-TT}
       }else{tt<-TT}
     conta<-sum(U[[y]]=="sick")
+    if(TRUE){
+      ggplot2::ggplot(data.frame(x=which(U[[y]]=="sick")),aes(x=x))+geom_histogram(color="white")
+    }
+    
   }
   U[["Iinf"]]<-U[[y]]
   if(conta<numberinfected){U$Iinf[U$Iinf=="sane"][sample(sum(U$Iinf=="sane"),numberinfected-conta,F)]<-"sick"}
