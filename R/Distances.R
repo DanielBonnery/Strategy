@@ -72,10 +72,10 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
         yy<-fields::fields.rdist.near(x1=U[stillfineexposedhexagon,c("x","y"),drop=FALSE],
                                       x2=U[new.sickinhexagon,c("x","y"),drop=FALSE], delta=delta,max.points=length(stillfineexposedhexagon)*length(new.sickinhexagon))
         if(!identical(yy$ra,-1)){
-          if((length(stillfineexposedhexagon)*length(new.sickinhexagon)==1)|!is.matrix(yy$ind)){yy$ind<-matrix(yy$ind,1,2)
+          if((length(stillfineexposedhexagon)*length(new.sickinhexagon)==1)|!is.matrix(yy$ind)){yy$ind<-matrix(yy$ind,1,2)}
           yy$ind[,1]<-stillfineexposedhexagon[yy$ind[,1]]
           yy$ind[,2]<-new.sickinhexagon[yy$ind[,2]]
-          }}
+          }
         return(if(!identical(yy$ra,-1)){
           list(ind=cbind(stillfine[yy$ind[,1]],new.sicks[yy$ind[,2]]),ra=yy$ra)}else{list(ind=NULL,ra=NULL)})
       }})
