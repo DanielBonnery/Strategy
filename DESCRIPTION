@@ -12,7 +12,8 @@ Depends: ggplot2,
 	leaflet,
 	spatstat,
 	sf,
-	hexbin
+	hexbin,
+	fields
 License: GPL (>= 2)
 LazyLoad: yes
 LazyData: true

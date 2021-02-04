@@ -5,6 +5,6 @@ account: danielbonnery
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3579444
-bundleId: 4178511
+bundleId: 4178537
 url: https://danielbonnery.shinyapps.io/shinyrisk2/
-when: 1612407843.03464
+when: 1612408546.34017
