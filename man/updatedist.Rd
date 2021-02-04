@@ -35,7 +35,7 @@ update the list of the already nown distances between subjects with distances be
 \examples{
 data(UE,package="Strategy")
 delta<-.005
-sicks<-(1:nrow(UE))[UE$I001=="sick"]
-closedistances=updatedist(NULL,UE,sicks)
+sicks<-which(UE$I001=="sick")
+closedistances=updatedist(NULL,UE,sicks,delta=delta)
 do.call(cbind,closedistances)[1:3,]
 }

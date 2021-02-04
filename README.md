@@ -193,9 +193,7 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I012")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/utyhgfdrewgf-1.png" title="plot of chunk utyhgfdrewgf" alt="plot of chunk utyhgfdrewgf" width="100%" />
 
 
 
@@ -231,9 +229,7 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I085")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/utyhgfewrfwedrewgf-1.png" title="plot of chunk utyhgfewrfwedrewgf" alt="plot of chunk utyhgfewrfwedrewgf" width="100%" />
 
 
 ## Details and code demo
@@ -267,9 +263,7 @@ leaflet(breweries91) %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = breweries91, .colors = c("red", : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/tyrtjhfhgn-1.png" title="plot of chunk tyrtjhfhgn" alt="plot of chunk tyrtjhfhgn" width="100%" />
 
 
 ### Computing distances between polygons
@@ -330,7 +324,7 @@ example(Generate_U,echo=F)
 
 ```
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/Rtmp2nJwin/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## Source: "/tmp/RtmpH3aRdW/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
 ## with 11358 features
 ## It has 7 fields
 ## Integer64 fields read as strings:  objectid
@@ -577,10 +571,10 @@ example(newdist)
 ## newdst> closedistances=newdist(NULL,UE,sicks)
 ## 
 ## newdst> do.call(cbind,closedistances)[1:3,]
-##                           ra
-## [1,] 13091 13903 0.002314053
-## [2,] 13118 13903 0.003925148
-## [3,] 13138 13903 0.002660063
+##                        ra
+## [1,] 13450 NA 0.002314053
+## [2,] 13477 NA 0.003925148
+## [3,] 13497 NA 0.002660063
 ```
 
 
@@ -594,13 +588,13 @@ example(updatedist)
 ## 
 ## updtds> delta<-.005
 ## 
-## updtds> sicks<-(1:nrow(UE))[UE$I001=="sick"]
+## updtds> sicks<-which(UE$I001=="sick")
 ## 
-## updtds> closedistances=updatedist(NULL,UE,sicks)
+## updtds> closedistances=updatedist(NULL,UE,sicks,delta=delta)
 ## 
 ## updtds> do.call(cbind,closedistances)[1:3,]
-##                           ra
-## [1,] 13091 13903 0.002314053
-## [2,] 13118 13903 0.003925148
-## [3,] 13138 13903 0.002660063
+##                        ra
+## [1,] 13450 NA 0.002314053
+## [2,] 13477 NA 0.003925148
+## [3,] 13497 NA 0.002660063
 ```
