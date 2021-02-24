@@ -2,8 +2,10 @@
 #' 
 #' @param Fields a Spatial Data frame with polygons
 #' @example 
-#' Shiny.FieldLevelType2risk(Fields0)
-
+#' 
+library(Strategy)
+library(avocado)
+Shiny.FieldLevelType2risk(Donovan)
 
 Shiny.FieldLevelType2risk <- function (Fields0=get(data(Fake,package="Strategy"))) {
 require(shiny)

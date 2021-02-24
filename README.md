@@ -324,7 +324,7 @@ example(Generate_U,echo=F)
 
 ```
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/RtmpH3aRdW/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
+## Source: "/tmp/Rtmpx4q5SO/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
 ## with 11358 features
 ## It has 7 fields
 ## Integer64 fields read as strings:  objectid
