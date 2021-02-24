@@ -3,7 +3,7 @@
 library(shiny)
 
 shinyServer(function(input, output,session) {
-
+  
   library(shinythemes)
   library(leaflet)
   library(ggplot2)
@@ -46,8 +46,7 @@ shinyServer(function(input, output,session) {
         plot.background = element_rect(color = " gray10", fill = " gray10"),  
         plot.title = element_text(color = "white"),  
         plot.subtitle = element_text(color = "white"),  
-        plot.caption = element_text( color = "white")
-      )}
+        plot.caption = element_text( color = "white"))}
   #ggplot(data=data.frame(x=1:15,z=1,y=factor(1:3)),aes(x=x,y=z,color=y))+geom_point()
   th<-theme_dark2()
   theme_set(th)
@@ -214,13 +213,21 @@ shinyServer(function(input, output,session) {
   
   # Panel 1
   observeEvent(input$N,  {
-    updateSliderInput(session = session, inputId = "m", max = input$N)
-    updateSliderInput(session = session, inputId = "n0", max = input$N%/%input$n1)
+    x<-input$N;y<-npiut$n1
+    updateSliderInput(session,inputId = "m", max = x)
+    updateSliderInput(session,inputId = "n0", max = x%/%y)
+    updateNumericInput(session,inputId = "N2", value = x)
+    #updateActionButton(session=session,inputId="rerun",label="Rerun")
+  })
+  observeEvent(input$N2,  {
+    x<-input$N2
+    if(x!=input$N){
+      updateNumericInput(session,inputId = "N", value = x)}
     #updateActionButton(session=session,inputId="rerun",label="Rerun")
   })
   
   observeEvent(input$n1,  {
-    updateSliderInput(session = session, inputId = "n0", max = input$N%/%input$n1)
+    updateSliderInput(session,inputId = "n0", max = input$N%/%input$n1)
   })
   
   
@@ -290,11 +297,24 @@ shinyServer(function(input, output,session) {
     Trees.1000f(Trees3, n0=input$n0,n1=input$n1,n2=input$n2)
   })
   
+  output$text<-renderUI({
+    str1<-paste0("Consider a population of ",input$N," trees.")
+    str2<-paste0("Some trees have a proportion of leaves with a detectable concentration of positive RNA higher than ",input$beta,".")
+    str3<-paste0("There are ",input$m, " of these trees.")
+    str4<-paste0("Those ",input$m," infected trees are located around ",input$foyers," different infection sources.")
+    str5<-paste0("When testing a single leaf from a healthy tree, the risk of a false positive result for that leaf is smaller than ","input$alpha")
+    str6<-paste0("")
+    str7<-paste0("")
+    str8<-paste0("")
+    
+    HTML(paste(str1, str2,str3,str4, str5,str6, str7, str8, sep = '<br/>'))})
+    
+    
+    output$bbmap1.4<- renderLeaflet({leafletmap(Trees1.4())})
+    
+    output$counts<-renderTable(Trees1000.1.4())
+    # Panel 2
+  })
   
-  output$bbmap1.4<- renderLeaflet({leafletmap(Trees1.4())})
   
-  output$counts<-renderTable(Trees1000.1.4())
-  # Panel 2
-})
-
-
+  

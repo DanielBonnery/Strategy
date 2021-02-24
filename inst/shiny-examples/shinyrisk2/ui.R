@@ -1,10 +1,4 @@
-  library(shiny)
-  library(shinythemes)
-  library(leaflet)
-  library(ggplot2)
-  library(Strategy)
-  library(RLeafletTools)
-  
+
   shinyUI(
     fluidPage(
       # Application title
@@ -21,7 +15,8 @@
                 column(
                   6,style=list("padding-right: 5px;"),
                   h4("Population parameters"),
-                  sliderInput("N","N, number of trees in the field",min = 1,  max = 100000,  value = 32369)),
+                  sliderInput("N","N, number of trees in the field",min = 1,  max = 100000,  value = 32369),
+                  numericInput("N2","",min = 1,  max = 100000,  value = 32369)),
                 column(
                   6,style=list("padding-right: 5px;"),
                   h4("Epidemic parameters"),
@@ -62,11 +57,19 @@
               tabsetPanel(
                 type="tabs",
                 tabPanel(
+                  "Details",
+                  htmlOutput("text")),
+                tabPanel(
                   "Formula",
                   plotOutput("plot.1",height = 500),
                   h3(textOutput("risk")),
                   tableOutput("counts")),
-                tabPanel("Visualisation",
+                tabPanel(
+                  "Variation",
+                  plotOutput("plot.1",height = 500),
+                  h3(textOutput("risk")),
+                  tableOutput("counts")),
+                tabPanel("Map (click 'refresh map' to view)",
                          leafletOutput("bbmap1.4", height=600))
               ))))#,
         ###################### Tabpanel 2
