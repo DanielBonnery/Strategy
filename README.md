@@ -9,13 +9,6 @@ always_allow_html: yes
 # Simulations for desease detection
 
 
-```
-## Error in library(Strategy): there is no package called 'Strategy'
-```
-
-```
-## Error in library(RLeafletTools): there is no package called 'RLeafletTools'
-```
 
 
 ## Installation
@@ -56,88 +49,23 @@ To visualize the data, one can use code like the following (only three fields ou
 
 ```r
 library(Strategy)
-```
-
-```
-## Error in library(Strategy): there is no package called 'Strategy'
-```
-
-```r
 data(Avo_fields,package="Strategy")
-```
-
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 data(U2,package="Strategy")
-```
 
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 U2<-U2[2:4]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'U2' not found
-```
-
-```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
-```
 
-```
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.factor': object 'Avo_fields' not found
-```
-
-```r
 QLD<-Avo_fields$State=="Qld"
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'Avo_fields' not found
-```
-
-```r
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1,3,4)]
-```
-
-```
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'unique': object 'Avo_fields' not found
-```
-
-```r
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'QLD' not found
-```
-
-```r
 QLDt<-is.element(U2$id,Avo_ids)
-```
 
-```
-## Error in is.element(U2$id, Avo_ids): object 'U2' not found
-```
-
-```r
 yearpal <- colorFactor(heat.colors(5),
                        domain = levels(Avo_fields$Source_yr),
                        na.color = "#aaff56")
-```
 
-```
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'levels': object 'Avo_fields' not found
-```
-
-```r
 leaflet(Avo_fields[QLD,]) %>%
   addProviderTiles('Esri.WorldImagery',
                    options = providerTileOptions(minZoom = 1, 
@@ -152,9 +80,7 @@ leaflet(Avo_fields[QLD,]) %>%
              clusterOptions = markerClusterOptions())
 ```
 
-```
-## Error in structure(list(options = options), leafletData = data): object 'Avo_fields' not found
-```
+<img src="figure/utyhgfdrewefewfwgf-1.png" title="plot of chunk utyhgfdrewefewfwgf" alt="plot of chunk utyhgfdrewefewfwgf" width="100%" />
 
 We have 797 avocado fields in Queensland from ACLUMP.
 The desease is spreading by root, so we can consider that root to root transmission is not possible for trees separated by more than the maximum avocado root reach. I read that the avocado should be planted at least 30 feet from houses, so I think it is safe to say that fields separated by more than 200 m will not contaminate each other via their roots.
@@ -235,45 +161,11 @@ The result on a selection of fields can be seen by executing
 
 ```r
 library(Strategy)
-```
-
-```
-## Error in library(Strategy): there is no package called 'Strategy'
-```
-
-```r
 data(Avo_fields,package="Strategy")
-```
-
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 data(U2E2,package="Strategy")
-```
 
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 U2E2<-U2E2[c(2:4,12:112)]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'U2E2' not found
-```
-
-```r
 names(U2E2)[1:2]<-c("long","lat")
-```
-
-```
-## Error in names(U2E2)[1:2] <- c("long", "lat"): object 'U2E2' not found
-```
-
-```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
 
@@ -282,13 +174,8 @@ QLD<-Avo_fields$State=="Qld"
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
 QLDt<-is.element(U2$id,Avo_ids)
-```
 
-```
-## Error in is.element(U2$id, Avo_ids): object 'U2' not found
-```
 
-```r
 yearpal <- colorFactor(heat.colors(5),
                        domain = levels(Avo_fields$Source_yr),
                        na.color = "#aaff56")
@@ -306,53 +193,17 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I012")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/utyhgfdrewgf-1.png" title="plot of chunk utyhgfdrewgf" alt="plot of chunk utyhgfdrewgf" width="100%" />
 
 
 
 ```r
 library(Strategy)
-```
-
-```
-## Error in library(Strategy): there is no package called 'Strategy'
-```
-
-```r
 data(Avo_fields,package="Strategy")
-```
-
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 data(U2E2,package="Strategy")
-```
 
-```
-## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
-```
-
-```r
 U2E2<-U2E2[c(2:4,12:112)]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'U2E2' not found
-```
-
-```r
 names(U2E2)[1:2]<-c("long","lat")
-```
-
-```
-## Error in names(U2E2)[1:2] <- c("long", "lat"): object 'U2E2' not found
-```
-
-```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
 
@@ -361,13 +212,8 @@ QLD<-Avo_fields$State=="Qld"
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
 QLDt<-is.element(U2$id,Avo_ids)
-```
 
-```
-## Error in is.element(U2$id, Avo_ids): object 'U2' not found
-```
 
-```r
 yearpal <- colorFactor(heat.colors(5),domain = levels(Avo_fields$Source_yr),na.color = "#aaff56")
 
 leaflet(Avo_fields[QLD,]) %>%
@@ -383,9 +229,7 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I085")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/utyhgfewrfwedrewgf-1.png" title="plot of chunk utyhgfewrfwedrewgf" alt="plot of chunk utyhgfewrfwedrewgf" width="100%" />
 
 
 ## Details and code demo
@@ -410,13 +254,6 @@ This function 'addpiechartclustermarkers' allows to replace cluster markers by c
 
 ```r
 library(Strategy)
-```
-
-```
-## Error in library(Strategy): there is no package called 'Strategy'
-```
-
-```r
 data("breweries91",package="leaflet")
 breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),
                              nrow(breweries91),
@@ -426,9 +263,7 @@ leaflet(breweries91) %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 ```
 
-```
-## Error in addpiechartclustermarkers(., .data = breweries91, .colors = c("red", : could not find function "addpiechartclustermarkers"
-```
+<img src="figure/tyrtjhfhgn-1.png" title="plot of chunk tyrtjhfhgn" alt="plot of chunk tyrtjhfhgn" width="100%" />
 
 
 ### Computing distances between polygons
