@@ -9,6 +9,13 @@ always_allow_html: yes
 # Simulations for desease detection
 
 
+```
+## Error in library(Strategy): there is no package called 'Strategy'
+```
+
+```
+## Error in library(RLeafletTools): there is no package called 'RLeafletTools'
+```
 
 
 ## Installation
@@ -49,23 +56,88 @@ To visualize the data, one can use code like the following (only three fields ou
 
 ```r
 library(Strategy)
-data(Avo_fields,package="Strategy")
-data(U2,package="Strategy")
+```
 
+```
+## Error in library(Strategy): there is no package called 'Strategy'
+```
+
+```r
+data(Avo_fields,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
+data(U2,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
 U2<-U2[2:4]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'U2' not found
+```
+
+```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
+```
 
+```
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.factor': object 'Avo_fields' not found
+```
+
+```r
 QLD<-Avo_fields$State=="Qld"
+```
 
+```
+## Error in eval(expr, envir, enclos): object 'Avo_fields' not found
+```
+
+```r
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1,3,4)]
-QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
-QLDt<-is.element(U2$id,Avo_ids)
+```
 
+```
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'unique': object 'Avo_fields' not found
+```
+
+```r
+QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'QLD' not found
+```
+
+```r
+QLDt<-is.element(U2$id,Avo_ids)
+```
+
+```
+## Error in is.element(U2$id, Avo_ids): object 'U2' not found
+```
+
+```r
 yearpal <- colorFactor(heat.colors(5),
                        domain = levels(Avo_fields$Source_yr),
                        na.color = "#aaff56")
+```
 
+```
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'levels': object 'Avo_fields' not found
+```
+
+```r
 leaflet(Avo_fields[QLD,]) %>%
   addProviderTiles('Esri.WorldImagery',
                    options = providerTileOptions(minZoom = 1, 
@@ -80,7 +152,9 @@ leaflet(Avo_fields[QLD,]) %>%
              clusterOptions = markerClusterOptions())
 ```
 
-<img src="figure/utyhgfdrewefewfwgf-1.png" title="plot of chunk utyhgfdrewefewfwgf" alt="plot of chunk utyhgfdrewefewfwgf" width="100%" />
+```
+## Error in structure(list(options = options), leafletData = data): object 'Avo_fields' not found
+```
 
 We have 797 avocado fields in Queensland from ACLUMP.
 The desease is spreading by root, so we can consider that root to root transmission is not possible for trees separated by more than the maximum avocado root reach. I read that the avocado should be planted at least 30 feet from houses, so I think it is safe to say that fields separated by more than 200 m will not contaminate each other via their roots.
@@ -161,11 +235,45 @@ The result on a selection of fields can be seen by executing
 
 ```r
 library(Strategy)
-data(Avo_fields,package="Strategy")
-data(U2E2,package="Strategy")
+```
 
+```
+## Error in library(Strategy): there is no package called 'Strategy'
+```
+
+```r
+data(Avo_fields,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
+data(U2E2,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
 U2E2<-U2E2[c(2:4,12:112)]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'U2E2' not found
+```
+
+```r
 names(U2E2)[1:2]<-c("long","lat")
+```
+
+```
+## Error in names(U2E2)[1:2] <- c("long", "lat"): object 'U2E2' not found
+```
+
+```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
 
@@ -174,8 +282,13 @@ QLD<-Avo_fields$State=="Qld"
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
 QLDt<-is.element(U2$id,Avo_ids)
+```
 
+```
+## Error in is.element(U2$id, Avo_ids): object 'U2' not found
+```
 
+```r
 yearpal <- colorFactor(heat.colors(5),
                        domain = levels(Avo_fields$Source_yr),
                        na.color = "#aaff56")
@@ -193,17 +306,53 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I012")
 ```
 
-<img src="figure/utyhgfdrewgf-1.png" title="plot of chunk utyhgfdrewgf" alt="plot of chunk utyhgfdrewgf" width="100%" />
+```
+## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
+```
 
 
 
 ```r
 library(Strategy)
-data(Avo_fields,package="Strategy")
-data(U2E2,package="Strategy")
+```
 
+```
+## Error in library(Strategy): there is no package called 'Strategy'
+```
+
+```r
+data(Avo_fields,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
+data(U2E2,package="Strategy")
+```
+
+```
+## Error in find.package(package, lib.loc, verbose = verbose): there is no package called 'Strategy'
+```
+
+```r
 U2E2<-U2E2[c(2:4,12:112)]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'U2E2' not found
+```
+
+```r
 names(U2E2)[1:2]<-c("long","lat")
+```
+
+```
+## Error in names(U2E2)[1:2] <- c("long", "lat"): object 'U2E2' not found
+```
+
+```r
 #Plot the trees
 Avo_fields$Source_yr<-addNA(as.factor(Avo_fields$Source_yr))
 
@@ -212,8 +361,13 @@ QLD<-Avo_fields$State=="Qld"
 Avo_ids<-unique(Avo_fields[QLD,]$Avo_id)[c(1:10)]
 QLD<-QLD&is.element(Avo_fields$Avo_id,Avo_ids)
 QLDt<-is.element(U2$id,Avo_ids)
+```
 
+```
+## Error in is.element(U2$id, Avo_ids): object 'U2' not found
+```
 
+```r
 yearpal <- colorFactor(heat.colors(5),domain = levels(Avo_fields$Source_yr),na.color = "#aaff56")
 
 leaflet(Avo_fields[QLD,]) %>%
@@ -229,7 +383,9 @@ leaflet(Avo_fields[QLD,]) %>%
                            group="I085")
 ```
 
-<img src="figure/utyhgfewrfwedrewgf-1.png" title="plot of chunk utyhgfewrfwedrewgf" alt="plot of chunk utyhgfewrfwedrewgf" width="100%" />
+```
+## Error in addpiechartclustermarkers(., .data = U2E2[is.element(U2E2$id, : could not find function "addpiechartclustermarkers"
+```
 
 
 ## Details and code demo
@@ -254,6 +410,13 @@ This function 'addpiechartclustermarkers' allows to replace cluster markers by c
 
 ```r
 library(Strategy)
+```
+
+```
+## Error in library(Strategy): there is no package called 'Strategy'
+```
+
+```r
 data("breweries91",package="leaflet")
 breweries91$goodbear<-sample(as.factor(c("terrific","marvelous","culparterretaping")),
                              nrow(breweries91),
@@ -263,7 +426,9 @@ leaflet(breweries91) %>%
  addpiechartclustermarkers(.data=breweries91,.colors=c("red","green","blue"),group="goodbear")
 ```
 
-<img src="figure/tyrtjhfhgn-1.png" title="plot of chunk tyrtjhfhgn" alt="plot of chunk tyrtjhfhgn" width="100%" />
+```
+## Error in addpiechartclustermarkers(., .data = breweries91, .colors = c("red", : could not find function "addpiechartclustermarkers"
+```
 
 
 ### Computing distances between polygons
@@ -283,16 +448,12 @@ A function of two triangles have the same orientation.
 example(triangleorientation,echo=F)
 ```
 
-<img src="figure/wefwef-1.png" title="plot of chunk wefwef" alt="plot of chunk wefwef" width="100%" />
-
 A function to tell if two segments intersect.
 
 
 ```r
 example(segment.intersect,echo=F)
 ```
-
-<img src="figure/fwfqfwf-1.png" title="plot of chunk fwfqfwf" alt="plot of chunk fwfqfwf" width="100%" />
 
 
 
@@ -307,27 +468,15 @@ example(segment.intersect,echo=F)
 example(ranges.gap,echo=F)
 ```
 
-<img src="figure/qdqwd-1.png" title="plot of chunk qdqwd" alt="plot of chunk qdqwd" width="100%" />
-
 
 
 ```r
 example(rangesoverlap,echo=F)
 ```
 
-<img src="figure/yujyuj-1.png" title="plot of chunk yujyuj" alt="plot of chunk yujyuj" width="100%" />
-
 
 ```r
 example(Generate_U,echo=F)
-```
-
-```
-## OGR data source with driver: ESRI Shapefile 
-## Source: "/tmp/Rtmpx4q5SO/Parishes_December_2011_Boundaries_EW_BFC.shp", layer: "Parishes_December_2011_Boundaries_EW_BFC"
-## with 11358 features
-## It has 7 fields
-## Integer64 fields read as strings:  objectid
 ```
 
 
@@ -335,13 +484,6 @@ example(Generate_U,echo=F)
 
 ```r
 example(risktobeinfectedbydistancetooneinfectedunit)
-```
-
-```
-## 
-## rsktbn> #Risk to be ingfected 2 m from the victim when the 50%risk distance is 1 m:
-## rsktbn> risktobeinfectedbydistancetooneinfectedunit(2,1)
-## [1] 0.05583301
 ```
 
 
@@ -353,49 +495,35 @@ of the closest point of a segment to a specific point on the plane. The position
 example(projpointonseg_a,echo=F)
 ```
 
-<img src="figure/hrehthrt-1.png" title="plot of chunk hrehthrt" alt="plot of chunk hrehthrt" width="100%" />
-
 
 ```r
 example(closestpointonpolygon,echo=F)
 ```
-
-<img src="figure/errtgrefed-1.png" title="plot of chunk errtgrefed" alt="plot of chunk errtgrefed" width="100%" />
 
 
 ```r
 example(closestpointsontwosegments,echo=F)
 ```
 
-<img src="figure/ascoikjgh-1.png" title="plot of chunk ascoikjgh" alt="plot of chunk ascoikjgh" width="100%" />
-
 
 ```r
 example(closestpointsontwosegments_n,echo=F)
 ```
-
-<img src="figure/wfesadokiuj-1.png" title="plot of chunk wfesadokiuj" alt="plot of chunk wfesadokiuj" width="100%" />
 
 
 ```r
 example(closestpointsontwopolygons,echo=F)
 ```
 
-<img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" />
-
 
 ```r
 example(closestpointsontwopolygons_n,echo=F)
 ```
 
-<img src="figure/wrgfglikyju-1.png" title="plot of chunk wrgfglikyju" alt="plot of chunk wrgfglikyju" width="100%" />
-
 
 ```r
 example(distpointtoseg,echo=F)
 ```
-
-<img src="figure/wegkyujh-1.png" title="plot of chunk wegkyujh" alt="plot of chunk wegkyujh" width="100%" />
 
 
 
@@ -403,8 +531,6 @@ example(distpointtoseg,echo=F)
 ```r
 example(distpointtopoly,echo=F)
 ```
-
-<img src="figure/ergdfsviutyh-1.png" title="plot of chunk ergdfsviutyh" alt="plot of chunk ergdfsviutyh" width="100%" />
 
 
 
@@ -414,34 +540,18 @@ example(distpointtopoly,echo=F)
 example(distpointtoseg,echo=F)
 ```
 
-<img src="figure/trgefsdtyuhfg-1.png" title="plot of chunk trgefsdtyuhfg" alt="plot of chunk trgefsdtyuhfg" width="100%" />
-
 
 ```r
 example(segment.intersect,echo=F)
 ```
 
-<img src="figure/tyrefsdjthgnf-1.png" title="plot of chunk tyrefsdjthgnf" alt="plot of chunk tyrefsdjthgnf" width="100%" />
-
 ```r
 example(distsegmenttosegment,echo=F)
 ```
 
-<img src="figure/rtrgefsujtghn-1.png" title="plot of chunk rtrgefsujtghn" alt="plot of chunk rtrgefsujtghn" width="100%" />
-
 
 ```r
 example(distsegmenttopoly)
-```
-
-```
-## 
-## dstsgm> zz<-function(){
-## dstsgm+ .poly<-matrix(sample(0:6,6,T),3,2)[c(1:3,1),]
-## dstsgm+ s<-matrix(sample(0:6,6,T),2,2)
-## dstsgm+ plot(rbind(.poly,s),xlab="",yaxt="n")
-## dstsgm+ points(.poly,type="l");points(s,type="l")
-## dstsgm+ points(closestpointsontwopolygons(s,.poly),lty=3,col="red")}
 ```
 
 
@@ -449,71 +559,14 @@ example(distsegmenttopoly)
 example(distpolytopoly,ask=F)
 ```
 
-```
-## 
-## dstply> zz<-function(){
-## dstply+ poly1=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
-## dstply+ poly2=matrix(sample(0:6,6,rep=T),3,2)[c(1:3,1),]
-## dstply+ s<-rbind(poly1,poly2)
-## dstply+ dd<-distpolytopoly(poly1,poly2)
-## dstply+ plot(s,cex=.5,main=paste0("Distance: ", signif(dd,3)),asp=1,xlim=range(s),ylim=range(s),xaxt='n',yaxt='n',xlab='',ylab='')
-## dstply+ points(poly1,type="l",lwd=2)
-## dstply+ points(poly2,type="l",lwd=2)
-## dstply+ for(cc in closestpointsontwopolygons_n(poly1,poly2)){
-## dstply+ points(cc,type="l",col="red",lty=3)}}
-## 
-## dstply> par(mfrow=c(2,2),oma=c(0,0,1,0),mar=c(0.1,0.1,1,0.1))
-## 
-## dstply> set.seed(2);replicate(4,zz())
-```
-
-<img src="figure/wedgfpoik-1.png" title="plot of chunk wedgfpoik" alt="plot of chunk wedgfpoik" width="100%" />
-
-```
-## [[1]]
-## NULL
-## 
-## [[2]]
-## NULL
-## 
-## [[3]]
-## NULL
-## 
-## [[4]]
-## NULL
-```
-
 
 ```r
 example(polydistmat,echo=F)
 ```
 
-<img src="figure/dfghuykjnbv-1.png" title="plot of chunk dfghuykjnbv" alt="plot of chunk dfghuykjnbv" width="100%" />
-
 
 ```r
 example(polysmalldistmat,echo=F)
-```
-
-<img src="figure/dgfghghfdgf-1.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
-
-```
-## [1] "ranges by gradient computed"
-## [1] "20 polygons."
-```
-
-<img src="figure/dgfghghfdgf-2.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
-
-```
-## [1] "ranges by gradient computed"
-## [1] "20 polygons."
-```
-
-<img src="figure/dgfghghfdgf-3.png" title="plot of chunk dgfghghfdgf" alt="plot of chunk dgfghghfdgf" width="100%" />
-
-```
-## [1] "ranges by gradient computed"
-## [1] "20 polygons."
 ```
 
 ```r
@@ -531,28 +584,9 @@ example(extractpolygonsaslist)
 example(neighbourhoods,echo=F)
 ```
 
-<img src="figure/uyhgffguyjg-1.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" /><img src="figure/uyhgffguyjg-2.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" /><img src="figure/uyhgffguyjg-3.png" title="plot of chunk uyhgffguyjg" alt="plot of chunk uyhgffguyjg" width="100%" />
-
 
 ```r
 example(dist_areas_f)
-```
-
-```
-## 
-## dst_r_> data(U) 
-## 
-## dst_r_> dist_areas_f(U)[1:3,1:3]
-##            18         67         68
-## 18 0.00000000 0.03502217 0.02395041
-## 67 0.03502217 0.00000000 0.01475275
-## 68 0.02395041 0.01475275 0.00000000
-## 
-## dst_r_> dist_areas_f(U,0.03)[1:3,1:3]
-##             9         10         33
-## 9  0.00000000 0.00000000 0.09622412
-## 10 0.00000000 0.00000000 0.09622412
-## 33 0.09622412 0.09622412 0.00000000
 ```
 
 
@@ -560,41 +594,7 @@ example(dist_areas_f)
 example(newdist)
 ```
 
-```
-## 
-## newdst> data(UE,package="Strategy")
-## 
-## newdst> delta<-.005
-## 
-## newdst> sicks<-(1:nrow(UE))[UE$I001=="sick"]
-## 
-## newdst> closedistances=newdist(NULL,UE,sicks)
-## 
-## newdst> do.call(cbind,closedistances)[1:3,]
-##                        ra
-## [1,] 13450 NA 0.002314053
-## [2,] 13477 NA 0.003925148
-## [3,] 13497 NA 0.002660063
-```
-
 
 ```r
 example(updatedist)
-```
-
-```
-## 
-## updtds> data(UE,package="Strategy")
-## 
-## updtds> delta<-.005
-## 
-## updtds> sicks<-which(UE$I001=="sick")
-## 
-## updtds> closedistances=updatedist(NULL,UE,sicks,delta=delta)
-## 
-## updtds> do.call(cbind,closedistances)[1:3,]
-##                        ra
-## [1,] 13450 NA 0.002314053
-## [2,] 13477 NA 0.003925148
-## [3,] 13497 NA 0.002660063
 ```

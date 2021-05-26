@@ -5,11 +5,11 @@
 \title{All ordered n-sized subsets of 1...N 
 n}
 \usage{
-subsets(
-  n,
-  N,
-  subsets_1 = if (n >= 2) {     subsets(n - 1, N) } else {     NULL }
-)
+subsets(n, N, subsets_1 = if (n >= 2) {
+    subsets(n - 1, N)
+} else {
+    NULL
+})
 }
 \description{
 All ordered n-sized subsets of 1...N 

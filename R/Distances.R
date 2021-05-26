@@ -104,7 +104,8 @@ newdist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_ar
 #' closedistances=updatedist(NULL,UE,sicks,delta=delta)
 #' do.call(cbind,closedistances)[1:3,]
 updatedist<-function(closedistances=NULL,U,sicks,new.sicks=NULL,delta=0.005,dist_areas=dist_areas_f(U,delta)){
-  if(is.null(closedistances)){closedistances=list(ind=matrix(NA,0,2),ra=vector())}
+  if(is.null(closedistances)){
+    closedistances=list(ind=matrix(NA,0,2),ra=vector())}
   L<-newdist(closedistances,U,sicks,new.sicks,delta,dist_areas)
   list(ind=rbind(closedistances$ind,L$ind),ra=c(closedistances$ra,L$ra))}
 
@@ -656,7 +657,7 @@ polysmalldistmat<-function(list.poly,delta,gradients=apply(cbind(c(0,1),c(1,0),c
     if(any(smalls)){
       do.call(rbind,
               lapply(((i+1):length(.list.poly))[smalls],function(j){
-                c(i,j,Strategy::distpolytopoly(.list.poly[[i]],.list.poly[[j]]))}))}else{matrix(NA,0,3)}},
+                c(i,j,distpolytopoly(.list.poly[[i]],.list.poly[[j]]))}))}else{matrix(NA,0,3)}},
     .rangesbygradients=rangesbygradients,
     .delta=delta,
     .list.poly=list.poly,

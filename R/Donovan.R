@@ -1,4 +1,5 @@
-if(FALSE){library(rgdal)
+if(FALSE){
+library(rgdal)
 library(raster)
 library(mapview)
 library(leaflet)

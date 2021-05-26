@@ -2,7 +2,7 @@ Package: Strategy
 Type: Package
 Title: X
 Version: 1.0
-Date: 2021-02-24
+Date: 2021-05-27
 Author: D. Bonnery
 Maintainer: D. Bonnery  <daniel.bonnery@gmail.com>
 Description: Data
@@ -17,4 +17,4 @@ Depends: ggplot2,
 License: GPL (>= 2)
 LazyLoad: yes
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1

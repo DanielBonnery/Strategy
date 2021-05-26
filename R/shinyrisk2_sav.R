@@ -2,8 +2,14 @@
 #' 
 #' @param Fields a Spatial Data frame with polygons
 #' @example 
-#' library(Strategy)
-#' library(avocado)
+#' DonovanFarm<-sf::read_sf(file.path(find.package("avocado"),'extdata','DonovanFarm.shp'))
+#' DonovanFarm$color=as.factor(DonovanFarm$Variety)
+#' levels(DonovanFarm$color)=c("green","blue","black")
+#' DonovanFarm$color<-as.character(DonovanFarm$color)
+
+
+#' Fields0<-DonovanFarm
+#' source(file.path(Mydirectories::googledrive.teamdrive.directory(),"Avocado Sunblotch/Programs_and_papers/Strategy/R/shinyrisk2.R")); Shiny.FieldLevelType2risk(Fields0)
 
 Shiny.FieldLevelType2risk <- function (Fields0=get(data(Fake,package="Strategy"))) {
 require(shiny)

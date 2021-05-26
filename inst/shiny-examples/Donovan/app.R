@@ -1,11 +1,85 @@
+if(FALSE){
+    table2<-data.frame(
+      countmax=c(206,412,618,824,1030,1236,1443,1649,1855,2061,2267,2473,2679,2885,3092,3298,3504,3710,3916,4122,4535,Inf),
+      samplingrate=c(1,.96,.78,.64,.53,.45,.40,.35,
+                     .32,.29,.26,.24,.23,.21,.20,
+                     .19,.18,.17,.16,.15,.14,NA))%>%
+      dplyr::mutate(      
+        countmin=c(1,countmax[-length(countmax)]+1),
+        infectedtrees=pmax(1,floor(.005*countmin)),
+        noninfectedtrees=countmin-floor(.005*countmin),
+        samplesize=ceiling(samplingrate*countmin))
+    
+    
+    table2.2<-plyr::adply(table2[1:(nrow(table2)-1),],
+                          1,
+                          function(d){
+                            data.frame(count=d$countmin:d$countmax)
+                          })%>%
+      dplyr::mutate(
+        recommendedsamplesize=ceiling(samplingrate*count),
+        infectedtrees=pmax(1,floor(.005*count)),
+        noninfectedtrees=count-infectedtrees)
+    
+    
+    table2.2<-plyr::adply(table2.2,
+                          1,
+                          function(d){
+                            data.frame(optimalsamplesize=requirednumberoftreeswithoutR(d$count,d$infectedtrees,n1=NA,n2=10,beta=exp(log(0.02)/10),risk=0.05))
+                          })
+    table2.2<-table2.2%>%
+      mutate(optimalsamplingrate=optimalsamplesize/count)
+    
+    table2.3<-table2.2%>%
+      reshape2::melt(id.vars="count",
+                     measure.vars=c("optimalsamplesize",
+                                    "recommendedsamplesize",
+                                    "samplingrate",
+                                    "infectedtrees",
+                                    "optimalsamplingrate"))%>%
+      mutate(type1=
+               recode(variable,"optimalsamplesize"="Sample sizes",
+                      "recommendedsamplesize"="Sample sizes",
+                      "samplingrate"="Sampling rates",
+                      "infectedtrees"="Detectable infected trees",
+                      "optimalsamplingrate"="Sampling rates"),
+             Type=recode(variable,
+                         "optimalsamplesize"="Optimal",
+                         "recommendedsamplesize"="Recommended by MAF",
+                         "samplingrate"="Recommended by MAF",
+                         "infectedtrees"="Infected trees",
+                         "optimalsamplingrate"="Optimal"))
+  
+  
+  
+  save(table2.3,file="data/table2.3.rda")
+}
+
+riskwithoutR     <-function(N,m,n0,n1,n2,betac){
+  possiblexs<-0:min(n0*n1,m)
+  sum(betac^(n2*possiblexs)*dhyper(x=possiblexs,m=m,n=N-m,k=n0*n1))}
+
+requirednumberoftreeswithoutR<-function(N,m,n1,n2,beta,risk){
+  n<-0
+  risk2<-1
+  while(n<N&risk2>risk){
+    n<-n+1
+    risk2<-riskwithoutR(N,m,n0=1,n,n2,beta)}
+  n}
+
+Fields0<-get(load("data/Fields0.rda"))
+table2.3<-get(load("data/table2.3.rda"))
+
 #' Shiny app - Simulation of infection and detection process
 #' 
-#' @param Fields a Spatial Data frame with polygons
-#' @example 
-#' library(Strategy)
-#' library(avocado)
+#' DonovanFarm<-sf::read_sf(file.path(find.package("avocado"),'extdata','DonovanFarm.shp'))
+#' DonovanFarm$color=as.factor(DonovanFarm$Variety)
+#' levels(DonovanFarm$color)=c("green","blue","black")
+#' DonovanFarm$color<-as.character(DonovanFarm$color)
 
-Shiny.FieldLevelType2risk <- function (Fields0=get(data(Fake,package="Strategy"))) {
+
+#' Fields0<-DonovanFarm
+
 require(shiny)
 require(shinythemes)
 require(leaflet)
@@ -187,38 +261,6 @@ server <- function(input , output,session) {
   #colScale2 <- scale_fill_manual(name = "Origin",values = c('Original'='lightblue', 'Transformed'='red','white'))
   
   #Risk with sampling with replacement approximation.
-  approximatedrisk1<-function(N,m,n0,n1,n2,betac){(1-(m/N)*(1-betac^(n2)))^(n1*n0)}
-  approximatedrisk2<-function(N,m,n0,n1,n2,betac){.5*(1-(m/N)*(1-betac^(n2)))^(n1*n0)}
-  riskwithR        <-function(N,m,n0,n1,n2,betac){(1-(m/N)*(1-(betac)^(n2)))^(n1*n0)}
-  riskwithoutR     <-function(N,m,n0,n1,n2,betac){
-    possiblexs<-0:min(n0*n1,m)
-    sum(betac^(n2*possiblexs)*dhyper(x=possiblexs,m=m,n=N-m,k=n0*n1))}
-  
-  requirednumberoftreeswithR<-function(N,m,n1,n2,beta,risk){
-    ceiling(log(risk)/(log(1-(m/N)*(1-beta^n2))))
-  }
-  
-  #'@param N population size
-  #'@param m number of infected
-  #'@param n0 number of bulks in sample
-  #'@param n1 number of trees in a bulk
-  #'@param n2 number of colected leaves per sampled tree
-  #'@param beta risk at the leaf level, or 1-proportion of leaves with detectable RNA in an infected tree 
-  #'@return an integer, number of required leaves
-  #'@examples
-  #' requirednumberoftreeswithR(1237,6,1,1,0.63,0.05)
-  #' requirednumberoftreeswithoutR(1237,6,1,1,0.63,0.05)
-  #' riskwithoutR(1237,6,1236,1,0.63)
-  #' requirednumberoftreeswithoutR(1237,6,1,10,0.63,0.05)
-  #' requirednumberoftreeswithoutR(1237,6,1,10,0,0.05)
-  requirednumberoftreeswithoutR<-function(N,m,n1,n2,beta,risk){
-    n<-0
-    risk2<-1
-    while(n<N&risk2>risk){
-      n<-n+1
-      risk2<-riskwithoutR(N,m,n0=1,n,n2,beta)}
-    n}
-  
   
   
   
@@ -608,79 +650,25 @@ which is close to \\(\\beta=0.63\\).
       output$samplesize5.1<-renderTable({bionz[1:7,]})
       output$samplesize5.2<-renderTable({bionz[8:14,]})
       output$samplesize5.3<-renderTable({bionz[15:21,]})
-      plot2<-function(){
-        
-        table2<-data.frame(
-          countmax=c(206,412,618,824,1030,1236,1443,1649,1855,2061,2267,2473,2679,2885,3092,3298,3504,3710,3916,4122,4535,Inf),
-          samplingrate=c(1,.96,.78,.64,.53,.45,.40,.35,
-                         .32,.29,.26,.24,.23,.21,.20,
-                         .19,.18,.17,.16,.15,.14,NA))%>%
-          dplyr::mutate(      
-            countmin=c(1,countmax[-length(countmax)]+1),
-            infectedtrees=pmax(1,floor(.005*countmin)),
-            noninfectedtrees=countmin-floor(.005*countmin),
-            samplesize=ceiling(samplingrate*countmin))
-        
-        
-        table2.2<-plyr::adply(table2[1:(nrow(table2)-1),],
-                              1,
-                              function(d){
-                                data.frame(count=d$countmin:d$countmax)
-                              })%>%
-          dplyr::mutate(
-            recommendedsamplesize=ceiling(samplingrate*count),
-            infectedtrees=pmax(1,floor(.005*count)),
-            noninfectedtrees=count-infectedtrees)
-        
-        
-        table2.2<-plyr::adply(table2.2,
-                              1,
-                              function(d){
-                                data.frame(optimalsamplesize=requirednumberoftreeswithoutR(d$count,d$infectedtrees,n1=NA,n2=10,beta=exp(log(0.02)/10),risk=0.05))
-                              })
-        table2.2<-table2.2%>%
-          mutate(optimalsamplingrate=optimalsamplesize/count)
-        
-        table2.3<-table2.2%>%
-          reshape2::melt(id.vars="count",
-                         measure.vars=c("optimalsamplesize",
-                                        "recommendedsamplesize",
-                                        "samplingrate",
-                                        "infectedtrees",
-                                        "optimalsamplingrate"))%>%
-          mutate(type1=
-                   recode(variable,"optimalsamplesize"="Sample sizes",
-                          "recommendedsamplesize"="Sample sizes",
-                          "samplingrate"="Sampling rates",
-                          "infectedtrees"="Detectable infected trees",
-                          "optimalsamplingrate"="Sampling rates"),
-                 Type=recode(variable,
-                             "optimalsamplesize"="Optimal",
-                             "recommendedsamplesize"="Recommended by MAF",
-                             "samplingrate"="Recommended by MAF",
-                             "infectedtrees"="Infected trees",
-                             "optimalsamplingrate"="Optimal"))
-        ggplot(data=table2.3,
-               aes(x=count,y=value,
-                   group=variable,colour=Type))+
-          geom_line()+
-          theme(legend.position = "bottom")+
-          xlab("Number of trees in the field")+
-          ylab("Sample size")+
-          facet_wrap(~type1, scales = "free")+
-          ggtitle("Biosecurity New Zealand Surveillance Standard ",
-                  "Sample size vs number of trees in the field, to achieve a risk of 5% with 10 leaves per tree")+ 
-          labs(fill="")+scale_colour_discrete(name="")
-      }
       
-      
-      plot2.0<-plot2()  
-      
+plot2<-function(){
+  ggplot(data=table2.3,
+         aes(x=count,y=value,
+             group=variable,colour=Type))+
+    geom_line()+
+    theme(legend.position = "bottom")+
+    xlab("Number of trees in the field")+
+    ylab("Sample size")+
+    facet_wrap(~type1, scales = "free")+
+    ggtitle("Biosecurity New Zealand Surveillance Standard ",
+            "Sample size vs number of trees in the field, to achieve a risk of 5% with 10 leaves per tree")+ 
+    labs(fill="")+scale_colour_discrete(name="")
+}
 
+plot2.0<-plot2()
       output$plot.2<-renderPlot({plot2.0})
     # Panel 2
   }
-  runApp(list(ui = ui ,server = server))
-}
 
 
+shinyApp(ui = ui, server = server)
