@@ -5,9 +5,9 @@ account: danielbonnery
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4190770
-bundleId: 4644393
+bundleId: 4649959
 url: https://danielbonnery.shinyapps.io/Donovan/
-when: 1622071459.5268
-lastSyncTime: 1622071459.52686
+when: 1622190660.25841
+lastSyncTime: 1622190660.25847
 asMultiple: FALSE
 asStatic: FALSE

@@ -548,8 +548,8 @@ server <- function(input , output,session) {
         geom_vline(data=riskbetac(),aes(xintercept=beta),color="white")+
         geom_hline(data=riskbetac(),aes(yintercept=risk),color="white")+
         ylim(0,1)+xlab("beta: maximal proportion of leaves WITHOUT detectable NRA in infected trees")},height = 400,width = 600)
-        output$toto<-renderText({paste0("The risk of not detecting the desease is lower than ",signif(riskbetac()$risk,3)," (approximately ",round(riskbetac()$risk,3)*100,"%)")})
-        output$risk<-renderText({paste0("The risk of not detecting the desease is lower than ",signif(riskbetac()$risk,3)," (approximately ",round(riskbetac()$risk,3)*100,"%)")})
+        output$toto<-renderText({paste0("The risk of not detecting the disease is lower than ",signif(riskbetac()$risk,3)," (approximately ",round(riskbetac()$risk,3)*100,"%)")})
+        output$risk<-renderText({paste0("The risk of not detecting the disease is lower than ",signif(riskbetac()$risk,3)," (approximately ",round(riskbetac()$risk,3)*100,"%)")})
     output$samplesize3<-renderUI({HTML(paste0("For the risk of no detection at the field level to be inferior to <b>",input$B,"%</b>, when<ul>
                                               <li>",input$n2," leaves are collected from each sampled tree,</li>
                                               <li> each bulk is made of ",input$n1*input$n2," leaves coming from ",input$n1, " distinct trees,</li>
