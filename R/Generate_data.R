@@ -166,6 +166,7 @@ Generate_Constrained_Epidemic<-
            delta=0.05,
            numberinfected=10,
            foyersaleatoires=2){
+    if(foyersaleatoires>0){
   TT<-numberinfected
   y0<-paste0("I",formatC(0, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
   y1<-paste0("I",formatC(1, width = 1+floor(log(TT)/log(10)), format = "d", flag = "0"))
@@ -206,5 +207,6 @@ Generate_Constrained_Epidemic<-
   }
   U[["Iinf"]]<-U[[y]]
   if(conta<numberinfected){U$Iinf[U$Iinf=="sane"][sample(sum(U$Iinf=="sane"),numberinfected-conta,F)]<-"sick"}
+  }else{U$I0<-'sane';U$I1<-'sane';U$Iinf<-'sane';}
   U
 }
